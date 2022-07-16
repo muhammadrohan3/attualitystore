@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto">
+
+    <div class="flex flex-col gap-4 lg:my-14 md:my-12 my-8">
+
+      <h1 class="text-24px font-semibold text-center">Reso & Cambi</h1>
+      <div class="flex flex-col gap-2">
+        <p class="text-center mx-auto font-medium lg:max-w-4xl md:max-w-2xl max-w-330px">Reso</p>
+        <p class="lg:max-w-4xl md:max-w-2xl max-w-330px mx-auto lg:text-16px text-14px mb-3">
+          Qualora l’articolo spedito arrivi accidentalmente con imperfezioni, si avranno a disposizione 14 giorni dalla consegna del pacco per il reso.
+          <br>
+          Per avere un riscontro immediato contattaci nella modalità che preferisci: Chat Live, Whatsapp, Instagram, Facebook o tramite e-mail.
+          <br>
+          Dopodiché basterà attendere le stesse tempistiche della spedizione indicate, 24/48 ore sul territorio italiano oppure 3 o 4 giorni lavorativi nel caso in cui i nostri clienti siano internazionali.  
+          <br>
+          Se si vorrà procedere con esso, noi di Attuality Store, dovremo ricevere indietro l’articolo nelle stesse condizioni in cui è stato spedito al vostro indirizzo, dopodiché effettueremo un verificato sull’articolo confermando se presenta ciò che il cliente ha realmente descritto. 
+          <br>
+          Nel caso vi siano effettivamente dei difetti si procederà al completo rimborso nell’arco delle prossime 24 ore dopo la verifica.
+        </p>
+        <p class="text-center mx-auto font-medium lg:max-w-4xl md:max-w-2xl max-w-330px">Cambio</p>
+        <p class="lg:max-w-4xl md:max-w-2xl max-w-330px mx-auto lg:text-16px text-14px mb-3">
+          Per il cambio le tempistiche saranno equivalenti a quelle del reso, ossia 14 giorni dalla consegna.
+          <br>
+          Nell’arco di queste due settimane potrai contattarci solo se ci sarà bisogno di un cambio taglia.
+          <br>
+          Ad esempio potrai cambiare il capo o l’accessorio nel caso in cui ci dovesse esserci un errore nella selezione dell’articolo sbagliato o nella taglia.
+          <br>
+          Successivamente si verificherà (non appena avremo ricevuto nuovamente il  prodotto) che non sia stato utilizzato ma solo provato.
+          <br>
+          Dopodiché si procederà con il cambio taglia o con il cambio del modello nel caso in cui la taglia dell’articolo acquistato non sia più disponibile.
+          <br>
+          *Consulta le misurazioni in cm di spalle e busto.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>

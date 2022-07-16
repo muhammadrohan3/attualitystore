@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/showPage.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/search.css">
+</head>
+
+<body class="bg-white flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto bg-white">
+
+
+    <% if(products && products.length){ %>
+
+      <div class="flex justify-center pt-2 lg:pb-3 lg:pt-3 bg-white">
+        <h1 class="text-20px md:text-24px lg:text-28px text-black text-center mx-8 mb-3">Risultati per: <span class="font-medium"><%= search %></span></h1>
+      </div>
+
+      <div class="grid grid-cols-12 gap-5 mb-20 xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+
+        <div class="md:col-span-3 col-span-12">
+          <div id="accordion-collapse" class="md:sticky lg:top-186.5px md:top-124px top-102px" data-accordion="collapse">
+            <h2 id="accordion-collapse-heading-1">
+              <button type="button" class="flex justify-between items-center py-3 w-full font-medium text-left" data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
+                <span class="text-14px">CATEGORIE</span>
+                <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </button>
+            </h2>
+            <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
+              <div class="flex flex-col gap-3 mb-2">
+  
+                <%
+                const categoryCount = {
+                  jackets: 0,
+                  hoodies: 0,
+                  sweatshirts: 0,
+                  shirts: 0,
+                  polos: 0,
+                  tshirts: 0,
+                  jeans: 0,
+                  trousers: 0,
+                  bermuda: 0,
+                  walletsAndSmallLeatherGoods: 0,
+                  swimwear: 0,
+                  slippers: 0
+                } 
+  
+                for(product of products){
+                  if(product.category == 'jackets'){
+                    categoryCount.jackets = categoryCount.jackets + 1
+                  }else if(product.category == 'hoodies'){
+                    categoryCount.hoodies = categoryCount.hoodies + 1
+                  }else if(product.category == 'sweatshirts'){
+                    categoryCount.sweatshirts = categoryCount.sweatshirts + 1
+                  }else if(product.category == 'shirts'){
+                    categoryCount.shirts = categoryCount.shirts + 1
+                  }else if(product.category == 'polos'){
+                    categoryCount.polos = categoryCount.polos + 1
+                  }else if(product.category == 't-shirts'){
+                    categoryCount.tshirts = categoryCount.tshirts + 1
+                  }else if(product.category == 'jeans'){
+                    categoryCount.jeans = categoryCount.jeans + 1
+                  }else if(product.category == 'trousers'){
+                    categoryCount.trousers = categoryCount.trousers + 1
+                  }else if(product.category == 'bermuda'){
+                    categoryCount.bermuda = categoryCount.bermuda + 1
+                  }else if(product.category == 'wallets-and-small-leather-goods'){
+                    categoryCount.walletsAndSmallLeatherGoods = categoryCount.walletsAndSmallLeatherGoods + 1
+                  }else if(product.category == 'swimwear'){
+                    categoryCount.swimwear = categoryCount.swimwear + 1
+                  }else if(product.category == 'slippers'){
+                    categoryCount.slippers = categoryCount.slippers + 1
+                  }
+                }
+                %> 
+                
+                <% if(categoryCount.jackets){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="jackets" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Giacche</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.jackets %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.hoodies){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="hoodies" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Felpe con cappuccio</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.hoodies %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.sweatshirts){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="sweatshirts" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Felpe</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.sweatshirts %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.shirts){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="shirts" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Camicie</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.shirts %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.polos){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="polos" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Polo</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.polos %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.tshirts){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="t-shirts" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">T-shirt</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.tshirts %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.jeans){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="jeans" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Jeans</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.jeans %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.trousers){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="trousers" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Pantaloni</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.trousers %></p>
+                  </div>
+                <% } %> 
+                <% if(categoryCount.bermuda){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="bermuda" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Bermuda</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.bermuda %></p>
+                  </div>
+                <% } %>
+                <% if(categoryCount.walletsAndSmallLeatherGoods){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="wallets-and-small-leather-goods" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Portafoglio e Piccola Pelletteria</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.walletsAndSmallLeatherGoods %></p>
+                  </div>
+                <% } %>
+                <% if(categoryCount.swimwear){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="swimwear" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Costumi da Bagno</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.swimwear%></p>
+                  </div>
+                <% } %>
+                <% if(categoryCount.slippers){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-category="slippers" class="checkbox categoryCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Ciabatte</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= categoryCount.slippers %></p>
+                  </div>
+                <% } %>
+                
+              </div>
+            </div>
+            <h2 id="accordion-collapse-heading-2">
+              <button type="button" class="flex justify-between items-center py-3 w-full font-medium text-left" data-accordion-target="#accordion-collapse-body-2" aria-expanded="false" aria-controls="accordion-collapse-body-2">
+                <span class="text-14px">DESIGNERS</span>
+                <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </button>
+            </h2>
+            <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
+              
+              <div class="flex flex-col gap-3 mb-2">
+  
+                <%
+                const designerCount = {
+                  versace: 0,
+                  fendi: 0,
+                  balmain: 0,
+                  dsquared2: 0,
+                  valentino: 0,
+                  philippPlein: 0,
+                  palmAngels: 0,
+                  marceloBurlon: 0
+                } 
+  
+                for(product of products){
+                  if(product.designer == 'versace'){
+                    designerCount.versace = designerCount.versace + 1
+                  }else if(product.designer == 'versace'){
+                    designerCount.versace = designerCount.versace + 1
+                  }else if(product.designer == 'fendi'){
+                    designerCount.fendi = designerCount.fendi + 1
+                  }else if(product.designer == 'balmain'){
+                    designerCount.balmain = designerCount.balmain + 1
+                  }else if(product.designer == 'dsquared2'){
+                    designerCount.dsquared2 = designerCount.dsquared2 + 1
+                  }else if(product.designer == 'valentino'){
+                    designerCount.valentino = designerCount.valentino + 1
+                  }else if(product.designer == 'philipp-plein'){
+                    designerCount.philippPlein = designerCount.philippPlein + 1
+                  }else if(product.designer == 'palm-angels'){
+                    designerCount.palmAngels = designerCount.palmAngels + 1
+                  }else if(product.designer == 'marcelo-burlon'){
+                    designerCount.marceloBurlon = designerCount.marceloBurlon + 1
+                  }
+                }
+                %> 
+  
+                <% if(designerCount.versace){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="versace" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Versace</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.versace %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.fendi){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="fendi" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Fendi</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.fendi %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.balmain){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="balmain" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Balmain</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.balmain %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.dsquared2){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="dsquared2" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Dsquared2</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.dsquared2 %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.valentino){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="valentino" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Valentino</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.valentino %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.philippPlein){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="philipp-plein" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Philipp Plein</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.philippPlein %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.palmAngels){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="palm-angels" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Palm Angels</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.palmAngels %></p>
+                  </div>
+                <% } %> 
+                <% if(designerCount.marceloBurlon){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-designer="marcelo-burlon" class="checkbox designerCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">Marcelo Burlon</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= designerCount.marceloBurlon %></p>
+                  </div>
+                <% } %> 
+  
+              </div>
+  
+            </div>
+            <h2 id="accordion-collapse-heading-3">
+              <button type="button" class="flex justify-between items-center py-3 w-full font-medium text-left" data-accordion-target="#accordion-collapse-body-3" aria-expanded="false" aria-controls="accordion-collapse-body-3">
+                <span class="text-14px">TAGLIE</span>
+                <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </button>
+            </h2>
+            <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
+              
+              <div class="flex flex-col gap-3 mb-2">
+
+                <%
+                const sizeCount = {
+                  'one-size': 0,
+                  XXS: 0,
+                  XS: 0,
+                  S: 0,
+                  M: 0,
+                  L: 0,
+                  XL: 0,
+                  XXL: 0,
+                  XXXL: 0,
+                  '42': 0,
+                  '44': 0,
+                  '46': 0,
+                  '48': 0,
+                  '50': 0,
+                  '52': 0,
+                  '54': 0,
+                  '56': 0
+                } 
+  
+                for(product of products){
+                  for(size of product.sizes){
+                    if(size.size == 'one-size'){
+                      sizeCount['one-size'] = sizeCount['one-size'] + 1
+                    }else if(size.size == 'XXS'){
+                      sizeCount['XXS'] = sizeCount['XXS'] + 1
+                    }else if(size.size == 'XS'){
+                      sizeCount['XS'] = sizeCount['XS'] + 1
+                    }else if(size.size == 'S'){
+                      sizeCount['S'] = sizeCount['S'] + 1
+                    }else if(size.size == 'M'){
+                      sizeCount['M'] = sizeCount['M'] + 1
+                    }else if(size.size == 'L'){
+                      sizeCount['L'] = sizeCount['L'] + 1
+                    }else if(size.size == 'XL'){
+                      sizeCount['XL'] = sizeCount['XL'] + 1
+                    }else if(size.size == 'XXL'){
+                      sizeCount['XXL'] = sizeCount['XXL'] + 1
+                    }else if(size.size == 'XXXL'){
+                      sizeCount['XXXL'] = sizeCount['XXXL'] + 1
+                    }else if(size.size == '42'){
+                      sizeCount['42'] = sizeCount['42'] + 1
+                    }else if(size.size == '44'){
+                      sizeCount['44'] = sizeCount['44'] + 1
+                    }else if(size.size == '46'){
+                      sizeCount['46'] = sizeCount['46'] + 1
+                    }else if(size.size == '48'){
+                      sizeCount['48'] = sizeCount['48'] + 1
+                    }else if(size.size == '50'){
+                      sizeCount['50'] = sizeCount['50'] + 1
+                    }else if(size.size == '52'){
+                      sizeCount['52'] = sizeCount['52'] + 1
+                    }else if(size.size == '54'){
+                      sizeCount['54'] = sizeCount['54'] + 1
+                    }else if(size.size == '56'){
+                      sizeCount['56'] = sizeCount['56'] + 1
+                    }
+                  }
+                }
+                %> 
+  
+                <% if(sizeCount['one-size']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="one-size" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">TAGLIA UNICA</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['one-size'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['XXS']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="XXS" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">XXS</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['XXS'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['XS']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="XS" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">XS</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['XS'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['S']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="S" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">S</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['S'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['M']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="M" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">M</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['M'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['L']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="L" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">L</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['L'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['XL']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="XL" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">XL</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['XL'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['XXL']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="XXL" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">XXL</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['XXL'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['XXXL']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="XXXL" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">XXXL</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['XXXL'] %></p>
+                  </div>
+                <% } %> 
+                <% if(sizeCount['42']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="42" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">42</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['42'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['44']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="44" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">44</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['44'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['46']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="46" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">46</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['46'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['48']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="48" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">48</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['48'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['50']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="50" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">50</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['50'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['52']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="52" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">52</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['52'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['54']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="54" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">54</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['54'] %></p>
+                  </div>
+                <% } %>
+                <% if(sizeCount['56']){ %>
+                  <div class="flex justify-between">
+                    <label class="flex gap-2 cursor-pointer items-center">
+                      <input type="checkbox" data-size="56" class="checkbox sizeCheckbox checkbox-xs rounded-none" />
+                      <span class="text-12px font-medium">56</span> 
+                    </label>
+                    <p class="text-12px font-light pr-2"><%= sizeCount['56'] %></p>
+                  </div>
+                <% } %>
+  
+              </div>
+              
+            </div>
+          </div>
+        </div>
+  
+        <div class="md:col-span-9 col-span-12 pb-6 grid lg:gap-x-5 md:gap-x-4 gap-x-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 pt-4 bg-background xl:px-4 lg:px-3 md:px-1 px-2">
+        
+          <% for(product of products){ %>
+    
+            <% 
+              let passed = false;  
+              for(size of product.sizes){
+                if(size.remaining > 0){
+                  passed = true;
+                  break
+                }
+              }
+              let sizeData = [];
+              for(size of product.sizes){
+                if(size.remaining != 0){
+                  sizeData.push(size.size)
+                }
+              } 
+            %> 
+    
+            <% if(passed){ %>
+    
+              <div data-sizes="<%= sizeData.toString() %>" data-designer="<%= product.designer %>" data-category="<%= product.category %>" class="flex prodotto flex-col mb-10 relative">
+                <button id="wishlist-<%= product._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(product._id.toString()) ? 'hidden' : '' : '' %>">
+                  <img src="/blackheart-icon.webp" class="h-5" alt="Product isn't added to the wishlist">       
+                </button>
+                <button id="removeWishlist-<%= product._id %>" class="absolute <%= wishlist ? wishlist.includes(product._id.toString()) ? '' : 'hidden' : 'hidden' %> right-2 top-2 z-10">
+                  <img src="/redheart-icon.webp" class="h-5" alt="Product added to the wishlist">     
+                </button>
+                <script>
+                  document.getElementById("wishlist-<%= product._id %>").addEventListener('click', async () => {
+                    let response = await fetch('/wishlist/<%= product._id %>', {
+                      method: 'POST'
+                    })
+                    response = await response.text()
+                    if(response == 'success'){
+                      document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
+                      document.getElementById('wishlist-indicator').classList.remove('hidden')
+  
+                      document.getElementById("wishlist-<%= product._id %>").classList.add('hidden')
+                      document.getElementById("removeWishlist-<%= product._id %>").classList.remove('hidden')
+                    }
+                  })
+  
+                  document.getElementById("removeWishlist-<%= product._id %>").addEventListener('click', async () => {
+                    let response = await fetch('/wishlist/<%= product._id %>', {
+                      method: 'DELETE'
+                    })
+                    response = await response.text()
+                    if(response == 'success'){
+                      document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
+                      if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
+                        document.getElementById('wishlist-indicator').classList.add('hidden')
+                      }
+  
+                      document.getElementById("wishlist-<%= product._id %>").classList.remove('hidden')
+                      document.getElementById("removeWishlist-<%= product._id %>").classList.add('hidden')
+                    }
+                  })
+                </script>
+                <% if(product.images.length > 1){ %>
+                  <a href="/product/<%= product.urlSlug %>?from=search" class="imageBox">
+                    <div class="imageInn">
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_600/<%= product.images[0].filename %>"
+                      alt="<%= product.urlSlug %>"
+                      class="w-full h-full">
+                    </div>
+                    <div class="hoverImg">
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_600/<%= product.images[1].filename %>"
+                      alt="<%= product.urlSlug %>"
+                      class="w-full h-full">
+                    </div>
+                  </a>
+                <% }else{ %>
+                  <a href="/product/<%= product.urlSlug %>?from=search">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_600/<%= product.images[0].filename %>"
+                      alt="Product image"
+                      class="w-full h-full">
+                  </a>
+                <% } %>   
+                <div class="flex flex-col gap-4">
+                  <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= product.designer.replace('-', ' ') %></p>
+                  <a href="/product/<%= product.urlSlug %>?from=search" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= product.modelName %></a>
+                  <p class="text-14px sm:text-16px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (product.price/100).toFixed(2) %></span>&nbsp;€<%= (product.discountedPrice /100).toFixed(2) %></p>
+                </div>
+                <% if(product.sizes[0].size != 'one-size'){ %>
+                  <%
+                    let sizeRemaining = [];
+                    for(size of product.sizes){
+                      if(size.remaining != 0){
+                        sizeRemaining.push(size)
+                      }
+                    }   
+                  %>
+                  <% if(sizeRemaining.length > 6){ %>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                      <% for(size of sizeRemaining.slice(3, 6)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                      <% for(size of sizeRemaining.slice(6)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+      
+                  <% } else if(sizeRemaining.length > 5){ %>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                      <% for(size of sizeRemaining.slice(3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+      
+                  <% }else if(sizeRemaining.length > 4){ %>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(4)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                      <% for(size of sizeRemaining.slice(3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                  <% } else if(sizeRemaining.length > 3){ %>
+                    <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining.slice(0, 3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                    <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                      <% for(size of sizeRemaining.slice(3)){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                  <% } else{ %>  
+                    <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                      <% for(size of sizeRemaining){ %>
+                        <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-9 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                          <%= size.size %>
+                        </a>
+                      <% } %>
+                    </div>
+                  <% } %> 
+                <% } %>
+                  
+              </div>
+    
+            <% } %> 
+    
+    
+          <% } %>
+    
+        </div>
+  
+      </div>
+    <% } else{ %>
+
+      <div class="flex justify-center my-20">
+
+        <p class="lg:text-36px text-32px font-medium">NESSUN RISULTATO</p>
+
+      </div>
+
+    <% } %> 
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>
+
+<script src="/javascript/search.js"></script>
+<script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.js"></script>

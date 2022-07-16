@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto">
+
+    <div class="xl:px-desktop lg:px-laptop md:px-tablet px-mobile grid-cols-12 grid w-full lg:my-20 md:my-16 my-10 gap-5 lg:max-w-5xl md:max-w-2xl max-w-xl mx-auto">
+      <% if(cart && cart.length){ %>
+        <div class="lg:col-span-7 col-span-12 p-4 shadow-md bg-white w-full">
+          <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">IL TUO CARRELLO</p>
+          <div id="allItems">
+            <% for(item of cart){ %>
+              <div id="containerPage=<%= item.id %>" class="flex flex-col gap-3 mt-4">
+                <div class="flex gap-5">
+            
+                  <div class="md:h-40 bg-background md:w-40 w-24 h-24 border border-black flex justify-center">
+                    <div class="flex flex-col justify-center">
+                      <a href="/product/<%= item.product.urlSlug %>">
+                        <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= item.product.images[0].filename %>" class="md:w-24 w-12" alt="<%= item.product.urlSlug %>">
+                      </a>
+                    </div>
+                  </div>
+    
+                  <div class="flex flex-col justify-center md:gap-2 gap-1 w-full mb-2">
+                    <div class="flex justify-between w-full">
+                      <div class="flex flex-col justify-center">
+                        <a href="/product/<%= item.product.urlSlug %>" class="font-medium hover:underline md:text-16px text-14px"><%= item.product.modelName %></a>
+                      </div>
+                        <p class="font-medium mt-1 md:text-16px text-14px">
+                          €<%= (item.product.discountedPrice/100).toFixed(2) %>
+                        </p>
+                    </div>
+                    <div class="flex gap-4">
+                      <div class="flex flex-col justify-center">
+                        <p class="md:text-14px text-12px">Taglia:</p>
+                      </div>
+                      <p class="font-medium md:text-16px text-14px"><%= item.size == 'one-size' ? 'TAGLIA UNICA' : item.size %></p>
+                    </div>
+                    <div class="flex md:gap-4 gap-2">
+                      <div class="flex flex-col justify-center">
+                        <p class="gap-3 md:text-14px text-12px">Quantità:</p>
+                      </div>
+                      <p id="cartQuantityPage-<%= item.id %>" class="font-medium md:text-16px text-14px"><%= item.copies %></p>
+      
+                      <div class="flex flex-col justify-center ml-5">
+                        <div class="flex">
+                          <button id="cartRemovePage-<%= item.id %>" class="rounded-l border border-black hover:border-primary w-5 h-5 font-bold">
+                            <div class="flex justify-center">
+                              <svg class="w-1.5" viewBox="0 0 25 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22.6562 0H2.34375C1.0498 0 0 1.0498 0 2.34375V3.90625C0 5.2002 1.0498 6.25 2.34375 6.25H22.6562C23.9502 6.25 25 5.2002 25 3.90625V2.34375C25 1.0498 23.9502 0 22.6562 0Z" fill="black"/>
+                              </svg> 
+                            </div>                   
+                          </button>
+                          <button id="cartAddPage-<%= item.id %>" class="rounded-r border border-black hover:border-primary w-5 h-5 font-bold">
+                            <div class="flex justify-center">
+                              <svg class="w-1.5" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22.6562 9H2.34375C1.0498 9 0 10.0498 0 11.3438V12.9062C0 14.2002 1.0498 15.25 2.34375 15.25H22.6562C23.9502 15.25 25 14.2002 25 12.9062V11.3438C25 10.0498 23.9502 9 22.6562 9Z" fill="black"/>
+                                <path d="M9.375 2.34375L9.375 22.6562C9.375 23.9502 10.4248 25 11.7188 25H13.2812C14.5752 25 15.625 23.9502 15.625 22.6562L15.625 2.34375C15.625 1.0498 14.5752 0 13.2813 0H11.7188C10.4248 0 9.375 1.0498 9.375 2.34375Z" fill="black"/>
+                              </svg> 
+                            </div>                   
+                          </button>
+                        </div>
+                      </div>
+      
+                    </div>
+                  </div>
+                  <div class="flex justify-start flex-col">
+      
+                  </div>
+                </div>
+                <div id="unavailableCartPage-<%= item.id %>" class="bg-red-100 mb-2 dark:bg-red-200 w-full px-3 py-2 hidden text-14px border border-red-500 font-medium">
+                  Non ci sono altri prodotti di questa taglia disponibili
+                </div>
+                <script>
+                  document.getElementById("cartAddPage-<%= item.id %>").addEventListener('click', async () => {
+                    let response = await fetch(`/cart/<%= item.product._id %>?size=<%= item.size %>`, {
+                      method: 'POST'
+                    })
+                    response = JSON.parse(await response.text())
+                    if(response.status == 'success'){
+                      document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
+                      document.getElementById('cart-indicator').classList.remove('hidden')
+                      document.getElementById('cartQuantity-<%= item.id %>').innerHTML = parseInt(document.getElementById('cartQuantity-<%= item.id %>').innerHTML) + 1
+                      document.getElementById('cartQuantityPage-<%= item.id %>').innerHTML = parseInt(document.getElementById('cartQuantityPage-<%= item.id %>').innerHTML) + 1
+                      document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (item.product.discountedPrice/100) %>).toFixed(2)
+    
+                      document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) + <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                      document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) + <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                    
+                    } else if(response.status == 'unavailable'){
+                      document.getElementById('unavailableCartPage-<%= item.id %>').classList.remove('hidden')
+                      setTimeout(() => {
+                        document.getElementById('unavailableCartPage-<%= item.id %>').classList.add('hidden')
+                      }, 4000)
+                    }
+                  })
+                  document.getElementById("cartRemovePage-<%= item.id %>").addEventListener('click', async () => {
+                    let response = await fetch(`/cart/<%= item.product._id %>?size=<%= item.size %>`, {
+                      method: 'DELETE'
+                    })
+                    response = JSON.parse(await response.text())
+                    if(response.status == 'product-removed-from-cart'){
+                      if(response.lastOne){
+                        document.getElementById('total').innerHTML = '0.00'
+                        document.getElementById('totalPage').innerHTML = '0.00'
+                        document.getElementById('subtotalPage').innerHTML = '0.00'
+                        document.getElementById('delivery').innerHTML = '€0.00'
+                        document.getElementById('formCheckout').classList.add('hidden')
+                      }else{
+                        document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                        document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                        document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                      }
+                      document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+                      if(parseInt(document.getElementById('cart-indicator').innerHTML) == 0){
+                        document.getElementById('cart-indicator').classList.add('hidden')
+                      }
+                      document.getElementById('containerPage=<%= item.id %>').parentElement.removeChild(document.getElementById('containerPage=<%= item.id %>'))
+                      document.getElementById('container=<%= item.id %>').parentElement.removeChild(document.getElementById('container=<%= item.id %>'))
+                    } else if(response.status == 'product-removed'){
+                      document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+                      document.getElementById('cartQuantity-<%= item.id %>').innerHTML = parseInt(document.getElementById('cartQuantity-<%= item.id %>').innerHTML) - 1
+                      document.getElementById('cartQuantityPage-<%= item.id %>').innerHTML = parseInt(document.getElementById('cartQuantityPage-<%= item.id %>').innerHTML) - 1
+                      document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                      document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                      document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (item.product.discountedPrice/100) %>).toFixed(2)
+                    }
+                  })
+                </script>
+              </div>
+            <% } %>  
+          </div>
+        </div>
+      <% }else{ %>
+        <div class="lg:col-span-7 col-span-12 p-4 shadow-md bg-white w-full">
+          <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">YOUR BAG</p>
+          <p class="font-medium mt-8">NESSUN PRODOTTO PRESENTE</p>
+        </div>
+      <% } %>   
+
+      <div style="max-height: 353.38px;" class="lg:col-span-5 col-span-12 bg-white p-4 shadow-md sticky lg:top-186.5px md:top-124px top-102px">
+        <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">RIASSUNTO</p>
+        <div class="flex border-b border-black mt-4 flex-col gap-3 py-3">
+          <% 
+            let totalPage = 0;
+            cart.forEach(item => {
+              totalPage = totalPage + item.copies * item.product.discountedPrice
+            })  
+          %> 
+          <div class="flex justify-between">
+            <p>Subtotale:</p>
+            <p>€<span id="subtotalPage"><%= (totalPage/100).toFixed(2) %></span></p>
+          </div>
+          <div class="flex justify-between">
+            <p>Spedizione:</p>
+            <p id="delivery">Non ancora calcolata</p>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex justify-between font-medium text-18px mt-5">
+            <p>Totale:</p>
+            <p>€<span id="totalPage"><%= cart.length ? (totalPage/100).toFixed(2) : (totalPage/100).toFixed(2) %></span></p>
+          </div>
+          <p class="text-14px font-light text-right w-full">IVA inclusa</p>
+        </div>
+        <% if(totalPage != 0){ %>
+          <form id="formCheckout" action="/checkout">
+            <label class="flex gap-2 cursor-pointer justify-end mt-6">
+              <span class="text-13px font-medium">Vuoi spedire in Italia?</span> 
+              <input id="deliveryItaly" style="width: 18px; height: 18px;" type="checkbox" class="checkbox rounded-none" />
+            </label>
+            <div class="flex justify-center">
+              <button class="bg-black text-white w-full py-2 font-medium text-20px mt-3">
+                CHECKOUT
+              </button>
+            </div>
+          </form>
+        <% } %> 
+      </div>
+
+    </div>
+
+    <%- include('../partials/why-attuality') %> 
+
+    <div class="xl:px-desktop lg:px-laptop md:px-tablet px-mobile mt-16">
+      <% if(recentlySeen && recentlySeen.length){ %>
+        <div class="flex justify-center mt-7">
+          <h5 class="text-medium xl:text-32px lg:text-28px md:text-22px text-20px">VISTI DI RECENTE</h5>
+        </div>
+        <div class="carousel-block mb-16 mt-4">
+          <% for(similar of recentlySeen){ %>
+            <div class="flex prodotto flex-col mb-10 relative">
+              <button id="wishlist-<%= similar._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(similar._id.toString()) ? 'hidden' : '' : '' %>">
+                <img src="/blackheart-icon.webp" class="md:h-5 h-4" alt="Product isn't added to the wishlist">       
+              </button>
+              <button id="removeWishlist-<%= similar._id %>" class="absolute <%= wishlist ? wishlist.includes(similar._id.toString()) ? '' : 'hidden' : 'hidden' %> right-2 top-2 z-10">
+                <img src="/redheart-icon.webp" class="md:h-5 h-4" alt="Product added to the wishlist">     
+              </button>
+
+              <a href="/product/<%= similar.urlSlug %>">
+                <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_510/<%= similar.images[0].filename %>"
+                  alt="Product image"
+                  class="w-full h-full">
+              </a>
+               
+              <div class="flex flex-col gap-4">
+                <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= similar.designer.replace('-', ' ') %></p>
+                <a href="#" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= similar.modelName %></a>
+                <p class="text-12px md:text-18px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (similar.price/100).toFixed(2) %></span>&nbsp;€<%= (similar.discountedPrice /100).toFixed(2) %></p>
+              </div>
+               
+              <% if(similar.sizes[0].size != 'one-size'){ %>
+  
+                <% 
+                let sizeRemaining = [];
+                for(size of similar.sizes){
+                  if(size.remaining != 0){
+                    sizeRemaining.push(size)
+                  }
+                }  
+                %> 
+  
+                <% if(sizeRemaining.length > 6){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3, 6)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(6)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 5){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 3){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } else{ %>  
+                  <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } %> 
+              <% } %>
+
+            </div>
+          <% } %>  
+        </div>
+      <% } %> 
+      <% if(wishlist && wishlist.length){ %>
+        <div class="flex justify-center mt-7">
+          <h5 class="text-medium  xl:text-32px lg:text-28px md:text-22px text-20px">DALLA TUA WISHLIST</h5>
+        </div>
+        <div class="carousel-block mb-16 mt-4">
+          <% for(similar of wishlist){ %>
+            <div class="flex prodotto flex-col mb-10 relative">
+              <button id="wishlist-<%= similar._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(similar._id.toString()) ? 'hidden' : '' : '' %>">
+                <img src="/blackheart-icon.webp" class="md:h-5 h-4" alt="Product isn't added to the wishlist">       
+              </button>
+              <button id="removeWishlist-<%= similar._id %>" class="absolute <%= wishlist ? wishlist.includes(similar._id.toString()) ? '' : 'hidden' : 'hidden' %> right-2 top-2 z-10">
+                <img src="/redheart-icon.webp" class="md:h-5 h-4" alt="Product added to the wishlist">     
+              </button>
+
+              <a href="/product/<%= similar.urlSlug %>">
+                <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_510/<%= similar.images[0].filename %>"
+                  alt="Product image"
+                  class="w-full h-full">
+              </a>
+               
+              <div class="flex flex-col gap-4">
+                <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= similar.designer.replace('-', ' ') %></p>
+                <a href="#" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= similar.modelName %></a>
+                <p class="text-12px md:text-18px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (similar.price/100).toFixed(2) %></span>&nbsp;€<%= (similar.discountedPrice /100).toFixed(2) %></p>
+              </div>
+               
+              <% if(similar.sizes[0].size != 'one-size'){ %>
+  
+                <% 
+                let sizeRemaining = [];
+                for(size of similar.sizes){
+                  if(size.remaining != 0){
+                    sizeRemaining.push(size)
+                  }
+                }  
+                %> 
+  
+                <% if(sizeRemaining.length > 6){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3, 6)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(6)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 5){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 3){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } else{ %>  
+                  <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= similar.urlSlug %>?sizeQuery=<%= size.size %>&from=category" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } %> 
+              <% } %>
+
+            </div>
+          <% } %>  
+        </div>
+      <% } %> 
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+  <script>
+    $(document).ready(function(){
+      $('.carousel-block').slick({
+          prevArrow: null,
+          nextArrow: null,
+          dots: false,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          autoplay: true,
+          autoplaySpeed: 2500,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+              }
+            },
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
+              }
+            }
+          ]
+        });
+      });
+    </script>
+
+</body>
+</html>
+
+
+
+<% for(similar of recentlySeen){ %>
+  <script>
+      document.getElementById("wishlist-<%= similar._id %>").addEventListener('click', async () => {
+        let response = await fetch('/wishlist/<%= similar._id %>', {
+          method: 'POST'
+        })
+        response = await response.text()
+        if(response == 'success'){
+          document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
+          document.getElementById('wishlist-indicator').classList.remove('hidden')
+    
+          document.getElementById("wishlist-<%= similar._id %>").classList.add('hidden')
+          document.getElementById("removeWishlist-<%= similar._id %>").classList.remove('hidden')
+        }
+      })
+    
+      document.getElementById("removeWishlist-<%= similar._id %>").addEventListener('click', async () => {
+        let response = await fetch('/wishlist/<%= similar._id %>', {
+          method: 'DELETE'
+        })
+        response = await response.text()
+        if(response == 'success'){
+          document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
+          if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
+            document.getElementById('wishlist-indicator').classList.add('hidden')
+          }
+    
+          document.getElementById("wishlist-<%= similar._id %>").classList.remove('hidden')
+          document.getElementById("removeWishlist-<%= similar._id %>").classList.add('hidden')
+        }
+      })  
+  </script>
+<% } %> 
+<% for(similar of wishlist){ %>
+  <script>
+      document.getElementById("wishlist-<%= similar._id %>").addEventListener('click', async () => {
+        let response = await fetch('/wishlist/<%= similar._id %>', {
+          method: 'POST'
+        })
+        response = await response.text()
+        if(response == 'success'){
+          document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
+          document.getElementById('wishlist-indicator').classList.remove('hidden')
+    
+          document.getElementById("wishlist-<%= similar._id %>").classList.add('hidden')
+          document.getElementById("removeWishlist-<%= similar._id %>").classList.remove('hidden')
+        }
+      })
+    
+      document.getElementById("removeWishlist-<%= similar._id %>").addEventListener('click', async () => {
+        let response = await fetch('/wishlist/<%= similar._id %>', {
+          method: 'DELETE'
+        })
+        response = await response.text()
+        if(response == 'success'){
+          document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
+          if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
+            document.getElementById('wishlist-indicator').classList.add('hidden')
+          }
+    
+          document.getElementById("wishlist-<%= similar._id %>").classList.remove('hidden')
+          document.getElementById("removeWishlist-<%= similar._id %>").classList.add('hidden')
+        }
+      })  
+  </script>
+<% } %> 
+
+<script src="/javascript/cart.js"></script>

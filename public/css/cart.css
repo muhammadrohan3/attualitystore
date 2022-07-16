@@ -1,0 +1,7 @@
+.misure{
+  visibility: hidden;
+}
+
+.prodotto:hover .misure {
+  visibility: visible;
+}

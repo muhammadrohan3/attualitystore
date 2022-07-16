@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+<% for(let i = 0; i < products.length; i++){ %>
+  <input type="checkbox" id="my-modal-<%= i %>" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-box relative">
+      <label for="my-modal-<%= i %>" class="btn btn-sm btn-circle border hover:bg-white border-black text-black bg-primary absolute right-2 top-2">✕</label>
+      <h3 class="text-lg font-bold">ELIMINARE PRODOTTO</h3>
+      <p class="pt-4 pb-6">Sei sicuro di voler eliminare il prodotto</p>
+      <form class="flex justify-center" action="/user/admin/products/delete/<%= products[i]._id %>?_method=DELETE" method="POST">
+        <button class="px-3 py-2 bg-red-600 rounded-md text-black font-semibold">
+          ELIMINA
+        </button>
+      </form>
+    </div>
+  </div>
+<% } %>
+
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/admin-navbar') %> 
+  <%- include('../partials/flash') %> 
+      
+  <div class="overflow-x-auto mt-10 xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+    <div class="flex justify-center gap-3">
+      <h3 class="text-16px font-medium uppercase text-center w-36 py-1.5 mb-5 bg-transparent border border-black">PRODOTTI</h3>
+      <a href="/user/admin/products/add" class="text-16px font-medium uppercase text-center w-36 py-1.5 mb-5 bg-black text-white border border-black">AGGIUNGI</a>
+    </div>
+    <table class="table table-compact w-full">
+      <thead>
+        <tr class="bg-background">
+          <th class="bg-secondary">IMMAGINI</th> 
+          <th class="bg-secondary">Nome</th> 
+          <th class="bg-secondary">Designer</th> 
+          <th class="bg-secondary">Categoria</th> 
+          <th class="bg-secondary">AZIONI</th> 
+        </tr>
+      </thead> 
+      <tbody>
+        <% for(let i = 0; i < products.length; i++){ %>
+          <tr>
+            <% category = products[i].category %> 
+            <th class="bg-background"><img src="<%= products[i].images[0].path %>" class="w-8" alt=""></th> 
+            <td class="bg-background"><%= products[i].modelName %></td> 
+            <td class="bg-background uppercase"><%= products[i].designer.replace('-', ' ') %></td> 
+            <td class="bg-background"><%= 
+              category == 'jackets' ? 'GIACCHE' : 
+              category == 'hoodies' ? 'FELPE CON CAPPUCCIO' : 
+              category == 'sweatshirts' ? 'FELPE' :
+              category == 'shirts' ? 'CAMICIE' :
+              category == 't-shirts' ? 'T-SHIRTS' :
+              category == 'polos' ? 'POLOS' :
+              category == 'jeans' ? 'JEANS' :
+              category == 'trousers' ? 'PANTALONI' :
+              category == 'bermuda' ? 'BERMUDA' :
+              category == 'wallets-and-small-leather-goods' ? "PORTAFOGLIO E PICCOLA PELLETTERIA" :
+              category == 'swimwear' ? "COSTUMI DA BAGNO" :
+              'CIABATTE'
+              %></td> 
+            <td class="bg-background flex gap-4">
+              <form action="/user/admin/products/modify/<%= products[i]._id %>" method="GET">
+                <button class="p-2 stroke bg-black border border-black">
+                  <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.3572 3.64195L16.3578 8.64282L5.49911 19.502L1.04063 19.9942C0.443772 20.0602 -0.0605117 19.5555 0.00589283 18.9586L0.501974 14.4968L11.3572 3.64195ZM19.4507 2.89741L17.1027 0.549325C16.3703 -0.183109 15.1825 -0.183109 14.45 0.549325L12.2411 2.75835L17.2418 7.75921L19.4507 5.55019C20.1831 4.81736 20.1831 3.62985 19.4507 2.89741Z" fill="white"/>
+                  </svg>
+                </button>
+              </form>
+              <label for="my-modal-<%= i %>" class="p-1 bg-transparent border border-black">
+                <svg class="fill-black h-5" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+              </label>
+              
+            </td>
+          </tr>
+        <% } %> 
+
+        <li class="hover:bg-white text-12px text-black px-3 py-1 hidden">
+          <a class="flex gap-3">
+            <img class="h-14" alt="product image"/>
+            <div class="flex flex-col justify-center gap-1">
+              <p class="font-medium text-12px"></p>
+              <p class="font-medium text-12px text-primary"><span class="line-through text-black"></p>
+            </div>
+          </a>
+        </li>
+        
+      </tbody> 
+    </table>
+  </div>
+
+
+  <%- include('../partials/admin-navbar-end') %> 
+    
+
+</body>
+</html>

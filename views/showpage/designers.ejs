@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/designers.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto bg-white">
+    <div class="flex justify-center pt-2 lg:pb-3 lg:pt-3 bg-white">
+      <h1 class="text-24px md:text-28px lg:text-32px text-black text-center mx-8"><%= designer %></h1>
+    </div>
+    <div class="flex justify-between xl:px-desktop lg:px-laptop md:px-tablet px-mobile bg-white">
+      <button id="filters" class="flex gap-2">
+        <div class="flex flex-col justify-center h-full">
+          <p class="text-12px md:text-14px lg:text-16px xl:text-18px">FILTRI</p>
+        </div>
+        <div class="flex flex-col justify-center h-full">
+          <div class="flex">
+            <svg id="filters-up" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.4899 0.343207L20.9793 9.83261C21.437 10.2903 21.437 11.0323 20.9793 11.4899L19.8725 12.5967C19.4157 13.0536 18.6752 13.0544 18.2172 12.5986L10.6613 5.07812L3.10536 12.5987C2.6474 13.0545 1.90692 13.0536 1.45004 12.5967L0.34325 11.4899C-0.114417 11.0323 -0.114417 10.2903 0.34325 9.83266L9.83265 0.343255C10.2903 -0.114411 11.0323 -0.11441 11.4899 0.343207Z" fill="black"/>
+            </svg> 
+            <svg id="filters-down" class="hidden" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.83265 12.5968L0.34325 3.1073C-0.114417 2.64963 -0.114417 1.90764 0.34325 1.45003L1.45004 0.343238C1.90692 -0.113646 2.6474 -0.114526 3.10536 0.341285L10.6613 7.86184L18.2172 0.341285C18.6752 -0.114526 19.4157 -0.113646 19.8725 0.343238L20.9793 1.45003C21.437 1.90769 21.437 2.64968 20.9793 3.1073L11.49 12.5968C11.0323 13.0544 10.2903 13.0544 9.83265 12.5968Z" fill="black"/>
+            </svg>                      
+          </div>
+        </div>
+      </button>
+      <div class="flex gap-2">
+        <div class="flex flex-col justify-center">
+          <div class="flex relative">
+            <button id="sortByButton" class="flex justify-center gap-2">
+              <p class="text-12px md:text-14px lg:text-16px xl:text-18px">ORDINA PER</p>
+              <div class="flex flex-col justify-center h-full">
+                <svg id="sortby-up" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11.4899 0.343207L20.9793 9.83261C21.437 10.2903 21.437 11.0323 20.9793 11.4899L19.8725 12.5967C19.4157 13.0536 18.6752 13.0544 18.2172 12.5986L10.6613 5.07812L3.10536 12.5987C2.6474 13.0545 1.90692 13.0536 1.45004 12.5967L0.34325 11.4899C-0.114417 11.0323 -0.114417 10.2903 0.34325 9.83266L9.83265 0.343255C10.2903 -0.114411 11.0323 -0.11441 11.4899 0.343207Z" fill="black"/>
+                </svg>  
+              </div>
+            </button>
+            <script>
+              document.querySelector('#sortByButton').addEventListener('click', () => {
+                document.querySelector('#sortby-up').classList.toggle('active')
+                document.querySelector('#sortByPopup').classList.toggle('active')
+              })
+              document.querySelector('#sortByButton').addEventListener('focusout', () => {
+                document.querySelector('#sortby-up').classList.remove('active')
+                document.querySelector('#sortByPopup').classList.remove('active')
+              })
+            </script>
+            <div id="sortByPopup" class="absolute z-40 top-7 w-64 right-0 shadowFar">
+              <ul class="bg-white">
+                <a class="sortBy" data-goto="most-recent" href="">
+                  <li class="px-3 py-2 text-14px <%= sortBy == 'most-recent' ? 'bg-white' : '' %> hover:bg-gray-200 text-right">Più recente</li>
+                </a>
+                <a class="sortBy" data-goto="decreasing-price" href="">
+                  <li class="px-3 py-2 text-14px <%= sortBy == 'decreasing-price' ? 'bg-white' : '' %> hover:bg-gray-200 text-right">Prezzo (dal più alto al più basso)</li>
+                </a>
+                <a class="sortBy" data-goto="rising-price" href="">
+                  <li class="px-3 py-2 text-14px <%= sortBy == 'rising-price' ? 'bg-white' : '' %> hover:bg-gray-200 text-right">Prezzo (dal più basso al più alto)</li>
+                </a>
+              </ul>
+            </div>
+            <script>
+              const params = new URLSearchParams(window.location.search)
+              for(element of document.querySelectorAll('.sortBy')){
+                if(params.has('sizeQuery') && params.has('designerQuery')){
+                  element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${params.get('sizeQuery')}&sortBy=${element.dataset.goto}`
+                }
+                else if(!params.has('sizeQuery') && params.has('designerQuery')){
+                  element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sortBy=${element.dataset.goto}`
+                }
+                else if(params.has('sizeQuery') && !params.has('designerQuery')){
+                  element.href = window.location.pathname +`?sortBy=${element.dataset.goto}&sizeQuery=${params.get('sizeQuery')}`
+                }else{
+                  element.href = window.location.pathname +`?sortBy=${element.dataset.goto}`
+                }
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div id="categoryQueryPopup" class="absolute xl:left-130px lg:left-110px md:left-50px left-40px z-40">
+        <div class="shadowFar w-52">
+          <ul class="bg-white">
+
+            <a class="categoryQuery" data-category="jackets" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'jackets' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Giacche</li>
+            </a>
+            <a class="categoryQuery" data-category="hoodies" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'hoodies' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Felpe con cappuccio</li>
+            </a>
+            <a class="categoryQuery" data-category="sweatshirts" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'sweatshirts' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Felpe</li>
+            </a>
+            <a class="categoryQuery" data-category="shirts" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'shirts' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Camicie</li>
+            </a>
+            <a class="categoryQuery" data-category="polos" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'polos' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Polo</li>
+            </a>
+            <a class="categoryQuery" data-category="t-shirts" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 't-shirts' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">T-shirt</li>
+            </a>
+            <a class="categoryQuery" data-category="jeans" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'jeans' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Jeans</li>
+            </a>
+            <a class="categoryQuery" data-category="trousers" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'trousers' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Pantaloni</li>
+            </a>
+            <a class="categoryQuery" data-category="bermuda" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'bermuda' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Bermuda</li>
+            </a>
+            <a class="categoryQuery" data-category="wallets-and-small-leather-goods" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'wallets-and-small-leather-goods' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Portafoglio e Piccola Pelletteria</li>
+            </a>
+            <a class="categoryQuery" data-category="swimwear" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'swimwear' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Customi da bagno</li>
+            </a>
+            <a class="categoryQuery" data-category="slippers" href="">
+              <li class="px-3 py-2 text-14px <%= categoryQuery === 'slippers' ? 'bg-gray-200' : '' %> hover:bg-gray-200 text-left">Ciabatte</li>
+            </a>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="relative">
+      <div id="sizeQueryPopup" class="absolute left-40px z-40">
+        <div class="shadowFar w-52">
+          <ul class="bg-white">
+              <a class="sizeQuery" data-size="one-size" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'one-size' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">Taglia unica</li>
+              </a>
+              <a class="sizeQuery" data-size="XXS" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'XXS' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">XXS</li>
+              </a>
+              <a class="sizeQuery" data-size="XS" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'XS' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">XS</li>
+              </a>
+              <a class="sizeQuery" data-size="S" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'S' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">S</li>
+              </a>
+              <a class="sizeQuery" data-size="M" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === "M" ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">M</li>
+              </a>
+              <a class="sizeQuery" data-size="L" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'L' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">L</li>
+              </a>
+              <a class="sizeQuery" data-size="XL" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'XL' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">XL</li>
+              </a>
+              <a class="sizeQuery" data-size="XXL" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'XXL' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">XXL</li>
+              </a>
+              <a class="sizeQuery" data-size="XXXL" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === 'XXXL' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">XXXL</li>
+              </a>
+              <a class="sizeQuery" data-size="42" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '42' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">42</li>
+              </a>
+              <a class="sizeQuery" data-size="44" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '44' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">44</li>
+              </a>
+              <a class="sizeQuery" data-size="46" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '46' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">46</li>
+              </a>
+              <a class="sizeQuery" data-size="48" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '48' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">48</li>
+              </a>
+              <a class="sizeQuery" data-size="50" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '50' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">50</li>
+              </a>
+              <a class="sizeQuery" data-size="52" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '52' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">52</li>
+              </a>
+              <a class="sizeQuery" data-size="54" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '54' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">54</li>
+              </a>
+              <a class="sizeQuery" data-size="56" href="">
+                <li class="px-3 py-2 text-14px <%= sizeQuery === '56' ? 'bg-gray-200' : '' %> %> hover:bg-gray-200 text-left">56</li>
+              </a>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="filterMenu" class="overflow-hidden bg-white mb-3 lg:mb-4">
+      <div class="grid py-10 lg:px-80px bg-white md:px-30px px-5 xl:gap-50px lg:gap-40px gap-25px md:grid-cols-3 grid-cols-1 border xl:mx-desktop lg:mx-laptop md:mx-tablet mx-mobile border-black">
+        <div>
+          <label for="underline_select2" class="font-medium tracking-wider">DESIGNER</label>
+          <p class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b border-black appearance-none focus:outline-none focus:ring-0 focus:border-gray-700 peer"><%= designer %></p>
+        </div>
+        <div class="relative">
+          <label class="font-medium tracking-wider">CATEGORIA</label>
+          <button id="categoryQueryButton" class="block py-2.5 px-0 w-full text-left text-sm text-black bg-transparent border-0 border-b border-black appearance-none focus:outline-none focus:ring-0 focus:border-gray-700 peer">
+            <%= categoryQuery ? categoryQuery : 'Scegli una categoria' %>
+          </button>
+        </div>
+        <div>
+          <label class="font-medium tracking-wider">TAGLIA</label>
+          <button id="sizeQueryButton" class="block text-left py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b border-black appearance-none focus:outline-none focus:ring-0 focus:border-gray-700 peer">
+            <%= sizeQuery ? sizeQuery.toUpperCase() : 'Scegli una taglia' %>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <% if(products.length != 0) { %>
+      <div class="ikgrid lg:gap-x-5 md:gap-x-4 gap-x-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 pt-4 bg-background xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+      
+        <% for(product of products){ %>
+  
+          <% 
+            let passed = false;  
+            for(size of product.sizes){
+              if(size.remaining > 0){
+                passed = true;
+                break
+              }
+            }
+          %> 
+  
+          <% if(passed){ %>
+  
+            <div class="flex prodotto flex-col mb-10 relative">
+              <button id="wishlist-<%= product._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(product._id.toString()) ? 'hidden' : '' : '' %>">
+                <img src="/blackheart-icon.webp" class="h-5" alt="Product isn't added to the wishlist">       
+              </button>
+              <button id="removeWishlist-<%= product._id %>" class="absolute <%= wishlist ? wishlist.includes(product._id.toString()) ? '' : 'hidden' : 'hidden' %> right-2 top-2 z-10">
+                <img src="/redheart-icon.webp" class="h-5" alt="Product added to the wishlist">     
+              </button>
+              <script>
+                document.getElementById("wishlist-<%= product._id %>").addEventListener('click', async () => {
+                  let response = await fetch('/wishlist/<%= product._id %>', {
+                    method: 'POST'
+                  })
+                  response = await response.text()
+                  if(response == 'success'){
+                    document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
+                    document.getElementById('wishlist-indicator').classList.remove('hidden')
+
+                    document.getElementById("wishlist-<%= product._id %>").classList.add('hidden')
+                    document.getElementById("removeWishlist-<%= product._id %>").classList.remove('hidden')
+                  }
+                })
+
+                document.getElementById("removeWishlist-<%= product._id %>").addEventListener('click', async () => {
+                  let response = await fetch('/wishlist/<%= product._id %>', {
+                    method: 'DELETE'
+                  })
+                  response = await response.text()
+                  if(response == 'success'){
+                    document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
+                    if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
+                      document.getElementById('wishlist-indicator').classList.add('hidden')
+                    }
+
+                    document.getElementById("wishlist-<%= product._id %>").classList.remove('hidden')
+                    document.getElementById("removeWishlist-<%= product._id %>").classList.add('hidden')
+                  }
+                })
+              </script>
+              <% if(product.images.length > 1){ %>
+                <a href="/product/<%= product.urlSlug %>?from=designer" class="imageBox">
+                  <div class="imageInn">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1000/<%= product.images[0].filename %>"
+                    alt="<%= product.urlSlug %>"
+                    class="w-full h-full">
+                  </div>
+                  <div class="hoverImg">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1000/<%= product.images[1].filename %>"
+                    alt="<%= product.urlSlug %>"
+                    class="w-full h-full">
+                  </div>
+                </a>
+              <% }else{ %>
+                <a href="/product/<%= product.urlSlug %>?from=designer">
+                  <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_800/<%= product.images[0].filename %>"
+                    alt="Product image"
+                    class="w-full h-full">
+                </a>
+              <% } %>   
+              <div class="flex flex-col gap-4">
+                <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= product.designer.replace('-', ' ') %></p>
+                <a href="/product/<%= product.urlSlug %>?from=new-arrivals" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= product.modelName %></a>
+                <p class="text-14px sm:text-18px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (product.price/100).toFixed(2) %></span>&nbsp;&nbsp;&nbsp;€<%= (product.discountedPrice /100).toFixed(2) %></p>
+              </div>
+              <% if(product.sizes[0].size != 'one-size'){ %>
+  
+                <% 
+                let sizeRemaining = [];
+                for(size of product.sizes){
+                  if(size.remaining != 0){
+                    sizeRemaining.push(size)
+                  }
+                }  
+                %> 
+  
+                <% if(sizeRemaining.length > 6){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3, 6)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(6)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 5){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 3){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } else{ %>  
+                  <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=designer" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } %> 
+              <% } %>
+               
+            </div>
+  
+          <% } %> 
+  
+  
+        <% } %>
+  
+      </div>
+    <% }else{ %>
+      <div class="flex justify-center h-full bg-background">
+        <h6 class="text-20px uppercase font-medium mt-12">NESSUN RISULTATO</h6>
+      </div>
+    <% } %> 
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>
+
+<script src="/javascript/designers.js"></script>

@@ -1,0 +1,155 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+
+#offCanvasMenu {
+  position: fixed;
+  left: -100%;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  transition: 0.5s;
+  z-index: 100000;
+  overflow-y: auto;
+}
+
+#offCanvasMenu.active {
+  top: 0;
+  left: 0;
+  margin: 0;
+}
+
+#search-icon{
+  top: 50px
+}
+
+#accordionContent1{
+  height: 0;
+  transition: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+#accordionContent1.active{
+  height: 344px;
+}
+#accordionContent2{
+  height: 0;
+  transition: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+#accordionContent2.active{
+  height: 128px;
+}
+#accordionContent3{
+  height: 0;
+  transition: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+#accordionContent3.active{
+  height: 308px;
+}
+body{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+body.active{
+  overflow-y: hidden;
+}
+
+.divisore{
+  height: 1px;
+}
+
+
+.bar {
+  width: 100%;
+  padding: 8px 0;
+
+  background-color: #F33F3F;
+  color: black;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media(min-width: 768px){
+  .bar{
+    font-size: 14px
+  }
+}
+
+.bar_content {
+  display: block; /* Important to give the content a width */
+
+  width: 100%;
+  transform: translateX(100%); /* Animation start out of the screen */
+
+  /* Add the animation */
+  animation: move 20s linear infinite /* infinite make reapeat the animation indefinitely */;
+}
+
+/* Create the animation */
+@keyframes move {
+  to { transform: translateX(-100%); }
+}
+
+.AnnouncementBar {
+  overflow: hidden;
+  position: relative;
+}
+
+.AnnouncementBarWrapper {
+  padding: 12px 15px;
+}
+
+.AnnouncementBar__Content {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  transform: translate(80%);
+  animation: 25s linear infinite;
+}
+
+
+.dropdown:hover .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dropdown2:hover .dropdown-menu2 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dropdown3:hover .dropdown-menu3 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#arrow-1{
+  transition: 0.2s;
+}
+#arrow-2 {
+  transition: 0.2s;
+}
+#arrow-3 {
+  transition: 0.2s;
+}
+.dropdown:hover #arrow-1 {
+  transform: rotate(180deg);
+  transition-timing-function: ease-in-out;
+}
+.dropdown2:hover #arrow-2 {
+  transform: rotate(180deg);
+  transition-timing-function: ease-in-out;
+}
+.dropdown3:hover #arrow-3 {
+  transform: rotate(180deg);
+  transition-timing-function: ease-in-out;
+}

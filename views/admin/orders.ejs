@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/admin-navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <div class="overflow-x-auto mt-10 xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+    <div class="flex justify-center gap-3">
+      <h3 class="text-16px font-medium uppercase text-center w-36 py-1.5 mb-5 bg-transparent border border-black">ORDINI</h3>
+    </div>
+    <table class="table table-compact w-full">
+      <thead>
+        <tr class="bg-background">
+          <th class="bg-secondary">ID ORDINE</th> 
+          <th class="bg-secondary">Prodotti</th>
+          <th class="bg-secondary">Data</th>  
+          <th class="bg-secondary">Cliente</th>
+          <th class="bg-secondary">Indirizzo</th> 
+          <th class="bg-secondary">Totale</th>  
+          <th class="bg-secondary">Stato ordine</th> 
+          <th class="bg-secondary">Nazione</th> 
+          <th class="bg-secondary">AZIONI</th> 
+        </tr>
+      </thead> 
+      <tbody>
+        <% for(let i = 0; i < orders.length; i++){ %>
+          <tr class="<%= i % 2 == 0 ? '' : 'bg-secondary' %>"> 
+            <th class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>">#<%= orders[i]._id%></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>">
+              <div class="flex gap-1">
+                <% for(product of orders[i].products){ %>
+                  <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_60/<%= product.product.images[0].filename %>" class="w-9" alt="product image">
+                <% } %> 
+              </div>
+            </td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase"><%= orders[i].createdAt.toLocaleString() %></td>
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= orders[i].name + ' ' + orders[i].surname %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase"><%= orders[i].address %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase">€<%= (orders[i].amount/100).toFixed(2) %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase"><%= orders[i].completed ? 'Completato' : 'Non completato' %></td>  
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase"><%= orders[i].state %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> flex">
+              <form action="/user/admin/orders/info/<%= orders[i]._id %>">
+                <button class="border border-black p-1 bg-secondary">
+                  <svg class="h-5 text-black" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </button>
+              </form> 
+            </td>
+          </tr>
+        <% } %> 
+      </tbody> 
+    </table>
+  </div>
+
+
+  <%- include('../partials/admin-navbar-end') %> 
+    
+
+</body>
+</html>

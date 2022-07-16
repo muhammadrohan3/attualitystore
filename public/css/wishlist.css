@@ -1,0 +1,19 @@
+.imageBox {
+  position: relative;
+  float: left;
+}
+
+.imageBox .hoverImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.imageBox:hover .hoverImg {
+  opacity: 1;
+}
+.sizeButtonAll.active{
+  border-color: black;
+}

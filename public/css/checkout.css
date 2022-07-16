@@ -1,0 +1,25 @@
+#bgToBlur{
+  transition: 0.5s;
+}
+#bgToBlur.active{
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  overflow-y: hidden;
+}
+#defaultModal{
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+  z-index: 4;
+}
+#defaultModal.active{
+  top: 30%;
+  visibility: visible;
+  opacity: 1;
+  transition: 0.5s;
+}

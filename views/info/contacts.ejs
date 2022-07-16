@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto">
+
+    <div class="flex flex-col gap-4 lg:my-14 md:my-12 my-8">
+
+      <h1 class="text-24px font-semibold text-center">Contattaci</h1>
+      <p class="lg:max-w-4xl md:max-w-2xl max-w-330px mx-auto lg:text-16px text-14px">
+        Affidati al nostro supporto, siamo sempre qui a tua disposizione: risolveremo i tuoi problemi nella maniera più semplice e veloce.
+        <br>
+        Scegli tu in che modo contattarci: 
+        <br>
+        <img src="/email.png" class="inline-block h-5" alt="email logo"> attuality.store@gmail.com
+        <br>
+        <img src="/whatsapp.png" class="inline-block h-5" alt="whatsapp logo"> +39 389 5392915
+      </p>
+
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>

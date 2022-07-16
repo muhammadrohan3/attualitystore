@@ -1,0 +1,87 @@
+*, *:after, *:before {
+	box-sizing: border-box;
+}
+
+:root {
+	font-size: 16px;
+}
+
+*:focus {
+	outline: none;
+}
+
+
+
+details div {
+	padding: 1.5em;
+}
+
+details div > * + * {
+	margin-top: 1.5em;
+}
+
+details + details {
+	margin-top: .5rem;
+}
+
+summary {
+	list-style: none;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
+
+summary {
+	cursor: pointer;
+	position: relative;
+}
+
+summary:before {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: .75rem;
+	content: "↓";
+	width: 1.75rem;
+	height: 1.75rem;
+	background-color: #000;
+	color: #FFF;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+details[open] summary {
+	background-color: #eee;
+}
+
+details[open] summary:before {
+	content: "↑";
+}
+
+
+.imageBox {
+  position: relative;
+  float: left;
+}
+.imageBox .hoverImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.imageBox:hover .hoverImg {
+  opacity: 1;
+}
+
+
+.misure{
+  visibility: hidden;
+}
+.prodotto:hover .misure {
+  visibility: visible;
+}

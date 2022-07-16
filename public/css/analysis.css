@@ -1,0 +1,209 @@
+ul.tabHead_ec {
+  background-color: #650fb4;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0px;
+}
+.tabHead_ec li {
+  flex: 0 50%;
+  text-align: center;
+  color: #fff;
+  width: 50%;
+  padding: 8px 0;
+  line-height: 20px;
+  text-align: center;
+  font-family: Lato-Bold,sans-serif;
+  color: rgba(255,255,255,.6);
+  background-color: #a36fd2;
+  position: relative;
+  cursor: pointer;
+}
+.tabHead_ec a {
+  padding: 0 10px;
+  display: inline-block;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 20px;
+}
+
+.tabHead_ec li.ui-state-active {
+  color: #fff;
+  background-color: #650fb4;
+}
+
+.tabHead_ec li.ui-state-active:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #fff;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+}
+
+.dateselected {
+  display: inline-block;
+  width: 100%;
+  font-weight: 300;
+  font-family: Lato,sans-serif;
+}
+
+.calender_ec {
+  width: 300px;
+}
+
+
+.ui-datepicker .ui-datepicker-header {
+  margin: 10px 12px;
+}
+
+.ui-datepicker .ui-datepicker-calendar thead {
+  /* border: 1px solid #c5c5c5; */
+  border-left: 0;
+  border-right: 0;
+  color: #f45056;
+  background-color: #fff;
+}
+
+.ui-datepicker th {
+  padding: .7em .3em;
+  text-align: center;
+  font-weight: 700;
+  border: 0;
+}
+
+.ui-datepicker-calendar thead {
+  border: 1px solid #c5c5c5;
+  border-left: 0;
+  border-right: 0;
+  color: #a07b34;
+  background-color: #fff;
+}
+
+.ui-state-disabled {
+  opacity: .5;
+}
+
+.ui-datepicker td {
+  border: 0;
+  padding: 1px;
+}
+.ui-state-disabled {
+  cursor: default!important;
+  pointer-events: none;
+}
+.ui-datepicker .ui-state-default {
+  margin: 2px auto;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  padding: 0;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+}
+.ui-datepicker td a, .ui-datepicker td span {
+  display: block;
+  padding: .2em;
+  text-align: right;
+  text-decoration: none;
+}
+
+.ui-datepicker .ui-state-active {
+  background-color: #650fb4;
+  color: #fff!important;
+}
+
+.ui-datepicker .ui-state-default {
+  margin: 2px auto;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  padding: 0;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #a36fd2;
+}
+.calender_ec .ui-datepicker .ui-datepicker-header {
+  margin: 10px 12px;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.calender_ec .ui-datepicker .ui-datepicker-header .ui-datepicker-title, .calender_ec .ui-datepicker .ui-datepicker-header .ui-corner-all {
+  flex-grow:1;
+}
+
+.calender_ec .ui-datepicker .ui-datepicker-header .ui-datepicker-title {
+  order: 1;
+  color: #650fb4;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+:focus{
+  outline: none;  
+}
+
+.calender_ec .ui-datepicker .ui-datepicker-header .ui-datepicker-prev {
+  order:0;
+  background-image: url(l.png);
+  background-position: center;
+  background-size: 25px;
+  background-repeat: no-repeat;
+}
+
+.calender_ec .ui-datepicker .ui-datepicker-header .ui-datepicker-next {
+  order:2;
+  background-image: url(r.png);
+  background-position: center;
+  background-size: 25px;
+  background-repeat: no-repeat;
+}
+
+span.ui-icon.ui-icon-circle-triangle-e {
+  color: transparent; 
+}
+
+span.ui-icon.ui-icon-circle-triangle-w {
+  color: transparent;
+}
+
+table.ui-datepicker-calendar {
+  border-bottom: 1px solid #a36fd2;
+  width: 100%;
+}
+
+.datepicer_wrap {
+  padding: 7px 20px 0;
+}
+
+.demoHeaders{display: none;}
+
+.buttonsdate {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.applybutton {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+  background: no-repeat;
+  cursor: pointer;
+  color: #f45056;
+}

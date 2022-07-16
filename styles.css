@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Nunito+Sans:wght@200;300;400;600&display=swap');
+
+
+/* @font-face {
+  font-family: Proxima Nova;
+  font-weight: 300;
+  src: url('../fonts/proximanova-thin.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 400;
+  src: url('../fonts/proximanova-regular.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 500;
+  src: url('../fonts/proximanova-medium.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 600;
+  src: url('../fonts/proximanova-semibold.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 700;
+  src: url('../fonts/proximanova-bold.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 800;
+  src: url('../fonts/proximanova-extrabold.otf') format("otf");
+}
+@font-face {
+  font-family: Proxima Nova;
+  font-weight: 900;
+  src: url('../fonts/proximanova-black.otf') format("otf");
+} */
+ 
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

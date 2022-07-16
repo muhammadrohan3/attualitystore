@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %> 
+
+  <div id="error-wrapper-login" class="xl:px-desktop hidden lg:px-laptop md:px-tablet px-mobile py-4">
+    <div class="flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" role="alert">
+        <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <div class="ml-3 text-sm font-medium text-red-700">
+         Seleziona una nazione valida
+        </div>
+        <button id="errorToggleLogin" type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-100 dark:bg-red-200 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 dark:hover:bg-red-300 inline-flex h-8 w-8"aria-label="Close">
+          <span class="sr-only">Dismiss</span>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+    </div>
+  </div>
+
+  <main class="h-auto">
+    <div class="flex justify-center xl:px-desktop md:my-16 my-12 lg:px-laptop md:px-tablet px-mobile">
+
+      <div class="grid grid-cols-11 lg:gap-6 max-w-5xl">
+  
+        <div class="md:col-span-5 col-span-11 flex justify-center">
+          <div>
+    
+            <form id="changes" action="/user/savechanges?_method=PATCH" method="POST">
+              <h1 class="lg:text-16px text-left font-semibold text-14px border-b border-secondaryDark md:py-2.5 py-1.5 md:mb-5 mb-3">CREA UN NUOVO ACCOUNT</h1>
+              <div class="grid xl:grid-cols-2 xl:gap-4">
+                <div class="relative z-0 w-full mb-5 group">
+                    <input value="<%= user.name %>" maxlength="20" type="text" name="name" id="floating_first_name" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
+                    <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                </div>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input value="<%= user.surname %>" maxlength="20" type="text" name="surname" id="floating_last_name" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
+                    <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cognome</label>
+                </div>
+              </div>
+              <%- include('../partials/countries-select') %>
+              <div class="relative z-0 w-full mb-5 group">
+                <input value="<%= user.email %>" type="email" maxlength="40" name="email" id="floating_email" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
+                <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
+              </div>
+              <div class="relative z-0 w-full mb-5 group">
+                <input value="<%= user.number %>" type="tel" pattern=".{12,}" name="number" id="floating_phone" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
+                <label for="floating_phone" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Numero di telefono (1234567890)</label>
+              </div>
+              <div class="flex justify-center">
+                <button type="submit" class="bg-black text-white border uppercase focus:ring-none focus:outline-none font-semibold mt-3 lg:text-16px text-14px w-full py-2 text-center">Salva modifiche</button>
+              </div>
+         
+            </form>
+    
+            <form action="/user/resetpassword" method="POST" class="mt-8">
+              <button class="py-1.5 border border-black text-black font-medium w-full">
+                CAMBIA LA PASSWORD
+              </button>
+            </form>
+    
+            <% if(user.admin){ %>
+              <form action="/user/admin/analysis" class="mt-2">
+                <button class="py-1.5 border border-black text-black font-medium w-full">
+                  ADMIN
+                </button>
+              </form>
+            <% } %> 
+      
+          </div>
+        </div>
+  
+        <div class="md:col-span-6 col-span-11 flex justify-center md:mt-0 mt-20 ml-0 md:ml-10">
+          <div class="max-w-340px md:max-w-none w-full">
+  
+            <h1 class="lg:text-16px text-left font-semibold text-14px border-b border-secondaryDark md:py-2.5 py-1.5 md:mb-5 mb-3">I TUOI ORDINI</h1>
+    
+            <% if(orders && orders.length){ %>
+              <div class="overflow-x-auto">
+  
+                <table class="table w-full">
+  
+                  <thead>
+                    <tr>
+                      <td>Articoli</td>
+                      <th>Consegna prevista</th>
+                      <th>Metodo di pagamento</th>
+                    </tr>
+                  </thead>
+  
+                  <tbody>
+  
+                    <% for(order of orders){ %>
+  
+                      <tr>
+                      <td><%= order.products.length %></td>
+                        <td>
+                          <%
+                          let delivery = order.createdAt;
+                          let delivery2 = order.createdAt;
+                          if(order.state == 'Italia'){
+                            delivery = new Date(delivery.setDate(delivery.getDate() + 1))
+                            delivery2 = new Date(delivery2.setDate(delivery2.getDate() + 2))
+                          } else{
+                            delivery = new Date(delivery.setDate(delivery.getDate() + 3))
+                            delivery2 = new Date(delivery2.setDate(delivery2.getDate() + 5))
+                          }
+                          %> 
+                          <%= delivery.toISOString().substr(0, 10) + '/' + delivery2.toISOString().substr(0, 10) %>
+                        </td>
+                        <td><%= order.cashOnDelivery ? 'Alla consegna' : order.paymentMethod %></td>
+                      </tr>
+
+                    <% } %>  
+  
+                  </tbody>
+  
+                </table>
+  
+              </div>
+            <% }else{ %>
+              <div class="flex justify-center mt-2">
+                <p>NON HAI ANCORA FATTO ORDINI</p>
+              </div>
+            <% } %>  
+    
+          </div>
+        </div>
+    
+      </div>
+  
+    </div>
+  </main>
+    
+  <%- include('../partials/footer') %>
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+<script>
+$(function () {
+  $('#floating_phone').inputmask('999-999-9999');
+});
+</script>
+<script>
+  const errorToggleLogin = document.getElementById('errorToggleLogin')
+  const errorWrapperLogin = document.getElementById('error-wrapper-login')
+  document.querySelector('#changes').addEventListener('submit', (e) => {
+    if(document.querySelector('#country').value === 'none'){
+      e.preventDefault()
+      errorWrapperLogin.classList.remove('hidden');
+    }
+  })
+  errorToggleLogin.addEventListener('click', () => {
+    errorWrapperLogin.classList.add('hidden');
+  })
+
+  const userCountry = '<%= user.country %>'
+  for(option of document.querySelector('#country').childNodes){
+    if(option.value == userCountry){
+      option.setAttribute('selected', '')
+    }
+  }
+</script>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link rel="stylesheet" href="/css/analysis.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
+</head>
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/admin-navbar') %> 
+  <%- include('../partials/flash') %> 
+      
+
+  <div class="overflow-x-auto mt-4 xl:px-desktop lg:px-laptop md:px-tablet px-mobile h-screen">
+
+    <div class="flex justify-center">
+      <h3 class="text-16px bg-white font-medium uppercase text-center w-36 py-1.5 border border-black">ANALISI</h3>
+    </div>
+      
+    <div class="flex justify-center mt-4">
+      <div class="border border-black bg-white px-3 py-2">
+        
+        <div date-rangepicker class="flex items-center">
+          <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input id="start" value="<%= start ? start : '' %>" name="start" type="text" class="bg-gray-50 border border-black text-gray-900 sm:text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2" placeholder="Select date start">
+            </div>
+          <span class="mx-2 text-black font-medium text-14px">to</span>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+            </div>
+            <input id="end" name="end" type="text" value="<%= end ? end : '' %>" class="bg-gray-50 border border-black text-gray-900 sm:text-sm focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-22 " placeholder="Select date end">
+          </div>
+        </div>
+  
+        <div class="flex justify-center mt-2 gap-3">
+          <button id="apply" class="bg-black text-white font-medium text-14px px-2 py-1.5">
+            APPLICA
+          </button>
+          <button id="remove" class="text-black border border-black font-medium text-14px px-2 py-1.5">
+            RIMUOVI
+          </button>
+        </div>
+  
+      </div>  
+    </div>
+
+    <div class="grid grid-cols-12 mt-10 gap-2.5">
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Vendite totali</h1>
+        <% 
+          let total = 0
+          for(order of orders){
+            total = total + order.amount /100
+          }
+        %> 
+        <p class="text-28px font-medium">€<%= total.toFixed(2) %></p>
+        
+        <canvas id="total" class="mt-3"></canvas>
+
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni create</h1>
+        <p class="text-28px font-medium"><%= sessions.length %></p>
+
+        <canvas id="sessions" class="mt-3"></canvas>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Percentuale clienti abituali:</h1>
+        <p class="text-28px font-medium" id="habitualConversion">Percentuali clienti abituali</p>
+        
+        <canvas id="customers" class="mt-3"></canvas>
+
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Tasso di conversione</h1>
+        <p class="text-28px font-medium"><%= orders.length / activeSessions.length == 'Infinity'? '0' : Number.isNaN(orders.length / activeSessions.length * 100) ? '0' : Math.round(orders.length / activeSessions.length * 100) %>%</p>
+        
+        <p class="font-medium text-12px mt-5">FUNNEL DI CONVERSIONI</p>
+
+        <% 
+          let cartConversion = 0;
+          for(session of activeSessions){
+            if(session.cart && session.cart.length){
+              cartConversion = cartConversion + 1
+            }
+          }
+
+          let checkoutReached = 0
+          for(session of activeSessions){
+            if(session.checkoutReached){
+              checkoutReached = checkoutReached + 1
+            }
+          }
+        %>
+        <div class="flex flex-col gap-1 mt-3">
+          <div class="flex justify-between">
+            <p class="text-12px">Aggiunte al carrello (<%= cartConversion %>)</p>
+            <p class="text-12px"><%= cartConversion / activeSessions.length == 'Infinity'? '0' : Number.isNaN(cartConversion / activeSessions.length * 100) ? '0' : Math.round(cartConversion / activeSessions.length * 100) %>%</p>
+          </div>
+
+          <div class="flex justify-between">
+            <p class="text-12px">Checkout raggiunti (<%= checkoutReached %>)</p>
+            <p class="text-12px"><%= checkoutReached / activeSessions.length == 'Infinity'? '0' : Number.isNaN((checkoutReached / activeSessions.length * 100)) ? '0' : Math.round(checkoutReached / activeSessions.length * 100) %>%</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni totali attive:</h1>
+        <p class="font-bold mt-2 text-20px"><%= activeSessions.length %></p>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">totale ordini</h1>
+        <p class="text-28px font-medium" id="habitualConversion"><%= orders.length %></p>
+        
+        <canvas id="orders" class="mt-3"></canvas>
+
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Landing page più popolari per sessioni</h1>
+        <% 
+        const landigPages = {}
+        for(session of sessions){
+          if(Object.keys(landigPages).includes(session.landingPage)){
+            landigPages[session.landingPage] = landigPages[session.landingPage] + 1
+          }else{
+            landigPages[session.landingPage] = 1
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(page of Object.keys(landigPages)){ %>
+          <div class="flex justify-between">
+            <a href="<%= page %>" class="text-14px text-blue-400 underline"><%= page %></a>
+            <p><%= landigPages[page] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni create per tipo di dispositivo</h1>
+        <% 
+        const devices = {}
+        for(session of sessions){
+          if(Object.keys(devices).includes(session.device)){
+            devices[session.device] = devices[session.device] + 1
+          }else{
+            devices[session.device] = 1
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(device of Object.keys(devices)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= device %></p>
+            <p><%= devices[device] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Migliori referrer per sessioni</h1>
+        <% 
+        const referrers = {}
+        for(session of sessions){
+          if(Object.keys(referrers).includes(session.referrer)){
+            referrers[session.referrer] = referrers[session.referrer] + 1
+          }else{
+            referrers[session.referrer] = 1
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(referrer of Object.keys(referrers)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= referrer.slice(0, 30) %></p>
+            <p><%= referrers[referrer] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni per località</h1>
+        <% 
+        const countries = {}
+        for(session of sessions){
+          if(Object.keys(countries).includes(session.country)){
+            countries[session.country] = countries[session.country] + 1
+          }else{
+            countries[session.country] = 1
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(country of Object.keys(countries)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= country %></p>
+            <p><%= countries[country] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Utenti per località</h1>
+        <% 
+        const countriesUsers = {}
+        for(user of users){
+          if(Object.keys(countriesUsers).includes(user.country)){
+            countriesUsers[user.country] = countriesUsers[user.country] + 1
+          }else{
+            countriesUsers[user.country] = 1
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(item of Object.keys(countriesUsers)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= item %></p>
+            <p><%= countriesUsers[item] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Prodotti più popolari per unità vendute</h1>
+        <% 
+        const bestProducts = {}
+        for(order of orders){
+          for(product of order.products){
+            if(Object.keys(bestProducts).includes(product.product.modelName)){
+              bestProducts[product.product.modelName] = bestProducts[product.product.modelName] + 1
+            }else{
+              bestProducts[product.product.modelName] = 1
+            }
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(product of Object.keys(bestProducts)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= product %></p>
+            <p><%= bestProducts[product] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Migliori referrer per guadagni portati</h1>
+        <% 
+        const bestReferrers = {}
+        for(session of sessions){
+          const sessionOrders = orders.filter(order => {
+            return order.suuid == session.uuid
+          })
+          let amount = 0;
+          for(item of sessionOrders){
+            amount += item.amount/100
+          }
+          if(Object.keys(bestReferrers).includes(session.referrer)){
+            bestReferrers[session.referrer] = bestReferrers[session.referrer] + amount
+          }else{
+            bestReferrers[session.referrer] = amount
+          }
+        }
+        %>
+       <div class="flex flex-col gap-1 mt-2">
+        <% for(referrer of Object.keys(bestReferrers)){ %>
+          <div class="flex justify-between">
+            <p class="text-14px"><%= referrer.slice(0, 30) %></p>
+            <p>€<%= bestReferrers[referrer] %></p>
+          </div>
+        <% } %> 
+       </div>
+      </div>
+
+      <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
+        <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Utenti totali:</h1>
+        <p class="font-bold mt-2 text-20px"><%= users.length %></p>
+      </div>
+
+    </div>
+    
+  </div>
+
+
+
+  <%- include('../partials/admin-navbar-end') %> 
+    
+
+</body>
+</html>
+<script src="https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.0.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script src="/javascript/analysis.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+<script>
+  const orders = <%- JSON.stringify(orders) %>
+  const allOrders = <%- JSON.stringify(allOrders) %>
+  const sessions = <%- JSON.stringify(sessions) %>
+  const startDateChart = '<%= start %>'
+  const endDateChart = '<%= end %>'
+</script>
+<script src="/javascript/total-chart.js"></script>
+<script src="/javascript/customers-chart.js"></script>
+<script src="/javascript/sessions-chart.js"></script>
+<script src="/javascript/orders-chart.js"></script>

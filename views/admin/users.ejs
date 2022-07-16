@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/admin-navbar') %> 
+  <%- include('../partials/flash') %> 
+      
+  <div class="overflow-x-auto mt-10 xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+    <h3 class="text-16px font-medium uppercase text-center w-36 mx-auto py-1.5 mb-5 bg-transparent border border-black">UTENTI</h3>
+    <table class="table table-compact w-full">
+      <thead>
+        <tr class="bg-background">
+          <th class="bg-secondary"></th> 
+          <th class="bg-secondary">Nome</th> 
+          <th class="bg-secondary">Cognome</th> 
+          <th class="bg-secondary">Email</th> 
+          <th class="bg-secondary">AZIONI</th> 
+        </tr>
+      </thead> 
+      <tbody>
+        <% for(let i = 0; i < users.length; i++){ %>
+          <tr>
+            <th class="bg-secondary"><%= i + 1 %></th> 
+            <td class="bg-background"><%= users[i].name %></td> 
+            <td class="bg-background"><%= users[i].surname %></td> 
+            <td class="bg-background"><%= users[i].email %></td> 
+            <td class="bg-background flex gap-4">
+              <form action="/user/admin/users/modify/<%= users[i]._id %>" method="GET">
+                <button class="p-2 stroke bg-black border border-black">
+                  <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.3572 3.64195L16.3578 8.64282L5.49911 19.502L1.04063 19.9942C0.443772 20.0602 -0.0605117 19.5555 0.00589283 18.9586L0.501974 14.4968L11.3572 3.64195ZM19.4507 2.89741L17.1027 0.549325C16.3703 -0.183109 15.1825 -0.183109 14.45 0.549325L12.2411 2.75835L17.2418 7.75921L19.4507 5.55019C20.1831 4.81736 20.1831 3.62985 19.4507 2.89741Z" fill="white"/>
+                  </svg>
+                </button>
+              </form>
+              <form action="/user/admin/users/info/<%= users[i]._id %>">
+                <button class="border border-black p-1 bg-secondary">
+                  <svg class="h-5 text-black" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </button>
+              </form>
+              <form action="/user/admin/users/delete/<%= users[i]._id %>?_method=DELETE" method="POST">
+                <button class="p-1 bg-transparent border border-black">
+                  <svg class="fill-black h-5" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% } %> 
+      </tbody> 
+    </table>
+  </div>
+
+
+  <%- include('../partials/admin-navbar-end') %> 
+    
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/showPage.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto bg-white">
+    <div class="flex justify-center pt-2 lg:pb-3 lg:pt-3 bg-white">
+      <h1 class="text-24px md:text-28px lg:text-32px text-black text-center mx-8">NUOVI ARRIVI</h1>
+    </div>
+
+
+    <% if(products.length != 0) { %>
+      <div class="grid lg:gap-x-5 md:gap-x-4 gap-x-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 pt-4 bg-background xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+      
+        <% for(product of products){ %>
+  
+          <% 
+            let passed = false;  
+            for(size of product.sizes){
+              if(size.remaining > 0){
+                passed = true;
+                break
+              }
+            }
+          %> 
+  
+          <% if(passed){ %>
+  
+            <div class="flex prodotto flex-col mb-10 relative">
+              <button id="wishlist-<%= product._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(product._id.toString()) ? 'hidden' : '' : '' %>">
+                <img src="/blackheart-icon.webp" class="h-5" alt="Product isn't added to the wishlist">       
+              </button>
+              <button id="removeWishlist-<%= product._id %>" class="absolute <%= wishlist ? wishlist.includes(product._id.toString()) ? '' : 'hidden' : 'hidden' %> right-2 top-2 z-10">
+                <img src="/redheart-icon.webp" class="h-5" alt="Product added to the wishlist">     
+              </button>
+              <script>
+                document.getElementById("wishlist-<%= product._id %>").addEventListener('click', async () => {
+                  let response = await fetch('/wishlist/<%= product._id %>', {
+                    method: 'POST'
+                  })
+                  response = await response.text()
+                  if(response == 'success'){
+                    document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
+                    document.getElementById('wishlist-indicator').classList.remove('hidden')
+
+                    document.getElementById("wishlist-<%= product._id %>").classList.add('hidden')
+                    document.getElementById("removeWishlist-<%= product._id %>").classList.remove('hidden')
+                  }
+                })
+
+                document.getElementById("removeWishlist-<%= product._id %>").addEventListener('click', async () => {
+                  let response = await fetch('/wishlist/<%= product._id %>', {
+                    method: 'DELETE'
+                  })
+                  response = await response.text()
+                  if(response == 'success'){
+                    document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
+                    if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
+                      document.getElementById('wishlist-indicator').classList.add('hidden')
+                    }
+
+                    document.getElementById("wishlist-<%= product._id %>").classList.remove('hidden')
+                    document.getElementById("removeWishlist-<%= product._id %>").classList.add('hidden')
+                  }
+                })
+              </script>
+              <% if(product.images.length > 1){ %>
+                <a href="/product/<%= product.urlSlug %>?from=new-arrivals" class="imageBox">
+                  <div class="imageInn">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1000/<%= product.images[0].filename %>"
+                    alt="<%= product.urlSlug %>"
+                    class="w-full h-full">
+                  </div>
+                  <div class="hoverImg">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1000/<%= product.images[0].filename %>"
+                    alt="<%= product.urlSlug %>"
+                    class="w-full h-full">
+                  </div>
+                </a>
+              <% }else{ %>
+                <a href="/product/<%= product.urlSlug %>?from=new-arrivals">
+                  <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_800/<%= product.images[0].filename %>"
+                    alt="Product image"
+                    class="w-full h-full">
+                </a>
+              <% } %>   
+              <div class="flex flex-col gap-4">
+                <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= product.designer.replace('-', ' ') %></p>
+                <a href="/product/<%= product.urlSlug %>?from=new-arrivals" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= product.modelName %></a>
+                <p class="text-16px md:text-18px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (product.price/100).toFixed(2) %></span>&nbsp;&nbsp;&nbsp;€<%= (product.discountedPrice /100).toFixed(2) %></p>
+              </div>
+              <% if(product.sizes[0].size !== 'one-size'){ %>
+  
+                <% 
+                let sizeRemaining = [];
+                for(size of product.sizes){
+                  if(size.remaining != 0){
+                    sizeRemaining.push(size)
+                  }
+                }  
+                %> 
+  
+                <% if(sizeRemaining.length > 6){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3, 6)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(6)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 5){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(5)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+    
+                <% } else if(sizeRemaining.length > 3){ %>
+                  <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining.slice(0, 3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                  <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                    <% for(size of sizeRemaining.slice(3)){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } else{ %>  
+                  <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                    <% for(size of sizeRemaining){ %>
+                      <a href="/product/<%= product.urlSlug %>?sizeQuery=<%= size.size %>&from=new-arrivals" class="w-10 py-0.5 text-12px font-medium bg-background border border-black hover:shadow-primary focus:shadow-primary text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                        <%= size.size %>
+                      </a>
+                    <% } %>
+                  </div>
+                <% } %> 
+              <% } %>
+            </div>
+  
+          <% } %> 
+  
+  
+        <% } %>
+  
+      </div>
+    <% }else{ %>
+      <div class="flex justify-center h-full bg-background">
+        <h6 class="text-20px uppercase font-medium mt-12">NESSUN RISULTATO</h6>
+      </div>
+    <% } %> 
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>

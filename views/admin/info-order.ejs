@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css" type="text/css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+<body 
+class="bg-background flex flex-col min-h-screen font-main">
+
+  <%- include('../partials/admin-navbar') %> 
+  <%- include('../partials/flash') %> 
+      
+
+  <div class="xl:px-desktop lg:px-tablet md:px-tablet px-mobile">
+    <div class="flex justify-center">
+      <p class="text-24px font-medium mt-10">PRODOTTI</p>
+    </div>
+    <table class="table table-compact w-full mt-2">
+      <thead>
+        <tr class="bg-background">
+          <th class="bg-secondary">IMMAGINI</th> 
+          <th class="bg-secondary">Nome</th> 
+          <th class="bg-secondary">Designer</th> 
+          <th class="bg-secondary">Categoria</th> 
+          <th class="bg-secondary">AZIONI</th> 
+        </tr>
+      </thead> 
+      <tbody>
+        <% for(let i = 0; i < order.products.length; i++){ %>
+          <tr>
+            <% category = order.products[i].product.category %> 
+            <th class="bg-background"><img src="<%= order.products[i].product.images[0].path %>" class="w-8" alt=""></th> 
+            <td class="bg-background"><%= order.products[i].product.modelName %></td> 
+            <td class="bg-background uppercase"><%= order.products[i].product.designer.replace('-', ' ') %></td> 
+            <td class="bg-background"><%= 
+              order.products[i].product.category == 'jackets' ? 'GIACCHE' : 
+              order.products[i].product.category == 'hoodies' ? 'FELPE CON CAPPUCCIO' : 
+              order.products[i].product.category == 'sweatshirts' ? 'FELPE' :
+              order.products[i].product.category == 'shirts' ? 'CAMICIE' :
+              order.products[i].product.category == 't-shirts' ? 'T-SHIRTS' :
+              order.products[i].product.category == 'polos' ? 'POLOS' :
+              order.products[i].product.category == 'jeans' ? 'JEANS' :
+              order.products[i].product.category == 'trousers' ? 'PANTALONI' :
+              order.products[i].product.category == 'bermuda' ? 'BERMUDA' :
+              order.products[i].product.category == 'wallets-and-small-leather-goods' ? "PORTAFOGLIO E PICCOLA PELLETTERIA" :
+              order.products[i].product.category == 'swimwear' ? "COSTUMI DA BAGNO" :
+              'CIABATTE'
+              %></td> 
+            <td class="bg-background flex gap-4">
+              <form action="/user/admin/orders/info/<%= order.products[i].product._id %>">
+                <button class="border border-black p-1 bg-secondary">
+                  <svg class="h-5 text-black" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </button>
+              </form>          
+            </td>
+          </tr>
+        <% } %> 
+      </tbody> 
+    </table>
+    <div class="flex justify-center">
+      <p class="text-16px font-medium mt-6">TOT: €<%= (order.amount/100).toFixed(2) %></p>
+    </div>
+    <div class="flex justify-center">
+      <p class="text-24px font-medium mt-28">Informazioni sull' ordine</p>
+    </div>
+    <div class="mt-2">
+      <table class="table w-full">
+        <tbody>
+          <tr class="hover">
+            <th  class="bg-secondary text-14px w-20">Utente</th>
+            <td  class="bg-background">Cliente: <%= order.name + ' ' + order.surname %> - Logged: <%= order.user ? 'SI' : 'NO' %></td>
+            <td  class="bg-background">EMAIL: <%= order.email %></td>
+            <td  class="bg-background">TEL: <%= order.number %></td>
+          </tr>
+          <tr class="hover">
+            <th  class="bg-secondary text-14px">Pagamento</th>
+            <td  class="bg-background">Tipo: <%= order.cashOnDelivery ? 'Alla consegna' : order.paymentMethod %></td>
+            <td  class="bg-background">PIID: <%= order.piid %></td>
+            <td  class="bg-background">Coupon: <%= order.coupon ? order.coupon : 'NO' %></td>
+          </tr>
+          <!-- row 3 -->
+          <tr class="hover">
+            <th  class="bg-secondary text-14px">Consegna</th>
+            <td  class="bg-background">Indirizzo: <%= order.address %></td>
+            <td  class="bg-background">Città: <%= order.city %></td>
+            <td  class="bg-background">Zip: <%= order.zip %></td>
+          </tr>
+          <tr class="hover">
+            <th  class="bg-secondary text-14px"></th>
+            <td  class="bg-background">Nazione: <%= order.state %></td>
+            <td  class="bg-background">Provincia: <%= order.province %></td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex justify-center mt-32">
+      <label for="my-modal-4" class="btn modal-button bg-black text-white rounded-none">CAMBIA STATO</label>
+    </div>
+    <div class="flex justify-center mt-2">
+      <p class="text-20px">STATO: <%= order.completed ? 'Completato' : 'Non completato' %></p>
+    </div>
+  </div>
+
+  <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+  <label for="my-modal-4" class="modal cursor-pointer">
+    <label class="modal-box relative" for="">
+      <div class="flex justify-center">
+        <h3 class="text-lg font-bold">Sicuro di voler cambiare stato?</h3>
+      </div>
+      <form action="/user/admin/orders/changestatus/<%= order._id %>?_method=PATCH" class="flex justify-center mt-4" method="POST">
+        <button class="btn btn-outline btn-info py-1 px-2">CAMBIA STATO ORDINE</button>
+      </form>
+    </label>
+  </label>
+
+  <%- include('../partials/admin-navbar-end') %> 
+    
+
+</body>
+</html>

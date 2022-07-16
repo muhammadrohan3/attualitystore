@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('./partials/navbar') %> 
+  <%- include('./partials/flash') %> 
+
+  <main class="h-auto">
+
+  <div class="flex justify-center lg:w-96 md:w-80 w-64 mx-auto mt-10">
+    <h1 class="uppercase font-medium text-center leading-6">puoi guadagnare fino a €40 con questo messaggio, esso è un messaggio di errore e ti preghiamo di segnalarlo al nostro staff tramite i contatti che trovi nel footer, spiegando il processo con cui sei arrivato a questa pagina</h1>
+  </div>
+
+  <div class="flex justify-center">
+    <div class="rounded mt-5 mb-10 lg:w-96 md:w-80 w-64 p-4 bg-red-300 border border-red-500">
+      <p class="text-14px"><%= err %></p>
+    </div>
+  </div>
+
+  </main>
+
+  <%- include('./partials/footer') %> 
+  <%- include('./partials/navbar-end') %>
+
+</body>
+</html>

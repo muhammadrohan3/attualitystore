@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto">
+
+    <div class="flex flex-col gap-4 lg:my-14 md:my-12 my-8">
+
+      <h1 class="text-24px font-semibold text-center">Contattaci</h1>
+      <div class="flex flex-col gap-2">
+        <p class="text-center mx-auto font-medium lg:max-w-4xl md:max-w-2xl max-w-330px">Da sempre abbiamo l'obiettivo di facilitare e fornire il massimo della sicurezza <br> d’acquisto dei nostri clienti. </p>
+        <p class="lg:max-w-4xl md:max-w-2xl max-w-330px mx-auto lg:text-16px text-14px">
+          Avrai anche a disposizione tutte le modalità di pagamento.
+          Sarai tu a scegliere la modalità per te più adatta alle tue esigenze:
+          <br>
+          · Visa                                 
+          <br>
+          · Mastercard
+          <br>
+          · Paypal
+          <br>
+          · American Express
+          <br>
+                  
+          In alternativa potrai scegliere di pagare direttamente alla consegna, senza alcun costo aggiuntivo
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>

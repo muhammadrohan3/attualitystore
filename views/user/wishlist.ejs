@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attuality Store</title>
+  <link rel="icon" type="image/x-icon" href="/favico.ico">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/wishlist.css">
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+  <%- include('../partials/navbar') %> 
+  <%- include('../partials/flash') %> 
+
+  <main class="h-auto xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
+
+    <div class="lg:my-20 md:my-16 my-10 xl:max-w-6xl lg:max-w-4xl max-w-xl mx-auto bg-white shadow-md p-4">
+      <% if(wishlist && wishlist.length){ %>
+        <div class="pb-12 pt-3 border-b border-secondaryDark flex flex-col">
+          <div class="flex justify-center">
+            <p class="font-bold text-36px">WISHLIST</p>
+          </div>
+          <div class="flex justify-center">
+            <p class="uppercase text-16px"><span id="wishlistNumber"><%= wishlist.length %></span> ARTICOLI</p>
+          </div>
+          <% if(!user){ %>
+            <div class="flex justify-center mt-9">
+              <p class="font-medium text-center w-96">Tutti i tuoi articoli preferiti a portata di click, qualunque dispositivo usi</p>
+            </div>
+            <div class="flex justify-center mt-3">
+              <a href="/login" class="bg-black hover:bg-gray-900 text-white w-36 py-2 text-center font-medium text-18px">ACCEDI</a>
+            </div>
+          <% } %> 
+        </div>
+        <div class="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-6 mt-4 p-4">
+          <% for(product of wishlist){ %>
+            <% 
+            let passed = false;  
+            for(size of product.sizes){
+              if(size.remaining > 0){
+                passed = true;
+                break
+                }
+              }
+            %> 
+  
+            <% if(passed){ %>
+    
+              <div id="containerWishlist-<%= product._id %>" class="flex prodotto flex-col mb-10 relative">
+                <button data-id="<%= product._id %>" class="removeFromWishlist absolute top-2 right-3 font-semibold text-12px z-40">
+                  ╳
+                </button>
+                <% if(product.images.length > 1){ %>
+                  <a href="/product/<%= product.urlSlug %>" class="imageBox mb-7">
+                    <div class="imageInn">
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[0].filename %>"
+                      alt="<%= product.urlSlug %>"
+                      class="w-full h-full">
+                    </div>
+                    <div class="hoverImg">
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[1].filename %>"
+                      alt="<%= product.urlSlug %>"
+                      class="w-full h-full">
+                    </div>
+                  </a>
+                <% }else{ %>
+                  <a class=" mb-7" href="/product/<%= product.urlSlug %>">
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[0].filename %>"
+                      alt="Product image"
+                      class="w-full h-full">
+                  </a>
+                <% } %>   
+                <div class="flex flex-col gap-3 mb-1">
+                  <p class="mx-auto font-normal tracking-1px md:text-17px text-13px uppercase"><%= product.designer.replace('-', ' ') %></p>
+                  <a href="/product/<%= product.urlSlug %>" class="hover:underline font-light tracking-1px text-center uppercase lg:leading-7 leading-5 mx-auto md:text-17px text-13px"><%= product.modelName %></a>
+                  <p class="text-14px md:text-18px font-normal tracking-1px text-primary mx-auto"><span class="line-through  text-black">€<%= (product.price/100).toFixed(2) %></span>&nbsp;€<%= (product.discountedPrice /100).toFixed(2) %></p>
+                </div>
+                <% if(product.sizes[0].size != 'one-size'){ %>
+    
+                  <% 
+                  let sizeRemaining = [];
+                  for(size of product.sizes){
+                    if(size.remaining != 0){
+                      sizeRemaining.push(size)
+                    }
+                  }  
+                  %> 
+    
+                  <% if(sizeRemaining.length > 6){ %>
+                    <div class="id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                      <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(0, 5)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(5)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(0, 3)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                        <% for(size of sizeRemaining.slice(3, 6)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                        <% for(size of sizeRemaining.slice(6)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                    </div>
+
+                  <% } else if(sizeRemaining.length > 5){ %>
+                    <div class="id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                      <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(0, 5)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(5)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(0, 3)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                        <% for(size of sizeRemaining.slice(3)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                    </div>
+
+                  <% } else if(sizeRemaining.length > 3){ %>
+                    <div id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                      <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining.slice(0, 3)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                      <div class="flex md:hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-1" role="group">
+                        <% for(size of sizeRemaining.slice(3)){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% } else{ %>  
+                    <div id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                      <div class="flex justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
+                        <% for(size of sizeRemaining){ %>
+                          <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
+                            <%= size.size %>
+                          </button>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% } %> 
+                <% }else{ %>
+                  <div id="sizegroup-<%= product._id %>" data-sizechoosen="one-size">
+                  </div>
+                <% } %> 
+                <p class="hidden text-primary text-12px text-center mx-auto mt-2" id="chooseSize">*seleziona una taglia*</p>
+
+                <button data-id="<%= product._id %>" class="md:px-4 px-2 addToCartButtons md:py-3 py-2.5 leading-4 mx-auto bg-black hover:bg-gray-900 text-white font-medium md:text-14px text-12px mt-5 mb-2">
+                  AGGIUNGI AL CARRELLO
+                </button>
+              
+                <div id="max-20-error-<%= product._id %>" class="bg-red-100 dark:bg-red-200 w-full mx-auto px-3 py-2 my-2 hidden text-13px border border-red-500 font-medium">
+                  Hai già 20 prodotti nel carrello, eliminane qualcuno per poterne aggiungere di altri
+                </div>
+                <div id="unavailable-<%= product._id %>" class="bg-red-100 dark:bg-red-200 w-full mx-auto px-3 py-2 my-2 hidden text-13px border border-red-500 font-medium">
+                  Non ci sono altri prodotti di questa taglia disponibili
+                </div>
+
+              </div>
+    
+            <% } %>
+          <% } %>  
+
+        </div>
+      <% }else{ %>
+          <div class="pb-12 pt-3 border-b border-secondaryDark flex flex-col">
+            <div class="flex justify-center">
+              <p class="font-bold text-36px">WISHLIST</p>
+            </div>
+            <div class="flex justify-center">
+              <p class="uppercase text-16px">0 ARTICOLI</p>
+            </div>
+            <% if(!user){ %>
+              <div class="flex justify-center mt-9">
+                <p class="font-medium text-center w-96">Tutti i tuoi articoli preferiti a portata di click, qualunque dispositivo usi</p>
+              </div>
+              <div class="flex justify-center mt-3">
+                <a href="/login" class="bg-black hover:bg-gray-900 text-white w-36 py-2 text-center font-medium rounded text-18px">ACCEDI</a>
+              </div>
+            <% } %> 
+          </div>
+          <div class="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-6 mt-4 p-4"></div>
+      <% } %>   
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %> 
+  <%- include('../partials/navbar-end') %>
+
+</body>
+</html>
+
+<script>
+const wishlist = <%- JSON.stringify(wishlist) %>
+const addToCartButtons = document.querySelectorAll('.addToCartButtons');
+for(button of addToCartButtons){
+  button.addEventListener('click', async (event) => {
+    const product = wishlist.filter(item => {
+      return item._id.toString() == event.target.dataset.id
+    })[0]
+
+    if(document.getElementById(`sizegroup-${event.target.dataset.id}`).dataset.sizechoosen == 'none'){
+      return document.getElementById('chooseSize').classList.remove('hidden')
+    }
+
+    let response = await fetch(`/cart/${product._id}?size=${document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen}`, {
+      method: 'POST'
+    })
+    response = JSON.parse(await response.text())
+    if(response.status == 'success'){
+      document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
+      document.getElementById('cart-indicator').classList.remove('hidden')
+      document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + (product.discountedPrice/100)).toFixed(2)
+
+      if(document.getElementById(`cartQuantity-${response.id}`)){
+        document.getElementById(`cartQuantity-${response.id}`).innerHTML = parseInt(document.getElementById(`cartQuantity-${response.id}`).innerHTML) + 1
+      }else{
+        const productDiv = document.createElement('div');
+        const parent = document.getElementById('cartItems');
+        productDiv.classList.add('flex')
+        productDiv.classList.add('gap-4')
+
+        productDiv.innerHTML = `
+        <div id="container=${response.id}">
+          <div class="flex gap-4">
+            <a class="w-20 shrink-0" href="/product/${product.urlSlug}">
+              <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_120/${product.images[0].filename}" class="w-20 shrink-0" alt="${product.urlSlug}">
+            </a>
+            <div class="flex flex-col justify-center">
+              <a href="/product/${product.urlSlug}" class="font-semibold hover:underline">${product.modelName}</a>
+              <div class="flex gap-4">
+                <p class="text-14px">Taglia : <span class="font-semibold">${ document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen == 'one-size' ? 'TAGLIA UNICA' : document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen }</span></p>
+                <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
+              </div>
+              <div class="flex gap-4">
+                <div class="flex mt-1">
+                  <button id="cartRemove-${response.id}" class="rounded-l border border-black hover:border-primary w-5 h-5 font-bold">
+                    <div class="flex justify-center">
+                      <svg class="w-1.5" viewBox="0 0 25 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.6562 0H2.34375C1.0498 0 0 1.0498 0 2.34375V3.90625C0 5.2002 1.0498 6.25 2.34375 6.25H22.6562C23.9502 6.25 25 5.2002 25 3.90625V2.34375C25 1.0498 23.9502 0 22.6562 0Z" fill="black"/>
+                      </svg> 
+                    </div>                   
+                  </button>
+                  <button id="cartAdd-${response.id}" class="rounded-r border border-black hover:border-primary w-5 h-5 font-bold">
+                    <div class="flex justify-center">
+                      <svg class="w-1.5" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.6562 9H2.34375C1.0498 9 0 10.0498 0 11.3438V12.9062C0 14.2002 1.0498 15.25 2.34375 15.25H22.6562C23.9502 15.25 25 14.2002 25 12.9062V11.3438C25 10.0498 23.9502 9 22.6562 9Z" fill="black"/>
+                        <path d="M9.375 2.34375L9.375 22.6562C9.375 23.9502 10.4248 25 11.7188 25H13.2812C14.5752 25 15.625 23.9502 15.625 22.6562L15.625 2.34375C15.625 1.0498 14.5752 0 13.2813 0H11.7188C10.4248 0 9.375 1.0498 9.375 2.34375Z" fill="black"/>
+                      </svg> 
+                    </div>                   
+                  </button>
+                </div>
+                <p class="text-14px font-semibold mt-1">€${(product.discountedPrice/100).toFixed(2)}</p>
+              </div>
+            </div>
+          </div>
+          <div id="unavailableCart-${response.id}" class="bg-red-100 mb-2 dark:bg-red-200 mx-auto px-2 py-1 hidden text-12px border border-red-500 font-medium">
+            Non ci sono altri prodotti di questa taglia disponibili
+          </div>
+        </div>
+        `
+
+        const script = 
+        `
+        <script>
+          document.getElementById("cartAdd-${response.id}").addEventListener('click', async () => {
+            let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen}', {
+              method: 'POST'
+            })
+            response = JSON.parse(await response.text())
+            if(response.status == 'success'){
+              document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
+              document.getElementById('cart-indicator').classList.remove('hidden')
+              document.getElementById('cartQuantity-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantity-${response.id}').innerHTML) + 1
+              if(document.getElementById('cartQuantityPage-${response.id}')){
+                document.getElementById('cartQuantityPage-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantityPage-${response.id}').innerHTML) + 1
+              }
+              if(document.getElementById('totalPage')){
+                document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) + ${product.discountedPrice/100}).toFixed(2)
+                document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) + ${product.discountedPrice/100} /100*78).toFixed(2)
+                document.getElementById('taxPage').innerHTML = (parseInt(document.getElementById('taxPage').innerHTML) + ${product.discountedPrice/100} /100*22).toFixed(2)
+              }
+              document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + ${product.discountedPrice/100}).toFixed(2)
+            } else if(response.status == 'unavailable'){
+              document.getElementById('unavailableCart-${response.id}').classList.remove('hidden')
+              setTimeout(() => {
+                document.getElementById('unavailableCart-${response.id}').classList.add('hidden')
+              }, 4000)
+            }
+          })
+          document.getElementById("cartRemove-${response.id}").addEventListener('click', async () => {
+            let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen}', {
+              method: 'DELETE'
+            })
+            response = JSON.parse(await response.text())
+            if(response.status == 'product-removed-from-cart'){
+              document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+              if(document.getElementById('cart-indicator').innerHTML == 0){
+                document.getElementById('cart-indicator').classList.add('hidden')
+              }
+              document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - ${product.discountedPrice/100}).toFixed(2)
+              if(document.getElementById('containerPage=${response.id}')){
+                document.getElementById('containerPage=${response.id}').parentElement.removeChild(document.getElementById('containerPage=${response.id}'))
+              }
+              if(document.getElementById('totalPage')){
+                document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - ${product.discountedPrice/100}).toFixed(2)
+                document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - ${product.discountedPrice/100} /100*78).toFixed(2)
+                document.getElementById('taxPage').innerHTML = (parseInt(document.getElementById('taxPage').innerHTML) - ${product.discountedPrice/100} /100*22).toFixed(2)
+              }
+              document.getElementById('container=${response.id}').parentElement.removeChild(document.getElementById('container=${response.id}'))
+            } else if(response.status == 'product-removed'){
+              document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+              document.getElementById('cartQuantity-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantity-${response.id}').innerHTML) - 1
+              if(document.getElementById('cartQuantityPage-${response.id}')){
+                document.getElementById('cartQuantityPage-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantityPage-${response.id}').innerHTML) - 1
+              }
+              if(document.getElementById('totalPage')){
+                document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - ${product.discountedPrice/100}).toFixed(2)
+                document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - ${product.discountedPrice/100} /100*78).toFixed(2)
+                document.getElementById('taxPage').innerHTML = (parseInt(document.getElementById('taxPage').innerHTML) - ${product.discountedPrice/100} /100*22).toFixed(2)
+              }
+              document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - ${product.discountedPrice/100}).toFixed(2)
+            }
+          })
+        <\/script>
+        `
+        const scriptEl = document.createRange().createContextualFragment(script);
+        productDiv.append(scriptEl)
+
+        parent.appendChild(productDiv)
+      }
+      
+      
+
+      
+    } else if(response.status == 'error'){
+      document.getElementById(`max-20-error-${product._id}`).classList.remove('hidden')
+      setTimeout(() => {
+        document.getElementById(`max-20-error-${product._id}`).classList.add('hidden')
+      }, 4000)
+    } else if(response.status == 'unavailable'){
+      document.getElementById(`unavailable-${product._id}`).classList.remove('hidden')
+      setTimeout(() => {
+        document.getElementById(`unavailable-${product._id}`).classList.add('hidden')
+      }, 4000)
+    }
+  })
+}
+</script>
+<script>
+for(element of wishlist){
+  const misureProdotto = document.querySelectorAll(`.sizeButton-${element._id}`)
+  const sizegroup = document.getElementById(`sizegroup-${element._id}`);
+  for(button of misureProdotto){
+    button.addEventListener('click', (e) => {
+      document.getElementById('chooseSize').classList.add('hidden')
+      misureProdotto.forEach(size => {
+        size.classList.remove('active');
+      })
+      e.target.classList.add('active')
+      sizegroup.dataset.sizechoosen = e.target.dataset.size;
+    })
+  }
+}
+</script>
+<script src="/javascript/wishlist.js"></script>
