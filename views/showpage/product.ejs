@@ -127,12 +127,14 @@
                 <p class="uppercase mx-auto sm:text-28px text-20px font-light text-center"><%= product.modelName %></p>
               </div>
       
-              <div class="mx-auto">
+              <div class="mx-auto flex lg:flex-row flex-col lg:gap-2 gap-0">
                 <p class="font-medium sm:text-22px text-18px text-primary"><span class="line-through text-black">€<%=
                     (product.price /100).toFixed(2) %></span>&nbsp;&nbsp;&nbsp;€<%= (product.discountedPrice/100).toFixed(2) %>
                 </p>
                 <div class="flex justify-center">
-                  <p class="text-red-500 text-14px">IVA inclusa</p>
+                  <div class="flex flex-col justify-center">
+                    <p class="text-red-500 text-14px">(IVA inclusa)</p>
+                  </div>
                 </div>
               </div>
 
@@ -401,12 +403,22 @@
 
             <div class="flex mt-3 col-span-11 md:px-12 px-14 gap-4 lg:flex-col xl:flex-row md:flex-row justify-center flex-col">
               <div class="flex flex-col">
-                <p class="font-semibold text-14px">Giorni di spedizione in Italia:</p>
-                <p class="text-14px">1-2</p>
+                <p class="font-semibold text-14px">Consegna prevista in Italia:</p>
+                <p class="text-14px">
+                  <%= new Date(new Date().setDate(new Date().getDate() + 1)).getDate() %> 
+                  <%= new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('default', { month: 'short' }) %> -
+                  <%= new Date(new Date().setDate(new Date().getDate() + 2)).getDate() %>
+                  <%= new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleString('default', { month: 'short' }) %>
+                </p>
               </div>
               <div class="flex flex-col">
-                <p class="font-semibold text-14px">Giorni di spedizione non in Italia:</p>
-                <p class="text-14px">3-4</p>
+                <p class="font-semibold text-14px">Consegna prevista non in Italia:</p>
+                <p class="text-14px">
+                  <%= new Date(new Date().setDate(new Date().getDate() + 3)).getDate() %>
+                    <%= new Date(new Date().setDate(new Date().getDate() + 3)).toLocaleString('default', { month: 'short' }) %> -
+                      <%= new Date(new Date().setDate(new Date().getDate() + 4)).getDate() %>
+                        <%= new Date(new Date().setDate(new Date().getDate() + 4)).toLocaleString('default', { month: 'short' }) %>
+                </p>
               </div>
             </div>
           </div>
@@ -811,7 +823,7 @@
           
           <% if(recentlySeen && recentlySeen.length){ %>
             <div class="flex justify-center">
-              <h5 class="text-medium  xl:text-32px lg:text-28px md:text-22px text-20px">VISTI DI RECENTE</h5>
+              <h5 class="text-medium  xl:text-32px lg:text-28px md:text-22px text-20px">VISUALIZZATI DI RECENTE</h5>
             </div>
             <div class="mb-10 mt-4 completeYourLook">
               <% for(similar of recentlySeen){ %>
