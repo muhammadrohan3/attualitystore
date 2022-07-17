@@ -17,7 +17,7 @@ infosize.addEventListener('click', () => {
   infodeli.classList.remove('active')
   inforefo.classList.remove('active')
   infocontent.innerHTML = `
-  <p>Size info</p>
+  <p>Lavori in corso...</p>
   `
 })
 infodeli.addEventListener('click', () => {

@@ -6,6 +6,7 @@ const Product = require('../models/product')
 const Order = require('../models/order')
 const User = require('../models/user')
 const nodemailer = require('nodemailer');
+const product = require('../models/product');
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -213,7 +214,6 @@ router.post('/checkout', async (req, res) => {
     total = total + item.product.discountedPrice * item.copies
   }
   total = total + countriesPrice[req.body.state] * 100
-  console.log(total)
 
   let userBody = false;
   if(req.user){
@@ -470,6 +470,178 @@ router.get('/checkout/buynow/:id', async (req, res) => {
   const key = process.env.STRIPE_KEY;
 
   res.render('checkout-buynow', { key, product, size })
+})
+router.post('/checkout/buynow', async (req, res) => {
+  
+let countriesPrice = {
+  Francia: 22,
+  Spagna: 20,
+  USA: 27,
+  Cina: 35,
+  Italia: 0,
+  Messico: 37,
+  Germania: 18,
+  Thailandia: 35,
+  "Regno Unito": 25,
+  Portogallo: 24,
+  "Paesi Bassi": 21,
+  Grecia: 30,
+  Islanda: 28,
+  Canada: 35,
+  Australia: 60,
+  Belgio: 20,
+  Ungheria: 17,
+  Polonia: 17,
+  Argentina: 37,
+  Turchia: 35,
+};
+
+// controllo carrello
+try {
+  for (item of req.body.cart) {
+    await Product.findById(item.product._id);
+  }
+} catch (error) {
+  return res.send("error");
+}
+for (item of req.body.cart) {
+  if (!item.size) {
+    return res.send("error");
+  }
+  if (Number.isNaN(parseInt(item.copies))) {
+    return res.send("error");
+  }
+  if (!item.copies) {
+    return res.send("error");
+  }
+  const product = await Product.findById(item.product._id);
+  let productCopies = 0;
+  product.sizes.forEach((size) => {
+    if (size.size == item.size) {
+      productCopies = size.remaining;
+    }
+  });
+  if (item.copies > productCopies) {
+    return res.send(JSON.stringify({ status: "cart-changed" }));
+  }
+}
+
+// controllo stato
+if (!Object.keys(countriesPrice).includes(req.body.state)) {
+  return res.send("error");
+}
+// controllo email
+if (!req.body.email || req.body.email.length > 50) {
+  return res.send("error");
+}
+
+// controllo numero di telefono
+if (!req.body.number || req.body.number.length != 12) {
+  return res.send("error");
+}
+
+// controllo cashOnDelivery
+if (typeof req.body.cashOnDelivery != "boolean") {
+  return res.send("error");
+}
+if (req.body.cashOnDelivery == true) {
+  if (req.body.state != "Italia") {
+    return res.send("error");
+  }
+}
+if (!req.body.name || req.body.name.length > 30) {
+  return res.send("error");
+}
+
+if (!req.body.surname || req.body.surname.length > 40) {
+  return res.send("error");
+}
+if (!req.body.address || req.body.address.length > 70) {
+  return res.send("error");
+}
+
+if (!req.body.city || req.body.city.length > 50) {
+  return res.send("error");
+}
+
+if (!req.body.province || req.body.province.length > 50) {
+  return res.send("error");
+}
+
+if (!req.body.zip || req.body.zip.length > 5) {
+  return res.send("error");
+}
+
+let total = 0;
+for (item of req.body.cart) {
+  total = total + item.product.discountedPrice * item.copies;
+}
+total = total + countriesPrice[req.body.state] * 100;
+
+let userBody = false;
+if (req.user) {
+  userBody = JSON.stringify(req.user._id);
+}
+
+let cart = [];
+for (data of req.body.cart) {
+  cart.push(
+    JSON.stringify({
+      product: data.product._id,
+      price: data.product.discountedPrice,
+      size: data.size,
+      copies: data.copies,
+    })
+  );
+}
+
+let result;
+if (req.body.cashOnDelivery) {
+  result = await stripe.paymentIntents.create({
+    amount: "1000",
+    currency: "eur",
+    payment_method_types: ["card"],
+    metadata: {
+      suuid: req.session.uuid,
+      user: userBody,
+      number: req.body.number,
+      email: req.body.email,
+      name: req.body.name,
+      surname: req.body.surname,
+      address: req.body.address,
+      city: req.body.city,
+      province: req.body.province,
+      state: req.body.state,
+      products: cart.toString(),
+      zip: req.body.zip,
+      cashOnDelivery: req.body.cashOnDelivery,
+    },
+  });
+} else {
+  result = await stripe.paymentIntents.create({
+    amount: total,
+    currency: "eur",
+    payment_method_types: ["card"],
+    metadata: {
+      suuid: req.session.uuid,
+      user: userBody,
+      number: req.body.number,
+      email: req.body.email,
+      name: req.body.name,
+      surname: req.body.surname,
+      address: req.body.address,
+      city: req.body.city,
+      province: req.body.province,
+      state: req.body.state,
+      products: cart.toString(),
+      zip: req.body.zip,
+      cashOnDelivery: req.body.cashOnDelivery,
+    },
+  });
+}
+
+res.send(JSON.stringify({ clientSecret: result.client_secret }));
+
 })
 
 

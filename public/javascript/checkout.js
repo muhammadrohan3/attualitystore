@@ -162,8 +162,6 @@ const checkout = document.getElementById('checkout');
 checkout.addEventListener('submit', async (e) => {
 
   e.preventDefault()
-  
-  document.getElementById('checkoutButton').setAttribute('disabled', '')
 
   if(!Object.keys(countriesPrice).includes(prevFlag)){
     return countryError.classList.remove('hidden')
@@ -206,8 +204,6 @@ checkout.addEventListener('submit', async (e) => {
         card: cardElement
       }
     })
-
-    document.getElementById('checkoutButton').removeAttribute('disabled', '')
 
     if(result.error){
       if(result.error.type == 'card_error'){

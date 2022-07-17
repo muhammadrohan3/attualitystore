@@ -2225,14 +2225,10 @@
               <div class="lg:col-span-5 col-span-12 bg-white p-4 shadow-md">
                 <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">RIASSUNTO</p>
                 <div class="flex border-b border-black mt-4 flex-col gap-3 py-3">
-                  <% let totalPage=0; cart.forEach(item=> {
-                    totalPage = totalPage + item.copies * item.product.discountedPrice
-                    })
-                    %>
                     <div class="flex justify-between">
                       <p>Subtotale:</p>
                       <p>€<span id="subtotalPage">
-                          <%= (totalPage/100).toFixed(2) %>
+                          <%= (product.discountedPrice/100).toFixed(2) %>
                         </span></p>
                     </div>
                     <div class="flex justify-between">
@@ -2245,13 +2241,11 @@
                   <div class="flex justify-between font-medium text-18px mt-5">
                     <p>Totale:</p>
                     <p>€<span id="totalPage">
-                        <%= (totalPage/100 ).toFixed(2) %>
+                        <%= (product.discountedPrice/100 ).toFixed(2) %>
                       </span></p>
                   </div>
                   <p class="text-14px font-light text-right w-full">IVA inclusa</p>
                 </div>
-
-                <% if(totalPage !=0){ %>
                   <div class="flex flex-col mt-5 gap-3">
                     <label id="deliveryItalyWrapper" class="flex gap-2 cursor-pointer justify-end hidden">
                       <span class="text-13px font-medium">Vuoi pagare alla consegna?</span>
@@ -2263,13 +2257,12 @@
                         CHECKOUT
                       </button>
                     </div>
-                    <p class="text-red-500 font-medium text-16px text-center hidden" id="italyMessage">I €10 verranno
-                      scalati dal totale all'arrivo del pacco</p>
+                    <p class="text-red-500 font-medium text-16px text-center hidden" id="italyMessage">I soldi della spedizione verranno
+                      scalati dal totale all' arrivo del pacco</p>
                     <div id="cardRejected" class="flex justify-center hidden">
                       <p class="font-semibold text-red-500">PAGAMENTO RIFIUTATO</p>
                     </div>
                   </div>
-                  <% } %>
               </div>
 
             </div>

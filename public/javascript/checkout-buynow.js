@@ -149,7 +149,7 @@ country.addEventListener("click", () => {
 country.addEventListener("focusout", () => {
   setTimeout(() => {
     dropdown.classList.add("hidden");
-  }, 150);
+  }, 170);
 });
 
 const paymentRadios = document.getElementsByName("payment");
@@ -165,8 +165,6 @@ for (radio of paymentRadios) {
 const checkout = document.getElementById("checkout");
 checkout.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  document.getElementById("checkoutButton").setAttribute("disabled", "");
 
   if (!Object.keys(countriesPrice).includes(prevFlag)) {
     return countryError.classList.remove("hidden");
@@ -186,7 +184,7 @@ checkout.addEventListener("submit", async (e) => {
     state: prevFlag,
   };
 
-  const request = await fetch("/checkout", {
+  const request = await fetch("/checkout/buynow", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -200,7 +198,7 @@ checkout.addEventListener("submit", async (e) => {
     alert(
       "La disponibilità dei prodotti è cambiata durante il tuo checkout quindi ti preghiamo di rifare il checkout"
     );
-    return (window.location = "/cart");
+    return (window.location = "/product/" + cart[0].product.urlSlug);
   }
 
   if (paymentValue == "card") {
@@ -211,8 +209,6 @@ checkout.addEventListener("submit", async (e) => {
         card: cardElement,
       },
     });
-
-    document.getElementById("checkoutButton").removeAttribute("disabled", "");
 
     if (result.error) {
       if (result.error.type == "card_error") {
@@ -225,7 +221,7 @@ checkout.addEventListener("submit", async (e) => {
       alert(
         "Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco"
       );
-      window.location = "/destroycart";
+      window.location = "/";
     }
   }
 });
