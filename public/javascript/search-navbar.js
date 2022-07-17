@@ -137,28 +137,41 @@ search.addEventListener('keyup', async (e) => {
     } else{
       if(possibleSentenceCategories.length || possibleSentenceSuggestions.length || productsResponse.length){
         searchPopup.innerHTML = `
-        ${possibleSentenceSuggestions.length ? `
+        ${
+          possibleSentenceSuggestions.length
+            ? `
         <div class="px-3 mb-2">
           <p class="font-medium py-1 border-b text-14px border-secondaryDark">Ti consigliamo</p>
         </div>
         <ul>
           ${HTMLstringSuggestions}
-        </ul>`: ''}
-        ${possibleSentenceCategories.length ? `
+        </ul>`
+            : ""
+        }
+        ${
+          possibleSentenceCategories.length
+            ? `
         <div class="px-3 mb-2">
           <p class="font-medium py-1 border-b text-14px border-secondaryDark">Categorie</p>
         </div>
         <ul>
           ${HTMLstringCategories}
-        </ul>`: ''}
-        ${productsResponse.length ? `
-        <div class="px-3 mb-2">
-          <p class="font-medium py-1 border-b text-14px border-secondaryDark">Prodotti</p>
-        </div>
+        </ul>`
+            : ""
+        }
+        ${
+          productsResponse.length
+            ? `
+        <div class="px-3 mb-2 flex justify-between">
+        <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Prodotti</p>
+        <a href="/search?search=${e.target.value}" class="underline text-blue-400 text-12px">Mostra tutto</a>
+      </div>
         <ul>
           ${HTMLstringProducts}
-        </ul>`: ''}
-      `
+        </ul>`
+            : ""
+        }
+      `;
       } else{
         searchPopup.innerHTML = `
         <p class="font-semibold py-1 px-3">Nessun risultato</p>
@@ -177,7 +190,7 @@ const offCanvasSearchPopup = document.getElementById('search-popup-offcanvas');
 offCanvasSearch.addEventListener('focusout', () => {
   setTimeout(() => {
     offCanvasSearchPopup.classList.add('hidden')
-  }, 150)
+  }, 160)
 })
 offCanvasSearch.addEventListener('focus', () => {
   offCanvasSearchPopup.classList.remove('hidden')
@@ -289,8 +302,9 @@ offCanvasSearch.addEventListener('keyup', async (e) => {
         ${HTMLstringCategories}
       </ul>`: ''}
       ${productsResponse.length ? `
-      <div class="px-3 mb-2">
+      <div class="px-3 mb-2 flex justify-between">
         <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Prodotti</p>
+        <a href="/search?search=${e.target.value}" class="underline text-blue-400 text-12px">Mostra tutto</a>
       </div>
       <ul>
         ${HTMLstringProducts}
