@@ -18,7 +18,7 @@
               <div class="flex flex-col justify-center">
                 <a href="/product/<%= cartItem.product.urlSlug %>" class="font-semibold hover:underline"><%= cartItem.product.modelName %></a>
                 <div class="flex gap-4">
-                  <p class="text-14px">Taglia : <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'TAGLIA UNICA' : cartItem.size %></span></p>
+                  <p class="text-14px">Taglia : <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'UNICA' : cartItem.size %></span></p>
                   <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-<%= cartItem.id %>"><%= cartItem.copies %></span></p>
                 </div>
                 <div class="flex gap-4">

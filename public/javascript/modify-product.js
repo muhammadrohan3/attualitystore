@@ -34,7 +34,7 @@ addSize.addEventListener('click', () => {
 
   <select name="size-${uuid}" id="sizeSelect-${uuid}" class="block sizeInputs px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-black appearance-none focus:outline-none focus:ring-0 focus:border-primary peer">
     <option value="none">-- TAGLIA --</option>
-    <option value="one-size">Taglia unica</option>
+    <option value="one-size">Unica</option>
     <option value="XXS">XXS</option>
     <option value="XS">XS</option>
     <option value="S">S</option>

@@ -119,7 +119,7 @@ class="bg-background flex flex-col min-h-screen font-main">
         <div class="mb-5 gap-5 flex sizeDiv" id="size-<%= uuids[product.sizes.indexOf(size)] %>">
           <select name="size-<%= uuids[product.sizes.indexOf(size)] %>" id="sizeSelect-<%= uuids[product.sizes.indexOf(size)] %>" class="block sizeInputs px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-black appearance-none focus:outline-none focus:ring-0 focus:border-primary peer">
             <option value="none">-- TAGLIA --</option>
-            <option <%= size.size === 'one-size' ? 'selected' : '' %> value="one-size">Taglia unica</option>
+            <option <%= size.size === 'one-size' ? 'selected' : '' %> value="one-size">Unica</option>
             <option <%= size.size === 'XXS' ? 'selected' : '' %> value="XXS">XXS</option>
             <option <%= size.size === 'XS' ? 'selected' : '' %> value="XS">XS</option>
             <option <%= size.size === 'S' ? 'selected' : '' %> value="S">S</option>

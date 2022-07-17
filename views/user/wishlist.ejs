@@ -285,7 +285,7 @@ for(button of addToCartButtons){
             <div class="flex flex-col justify-center">
               <a href="/product/${product.urlSlug}" class="font-semibold hover:underline">${product.modelName}</a>
               <div class="flex gap-4">
-                <p class="text-14px">Taglia : <span class="font-semibold">${ document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen == 'one-size' ? 'TAGLIA UNICA' : document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen }</span></p>
+                <p class="text-14px">Taglia : <span class="font-semibold">${ document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen == 'one-size' ? 'UNICA' : document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen }</span></p>
                 <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
               </div>
               <div class="flex gap-4">

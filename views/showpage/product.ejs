@@ -133,7 +133,7 @@
                 </p>
                 <div class="flex justify-center">
                   <div class="flex flex-col justify-center">
-                    <p class="text-red-500 text-14px">(IVA inclusa)</p>
+                    <p class="text-black text-14px">(IVA inclusa)</p>
                   </div>
                 </div>
               </div>
@@ -403,7 +403,7 @@
 
             <div class="flex mt-3 col-span-11 md:px-12 px-14 gap-4 lg:flex-col xl:flex-row md:flex-row justify-center flex-col">
               <div class="flex flex-col">
-                <p class="font-semibold text-14px">Consegna prevista in Italia:</p>
+                <p class="font-semibold text-14px">Consegna prevista:</p>
                 <p class="text-14px">
                   <%= new Date(new Date().setDate(new Date().getDate() + 1)).getDate() %> 
                   <%= new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('default', { month: 'short' }) %> -
@@ -411,7 +411,7 @@
                   <%= new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleString('default', { month: 'short' }) %>
                 </p>
               </div>
-              <div class="flex flex-col">
+              <!-- <div class="flex flex-col">
                 <p class="font-semibold text-14px">Consegna prevista non in Italia:</p>
                 <p class="text-14px">
                   <%= new Date(new Date().setDate(new Date().getDate() + 3)).getDate() %>
@@ -419,7 +419,7 @@
                       <%= new Date(new Date().setDate(new Date().getDate() + 4)).getDate() %>
                         <%= new Date(new Date().setDate(new Date().getDate() + 4)).toLocaleString('default', { month: 'short' }) %>
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
   
