@@ -20,6 +20,7 @@ module.exports = {
 
     "./views/info/privacy.ejs",
     "./views/info/online-exclusive.ejs",
+    "./views/info/attuality-store.ejs",
 
     "./views/admin/analysis.ejs",
     "./views/admin/users.ejs",
@@ -57,11 +58,11 @@ module.exports = {
         "400px": "400px",
       },
       maxWidth: {
-        '340px': '340px',
-        '330px': '330px',
+        "340px": "340px",
+        "330px": "330px",
       },
       maxHeight: {
-        'mainPhoto': '720px',
+        mainPhoto: "720px",
       },
       fontSize: {
         "96px": "96px",
