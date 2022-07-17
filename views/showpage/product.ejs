@@ -401,15 +401,39 @@
               </script>
 
             </div>
+            <% 
+            function getDatesInRange(startDate, endDate) {
+              const date = new Date(startDate.getTime());
 
+              const dates = [];
+
+              while (date <= endDate) {
+                dates.push(new Date(date));
+                date.setDate(date.getDate() + 1);
+              }
+
+              let weekend = 0;
+              for(item of dates){
+                if(item.getDay() == 0 || item.getDay() == 6){
+                  weekend = weekend + 1
+                }
+              }
+
+              return weekend;
+            }
+
+            const d1 = new Date(new Date());
+            const d2 = new Date(new Date(new Date().setDate(new Date().getDate() + 1)));
+
+              %>
             <div class="flex mt-3 col-span-11 md:px-12 px-14 gap-4 justify-center">
               <div class="flex flex-col">
                 <p class="font-semibold text-14px">Consegna prevista:</p>
                 <p class="text-14px">
-                  <%= new Date(new Date().setDate(new Date().getDate() + 1)).getDate() %> 
-                  <%= new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('it-IT', { month: 'short' }) %> -
-                  <%= new Date(new Date().setDate(new Date().getDate() + 2)).getDate() %>
-                  <%= new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleString('it-IT', { month: 'short' }) %>
+                  <%= new Date(new Date().setDate(new Date().getDate() + 1 + getDatesInRange(d1, d2))).getDate() %> 
+                  <%= new Date(new Date().setDate(new Date().getDate() + 1 + getDatesInRange(d1, d2))).toLocaleString('it-IT', { month: 'short' }) %> -
+                  <%= new Date(new Date().setDate(new Date().getDate() + 2 + getDatesInRange(d1, d2))).getDate() %>
+                  <%= new Date(new Date().setDate(new Date().getDate() + 2 + getDatesInRange(d1, d2))).toLocaleString('it-IT', { month: 'short' }) %>
                 </p>
               </div>
               <!-- <div class="flex flex-col">
