@@ -3,6 +3,9 @@ if(process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 
+router.get("/info/attuality-store", (req, res) => {
+  res.render("info/attuality-store");
+});
 router.get('/info/privacy-cookie-policy', (req, res) => {
   res.render('info/privacy')
 })

@@ -207,8 +207,9 @@
                 <div id="max-20-error-<%= product._id %>" class="bg-red-100 dark:bg-red-200 w-full mx-auto px-3 py-2 my-2 hidden text-13px border border-red-500 font-medium">
                   Hai già 20 prodotti nel carrello, eliminane qualcuno per poterne aggiungere di altri
                 </div>
-                <div id="unavailable-<%= product._id %>" class="bg-red-100 dark:bg-red-200 w-full mx-auto px-3 py-2 my-2 hidden text-13px border border-red-500 font-medium">
-                  Non ci sono altri prodotti di questa taglia disponibili
+                <div id="unavailable-<%= product._id %>" class="w-full mx-auto my-2 hidden text-13px text-primary text-center font-medium">
+                  <%= product.sizes[0].size=='one-size' ? 'Non ci sono altri prodotti disponibili'
+                    : 'Non ci sono altri prodotti di questa taglia disponibili' %>
                 </div>
 
               </div>
@@ -285,8 +286,8 @@ for(button of addToCartButtons){
             <div class="flex flex-col justify-center">
               <a href="/product/${product.urlSlug}" class="font-semibold hover:underline">${product.modelName}</a>
               <div class="flex gap-4">
-                <p class="text-14px">Taglia : <span class="font-semibold">${ document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen == 'one-size' ? 'UNICA' : document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen }</span></p>
-                <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
+                <p class="text-14px">Taglia: <span class="font-semibold">${ document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen == 'one-size' ? 'UNICA' : document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen }</span></p>
+                <p class="text-14px">Quantità: <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
               </div>
               <div class="flex gap-4">
                 <div class="flex mt-1">

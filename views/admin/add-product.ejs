@@ -77,14 +77,19 @@ class="bg-background flex flex-col min-h-screen font-main">
 
     <div class="flex flex-col">
       <div class="flex justify-center">
-        <div class="mb-3 w-96 flex gap-2">
-          <div class="bg-black text-white flex flex-col justify-center w-20 border border-black">
-            <label for="formFileMultipleSize" class="form-label text-14px inline-block uppercase font-semibold mx-auto">size</label>
+        <div class="mb-3 w-96 flex flex-col gap-2">
+          <div class="bg-black text-white flex flex-col justify-center w-full border border-black py-3">
+            <label for="formFileMultipleSize" class="form-label text-14px inline-block uppercase font-semibold w-full text-center">GUIDA ALLE TAGLIE</label>
           </div>
-          <input onchange="readURLSize(this)" required name="images" accept=".jpeg,.jpg,.png" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-black transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFileMultipleSize">
-          <button type="button" onclick="removeImage()" data-image="imageSize" data-remove="formFileMultipleSize" class="px-3 border border-black">
-            ╳
-          </button>
+          <div class="flex justify-center gap-2">
+            <input onchange="readURLSize(this)" required name="images" accept=".jpeg,.jpg,.png"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-black transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              type="file" id="formFileMultipleSize">
+            <button type="button" onclick="removeImage()" data-image="imageSize" data-remove="formFileMultipleSize"
+              class="px-3 border border-black">
+              ╳
+            </button>
+          </div>
         </div>
       </div>
       <img src="" class="mb-5" id="imageSize">

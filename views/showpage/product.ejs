@@ -262,8 +262,8 @@
                                         <div class="flex flex-col justify-center">
                                           <a href="/product/${product.urlSlug}" class="font-semibold hover:underline">${product.modelName}</a>
                                           <div class="flex gap-4">
-                                            <p class="text-14px">Taglia : <span class="font-semibold">${document.getElementById('sizegroup').dataset.sizechoosen == 'one-size' ? 'TAGLIA UNICA' : document.getElementById('sizegroup').dataset.sizechoosen}</span></p>
-                                            <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
+                                            <p class="text-14px">Taglia: <span class="font-semibold">${document.getElementById('sizegroup').dataset.sizechoosen == 'one-size' ? 'TAGLIA UNICA' : document.getElementById('sizegroup').dataset.sizechoosen}</span></p>
+                                            <p class="text-14px">Quantità: <span class="font-semibold" id="cartQuantity-${response.id}">1</span></p>
                                           </div>
                                           <div class="flex gap-4">
                                             <div class="flex mt-1">
@@ -287,8 +287,8 @@
                                           </div>
                                         </div>
                                       </div>
-                                      <div id="unavailableCart-${response.id}" class="bg-red-100 mb-2 dark:bg-red-200 mx-auto px-2 py-1 hidden text-12px border border-red-500 font-medium">
-                                        Non ci sono altri prodotti di questa taglia disponibili
+                                      <div id="unavailableCart-${response.id}" class="mb-2 mx-auto hidden text-12px text-primary font-medium text-center">
+                                        ${product.sizes[0].size == 'one-size' ? 'Non ci sono altri prodotti disponibili' : 'Non ci sono altri prodotti di questa taglia disponibili'}
                                       </div>
                                     </div>
                                     `
@@ -384,8 +384,9 @@
                   Hai già 20 prodotti nel carrello, eliminane qualcuno per poterne aggiungere di altri
                 </div>
                 <div id="unavailable"
-                  class="bg-red-100 dark:bg-red-200 w-3/4 mx-auto px-4 py-3 my-2 hidden text-13px border border-red-500 font-medium">
-                  Non ci sono altri prodotti di questa taglia disponibili
+                  class="w-3/4 mx-auto px-4 hidden text-13px text-center text-primary font-medium">
+                  <%= product.sizes[0].size=='one-size' ? 'Non ci sono altri prodotti disponibili'
+                    : 'Non ci sono altri prodotti di questa taglia disponibili' %>
                 </div>
               </div>
 

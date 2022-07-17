@@ -80,8 +80,9 @@
       
                   </div>
                 </div>
-                <div id="unavailableCartPage-<%= item.id %>" class="bg-red-100 mb-2 dark:bg-red-200 w-full px-3 py-2 hidden text-14px border border-red-500 font-medium">
-                  Non ci sono altri prodotti di questa taglia disponibili
+                <div id="unavailableCartPage-<%= item.id %>" class="w-full hidden text-14px text-center text-primary font-medium">
+                  <%= item.product.sizes[0].size=='one-size' ? 'Non ci sono altri prodotti disponibili'
+                    : 'Non ci sono altri prodotti di questa taglia disponibili' %>
                 </div>
                 <script>
                   document.getElementById("cartAddPage-<%= item.id %>").addEventListener('click', async () => {

@@ -18,8 +18,8 @@
               <div class="flex flex-col justify-center">
                 <a href="/product/<%= cartItem.product.urlSlug %>" class="font-semibold hover:underline"><%= cartItem.product.modelName %></a>
                 <div class="flex gap-4">
-                  <p class="text-14px">Taglia : <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'UNICA' : cartItem.size %></span></p>
-                  <p class="text-14px">Quantità : <span class="font-semibold" id="cartQuantity-<%= cartItem.id %>"><%= cartItem.copies %></span></p>
+                  <p class="text-14px">Taglia: <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'UNICA' : cartItem.size %></span></p>
+                  <p class="text-14px">Quantità: <span class="font-semibold" id="cartQuantity-<%= cartItem.id %>"><%= cartItem.copies %></span></p>
                 </div>
                 <div class="flex gap-4">
                   <div class="flex mt-1">
@@ -101,15 +101,15 @@
                 </div>
               </div>
             </div>
-            <div id="unavailableCart-<%= cartItem.id %>" class="bg-red-100 mb-2 dark:bg-red-200 mx-auto px-2 py-1 hidden text-12px border border-red-500 font-medium">
-              Non ci sono altri prodotti di questa taglia disponibili
+            <div id="unavailableCart-<%= cartItem.id %>" class="mb-2 mx-auto hidden text-12px border font-medium text-primary text-center">
+              <%= cartItem.product.sizes[0].size == 'one-size' ? 'Non ci sono altri prodotti disponibili' : 'Non ci sono altri prodotti di questa taglia disponibili' %>
             </div>
           </div>
         <% } %>  
       </div>
       <div class="p-2 flex flex-col md:gap-3 gap-2">
         <div class="flex justify-between">
-          <p class="text-14px font-semibold">Total :</p>
+          <p class="text-14px font-semibold">Totale:</p>
           <p class="text-14px font-semibold">€<span id="total"><%= total.toFixed(2) %></span></p>
         </div>
         <a href="/cart" class="px-auto bg-white md:py-3 py-2 border-2 border-black text-center font-semibold uppercase">VAI AL CARRELLO</a>

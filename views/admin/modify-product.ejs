@@ -341,14 +341,20 @@ class="bg-background flex flex-col min-h-screen font-main">
   <form class="lg:mb-24 md:mb-20 mb-14 xl:w-400px lg:w-360px md:w-330px w-280px mx-auto" action="/user/admin/products/modifysize/images/<%= product._id %>?_method=PATCH" method="POST" enctype="multipart/form-data">
     <div class="flex flex-col">
       <div class="flex justify-center">
-        <div class="w-96 flex gap-2">
-          <div class="bg-black text-white flex flex-col justify-center w-20 border border-black">
-            <label for="formFileMultipleSize" class="form-label text-14px inline-block uppercase font-semibold mx-auto">size</label>
+        <div class="w-96 flex flex-col gap-2">
+          <div class="bg-black text-white flex flex-col justify-center w-full border border-black">
+            <label for="formFileMultipleSize"
+              class="form-label text-14px inline-block uppercase font-semibold w-full py-3 mx-auto text-center">size</label>
           </div>
-          <input required onchange="readURLSize(this)" name="size" accept=".jpeg,.jpg,.png" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-black transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" type="file" id="formFileMultipleSize">
-          <button type="button" onclick="removeImage()" data-image="imageSize" data-remove="formFileMultipleSize" class="px-3 border border-black">
-            ╳
-          </button>
+          <div class="flex justify-center gap-2">
+            <input required onchange="readURLSize(this)" name="size" accept=".jpeg,.jpg,.png"
+              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-black transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              type="file" id="formFileMultipleSize">
+            <button type="button" onclick="removeImage()" data-image="imageSize" data-remove="formFileMultipleSize"
+              class="px-3 border border-black">
+              ╳
+            </button>
+          </div>
         </div>
       </div>
       <img src="" class="mb-5" id="imageSize">
