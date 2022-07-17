@@ -149,7 +149,11 @@ app.use(async (req, res, next) => {
   res.locals.user = req.user;
   res.locals.wishlist = req.session.wishlist || [];
   let sessionCart = [];
+  let elements = []
   if(req.session.cart && req.session.cart.length){
+    for(element of req.session.cart){
+      elements.push(element._id)
+    }
     for(element of req.session.cart){
       try {
         let product = await Product.findById(element.product)
@@ -185,12 +189,27 @@ app.use(async (req, res, next) => {
       }
     }
   }
-  res.locals.cart = sessionCart;
+  const findDuplicates = (arr) => {
+    let sorted_arr = arr.slice().sort();
+    let results = [];
+    for (let i = 0; i < sorted_arr.length - 1; i++) {
+      if (sorted_arr[i + 1] == sorted_arr[i]) {
+        results.push(sorted_arr[i]);
+      }
+    }
+    return results;
+  };
+  const duplicateElements = findDuplicates(sessionCart);
+  if (duplicateElements.length) {
+    req.session.cart = [];
+    res.locals.cart = []
+  }else{
+      res.locals.cart = sessionCart;
+  }
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
 })
-
 // set the important information in the session
 const { v4: uuidv4 } = require('uuid');
 const { lookup } = require('geoip-lite');

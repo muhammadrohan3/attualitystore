@@ -198,6 +198,8 @@
                   </div>
                   <script>
                     document.getElementById("wishlist-<%= product._id %>").addEventListener('click', async () => {
+                      document.getElementById("wishlist-<%= product._id %>").disabled = true
+                      document.getElementById("removeWishlist-<%= product._id %>").disabled = true
                       let response = await fetch('/wishlist/<%= product._id %>', {
                         method: 'POST'
                       })
@@ -209,9 +211,13 @@
                         document.getElementById("wishlist-<%= product._id %>").classList.add('hidden')
                         document.getElementById("removeWishlist-<%= product._id %>").classList.remove('hidden')
                       }
+                      document.getElementById("wishlist-<%= product._id %>").disabled = false
+                      document.getElementById("removeWishlist-<%= product._id %>").disabled = false
                     })
 
                     document.getElementById("removeWishlist-<%= product._id %>").addEventListener('click', async () => {
+                      document.getElementById("wishlist-<%= product._id %>").disabled = true
+                      document.getElementById("removeWishlist-<%= product._id %>").disabled = true
                       let response = await fetch('/wishlist/<%= product._id %>', {
                         method: 'DELETE'
                       })
@@ -225,11 +231,14 @@
                         document.getElementById("wishlist-<%= product._id %>").classList.remove('hidden')
                         document.getElementById("removeWishlist-<%= product._id %>").classList.add('hidden')
                       }
+                      document.getElementById("wishlist-<%= product._id %>").disabled = false
+                      document.getElementById("removeWishlist-<%= product._id %>").disabled = false
                     })
                   </script>
                 </div>
                 <script>
                   document.getElementById("cart-<%= product._id %>").addEventListener('click', async () => {
+                    document.getElementById("cart-<%= product._id %>").disabled = true
                     const product = <%- JSON.stringify(product) %>
                                 
                     if (document.getElementById('sizegroup').dataset.sizechoosen == 'none') {
@@ -240,11 +249,11 @@
                       method: 'POST'
                     })
                     response = JSON.parse(await response.text())
+                    document.getElementById("cart-<%= product._id %>").disabled = false
                     if (response.status == 'success') {
                       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                       document.getElementById('cart-indicator').classList.remove('hidden')
                       document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (product.discountedPrice / 100) %>).toFixed(2)
-
                   if (document.getElementById(`cartQuantity-${response.id}`)) {
                     document.getElementById(`cartQuantity-${response.id}`).innerHTML = parseInt(document.getElementById(`cartQuantity-${response.id}`).innerHTML) + 1
                   } else {
@@ -296,10 +305,20 @@
                     const script = `
                                     <script>
                                       document.getElementById("cartAdd-${response.id}").addEventListener('click', async () => {
+                                        if(document.getElementById("cart-<%= product._id %>")){
+                                          document.getElementById("cart-<%= product._id %>").disabled = true
+                                        }
+                                        document.getElementById("cartAdd-${response.id}").disabled = true
+                                        document.getElementById("cartRemove-${response.id}").disabled = true
                                         let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup').dataset.sizechoosen}', {
                                           method: 'POST'
                                         })
                                         response = JSON.parse(await response.text())
+                                        if(document.getElementById("cart-<%= product._id %>")){
+                                          document.getElementById("cart-<%= product._id %>").disabled = false;
+                                        }
+                                        document.getElementById("cartAdd-${response.id}").disabled = false
+                                        document.getElementById("cartRemove-${response.id}").disabled = false
                                         if(response.status == 'success'){
                                           document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                                           document.getElementById('cart-indicator').classList.remove('hidden')
@@ -321,10 +340,20 @@
                                         }
                                       })
                                       document.getElementById("cartRemove-${response.id}").addEventListener('click', async () => {
+                                        if(document.getElementById("cart-<%= product._id %>")){
+                                          document.getElementById("cart-<%= product._id %>").disabled = true
+                                        }
+                                        document.getElementById("cartAdd-${response.id}").disabled = true
+                                        document.getElementById("cartRemove-${response.id}").disabled = true
                                         let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup').dataset.sizechoosen}', {
                                           method: 'DELETE'
                                         })
                                         response = JSON.parse(await response.text())
+                                        if(document.getElementById("cart-<%= product._id %>")){
+                                          document.getElementById("cart-<%= product._id %>").disabled = false;
+                                        }
+                                        document.getElementById("cartAdd-${response.id}").disabled = false
+                                        document.getElementById("cartRemove-${response.id}").disabled = false
                                         if(response.status == 'product-removed-from-cart'){
                                           document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
                                           if(document.getElementById('cart-indicator').innerHTML == 0){

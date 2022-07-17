@@ -40,10 +40,20 @@
                     </button>
                     <script>
                       document.getElementById("cartAdd-<%= cartItem.id %>").addEventListener('click', async () => {
+                        if (document.getElementById("cart-<%= cartItem.id %>")) {
+                          document.getElementById("cart-<%= cartItem.id %>").disabled = true;
+                        }
+                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = true;
+                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = true;
                         let response = await fetch(`/cart/<%= cartItem.product._id %>?size=<%= cartItem.size %>`, {
                           method: 'POST'
                         })
                         response = JSON.parse(await response.text())
+                        if (document.getElementById("cart-<%= cartItem.id %>")) {
+                          document.getElementById("cart-<%= cartItem.id %>").disabled = false;
+                        }
+                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = false;
+                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = false;
                         if(response.status == 'success'){
                           document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                           document.getElementById('cart-indicator').classList.remove('hidden')
@@ -64,10 +74,20 @@
                         }
                       })
                       document.getElementById("cartRemove-<%= cartItem.id %>").addEventListener('click', async () => {
+                        if (document.getElementById("cart-<%= cartItem.id %>")) {
+                          document.getElementById("cart-<%= cartItem.id %>").disabled = true;
+                        }
+                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = true
+                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = true
                         let response = await fetch(`/cart/<%= cartItem.product._id %>?size=<%= cartItem.size %>`, {
                           method: 'DELETE'
                         })
                         response = JSON.parse(await response.text())
+                        if (document.getElementById("cart-<%= cartItem.id %>")) {
+                          document.getElementById("cart-<%= cartItem.id %>").disabled = false;
+                        }
+                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = false;
+                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = false;
                         if(response.status == 'product-removed-from-cart'){
                           document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
                           if(document.getElementById('cart-indicator').innerHTML == 0){
