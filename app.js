@@ -150,6 +150,9 @@ app.use(async (req, res, next) => {
   res.locals.wishlist = req.session.wishlist || [];
   let sessionCart = [];
   let elements = []
+  if(!req.session.cart){
+    req.session.cart = []
+  }
   if(req.session.cart && req.session.cart.length){
     for(element of req.session.cart){
       elements.push(element._id)
