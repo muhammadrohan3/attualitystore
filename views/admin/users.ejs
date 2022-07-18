@@ -30,11 +30,11 @@ class="bg-background flex flex-col min-h-screen font-main">
       <tbody>
         <% for(let i = 0; i < users.length; i++){ %>
           <tr>
-            <th class="bg-secondary"><%= i + 1 %></th> 
-            <td class="bg-background"><%= users[i].name %></td> 
-            <td class="bg-background"><%= users[i].surname %></td> 
-            <td class="bg-background"><%= users[i].email %></td> 
-            <td class="bg-background flex gap-4">
+            <th class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= i + 1 %></th> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].name %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].surname %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].email %></td> 
+            <td class="flex gap-4 <%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>">
               <form action="/user/admin/users/modify/<%= users[i]._id %>" method="GET">
                 <button class="p-2 stroke bg-black border border-black">
                   <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

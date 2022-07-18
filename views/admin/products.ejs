@@ -50,10 +50,10 @@ class="bg-background flex flex-col min-h-screen font-main">
         <% for(let i = 0; i < products.length; i++){ %>
           <tr>
             <% category = products[i].category %> 
-            <th class="bg-background"><img src="<%= products[i].images[0].path %>" class="w-8" alt=""></th> 
-            <td class="bg-background"><%= products[i].modelName %></td> 
-            <td class="bg-background uppercase"><%= products[i].designer.replace('-', ' ') %></td> 
-            <td class="bg-background"><%= 
+            <th class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><img src="<%= products[i].images[0].path %>" class="w-8" alt=""></th> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= products[i].modelName %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> uppercase"><%= products[i].designer.replace('-', ' ') %></td> 
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= 
               category == 'jackets' ? 'GIACCHE' : 
               category == 'hoodies' ? 'FELPE CON CAPPUCCIO' : 
               category == 'sweatshirts' ? 'FELPE' :
@@ -67,7 +67,7 @@ class="bg-background flex flex-col min-h-screen font-main">
               category == 'swimwear' ? "COSTUMI DA BAGNO" :
               'CIABATTE'
               %></td> 
-            <td class="bg-background flex gap-4">
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> flex gap-4">
               <form action="/user/admin/products/modify/<%= products[i]._id %>" method="GET">
                 <button class="p-2 stroke bg-black border border-black">
                   <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
