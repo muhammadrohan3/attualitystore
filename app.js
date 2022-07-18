@@ -82,8 +82,9 @@ const fontSrcUrls = [
 ];
 const imgSrc = [
   "https://res.cloudinary.com/attuality-store/",
-  "https://*.cdninstagram.com/"
-]
+  "https://*.cdninstagram.com/",
+  "https://cdn.shopify.com/",
+];
 const defaultSrc = [
   "https://js.stripe.com/"
 ]
