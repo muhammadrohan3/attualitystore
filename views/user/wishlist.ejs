@@ -278,7 +278,9 @@ for(button of addToCartButtons){
         const parent = document.getElementById('cartItems');
         productDiv.classList.add('flex')
         productDiv.classList.add('gap-4')
-
+        const isAccessory = wishlist.filter(item => {
+          return item._id == event.target.dataset.id
+        })[0]
         productDiv.innerHTML = `
         <div id="container=${response.id}">
           <div class="flex gap-4">
@@ -313,8 +315,8 @@ for(button of addToCartButtons){
               </div>
             </div>
           </div>
-          <div id="unavailableCart-${response.id}" class="bg-red-100 mb-2 dark:bg-red-200 mx-auto px-2 py-1 hidden text-12px border border-red-500 font-medium">
-            Non ci sono altri prodotti di questa taglia disponibili
+          <div id="unavailableCart-${response.id}" class="mb-2 mx-auto px-2 py-1 hidden text-12px text-center text-primary font-medium">
+            ${isAccessory.sizes[0].size=='one-size' ? 'Non ci sono altri prodotti disponibili' : 'Non ci sono altri prodotti di questa taglia disponibili'}
           </div>
         </div>
         `
