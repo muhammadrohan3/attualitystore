@@ -199,16 +199,7 @@ app.use(async (req, res, next) => {
     }
     return results;
   };
-  // TODO mettere questo con gli oggetti dato che deve comprendere anche la taglia e non solo l'id del prodottto perche' se no non ci sarebbero taglie diverse di uno stesso prodotto
-  // TODO mettere che non ci possono essere piu' prodotti di una stessa taglia di uno stesso prodotto in piu' oggetti e testare la api
-  // TODO cambiare il carrello in base al TODO che c'e' sopra a questo
-  const duplicateElements = findDuplicates(sessionCart);
-  if (duplicateElements.length) {
-    req.session.cart = [];
-    res.locals.cart = []
-  }else{
-      res.locals.cart = sessionCart;
-  }
+  res.locals.cart = sessionCart;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
