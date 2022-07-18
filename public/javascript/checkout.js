@@ -49,7 +49,6 @@ const dropdown = document.getElementById('dropdown')
 
 const deliveryItalyWrapper = document.getElementById('deliveryItalyWrapper');
 const deliveryItaly = document.getElementById('deliveryItaly');
-const countryError = document.getElementById('countryError')
 
 let prevFlag = 'none';
 let total = parseFloat(totalPage.innerHTML);
@@ -58,7 +57,6 @@ for(flag of countryFlag){
 
     dropdown.classList.add('hidden')
     dropdown.classList.remove('block')
-    countryError.classList.add('hidden')
 
     if(deliveryItaly.checked){
       totalPage.innerHTML = total;
@@ -163,10 +161,6 @@ checkout.addEventListener('submit', async (e) => {
 
   e.preventDefault()
 
-  if(!Object.keys(countriesPrice).includes(prevFlag)){
-    return countryError.classList.remove('hidden')
-  }
-
   const dataToFormat = {
     cart: cart,
     cashOnDelivery: deliveryItaly.checked,
@@ -195,6 +189,9 @@ checkout.addEventListener('submit', async (e) => {
     alert('La disponibilità dei prodotti è cambiata durante il tuo checkout quindi ti preghiamo di rifare il checkout')
     return window.location = '/cart'
   }
+  if (response.status == "invalid-tld") {
+    return document.getElementById('emailError').classList.remove('hidden')
+  }
 
   if(paymentValue == 'card'){
     response = response.clientSecret 
@@ -219,6 +216,10 @@ checkout.addEventListener('submit', async (e) => {
 
   }
 
+})
+
+document.getElementById('email').addEventListener('keyup', () => {
+  return document.getElementById("emailError").classList.add("hidden");
 })
 
 $(function () {

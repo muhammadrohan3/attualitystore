@@ -278,8 +278,7 @@ router.patch('/user/admin/products/modify/:id', middleware.isAdmin, async (req, 
       return res.redirect('/user/admin/products')
     }
   
-    req.flash('success', 'Prodotto modificato con successo')
-    res.redirect('/user/admin/products')
+    res.redirect("/user/admin/products/modify/" + req.params.id);
   }
   return checkInput()
 })
