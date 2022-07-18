@@ -26,7 +26,7 @@
 <% } %>
 
 <body 
-class="bg-background flex flex-col min-h-screen font-main">
+class="bg-white flex flex-col min-h-screen font-main">
 
   <%- include('../partials/admin-navbar') %> 
   <%- include('../partials/flash') %> 
@@ -67,7 +67,7 @@ class="bg-background flex flex-col min-h-screen font-main">
               category == 'swimwear' ? "COSTUMI DA BAGNO" :
               'CIABATTE'
               %></td> 
-            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> flex gap-4">
+            <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %> flex gap-4" style="height: 53px;">
               <form action="/user/admin/products/modify/<%= products[i]._id %>" method="GET">
                 <button class="p-2 stroke bg-black border border-black">
                   <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

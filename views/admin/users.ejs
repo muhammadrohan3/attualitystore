@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
 </head>
 <body 
-class="bg-background flex flex-col min-h-screen font-main">
+class="bg-white flex flex-col min-h-screen font-main">
 
   <%- include('../partials/admin-navbar') %> 
   <%- include('../partials/flash') %> 
@@ -34,7 +34,7 @@ class="bg-background flex flex-col min-h-screen font-main">
             <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].name %></td> 
             <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].surname %></td> 
             <td class="<%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>"><%= users[i].email %></td> 
-            <td class="flex gap-4 <%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>">
+            <td class="flex gap-4 <%= i % 2 == 0 ? 'bg-background' : 'bg-secondary' %>" style="height: 53px;">
               <form action="/user/admin/users/modify/<%= users[i]._id %>" method="GET">
                 <button class="p-2 stroke bg-black border border-black">
                   <svg class="fill-white h-3" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
