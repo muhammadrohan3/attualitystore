@@ -46,10 +46,14 @@
               </button>
               <script>
                 document.getElementById("wishlist-<%= product._id %>").addEventListener('click', async () => {
+                  document.getElementById("removeWishlist-<%= product._id %>").disabled = true;
+                  document.getElementById("wishlist-<%= product._id %>").disabled = true;
                   let response = await fetch('/wishlist/<%= product._id %>', {
                     method: 'POST'
                   })
                   response = await response.text()
+                  document.getElementById("removeWishlist-<%= product._id %>").disabled = false;
+                  document.getElementById("wishlist-<%= product._id %>").disabled = false;
                   if(response == 'success'){
                     document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
                     document.getElementById('wishlist-indicator').classList.remove('hidden')
@@ -60,10 +64,14 @@
                 })
 
                 document.getElementById("removeWishlist-<%= product._id %>").addEventListener('click', async () => {
+                  document.getElementById("removeWishlist-<%= product._id %>").disabled = true;
+                  document.getElementById("wishlist-<%= product._id %>").disabled = true;
                   let response = await fetch('/wishlist/<%= product._id %>', {
                     method: 'DELETE'
                   })
                   response = await response.text()
+                  document.getElementById("removeWishlist-<%= product._id %>").disabled = false;
+                  document.getElementById("wishlist-<%= product._id %>").disabled = false;
                   if(response == 'success'){
                     document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
                     if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){

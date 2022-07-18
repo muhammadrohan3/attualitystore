@@ -55,19 +55,19 @@
                 <% if(product.images.length > 1){ %>
                   <a href="/product/<%= product.urlSlug %>" class="imageBox mb-7">
                     <div class="imageInn">
-                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[0].filename %>"
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_500/<%= product.images[0].filename %>"
                       alt="<%= product.urlSlug %>"
                       class="w-full h-full">
                     </div>
                     <div class="hoverImg">
-                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[1].filename %>"
+                      <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_500/<%= product.images[1].filename %>"
                       alt="<%= product.urlSlug %>"
                       class="w-full h-full">
                     </div>
                   </a>
                 <% }else{ %>
                   <a class=" mb-7" href="/product/<%= product.urlSlug %>">
-                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_370/<%= product.images[0].filename %>"
+                    <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_500/<%= product.images[0].filename %>"
                       alt="Product image"
                       class="w-full h-full">
                   </a>
@@ -252,6 +252,7 @@ const wishlist = <%- JSON.stringify(wishlist) %>
 const addToCartButtons = document.querySelectorAll('.addToCartButtons');
 for(button of addToCartButtons){
   button.addEventListener('click', async (event) => {
+    event.target.disabled = true
     const product = wishlist.filter(item => {
       return item._id.toString() == event.target.dataset.id
     })[0]
@@ -264,6 +265,7 @@ for(button of addToCartButtons){
       method: 'POST'
     })
     response = JSON.parse(await response.text())
+    event.target.disabled = false
     if(response.status == 'success'){
       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
       document.getElementById('cart-indicator').classList.remove('hidden')
@@ -321,10 +323,14 @@ for(button of addToCartButtons){
         `
         <script>
           document.getElementById("cartAdd-${response.id}").addEventListener('click', async () => {
+            document.getElementById("cartAdd-${response.id}").disabled = true
+            document.getElementById("cartRemove-${response.id}").disabled = true
             let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen}', {
               method: 'POST'
             })
             response = JSON.parse(await response.text())
+            document.getElementById("cartAdd-${response.id}").disabled = false
+            document.getElementById("cartRemove-${response.id}").disabled = false
             if(response.status == 'success'){
               document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
               document.getElementById('cart-indicator').classList.remove('hidden')
@@ -346,10 +352,14 @@ for(button of addToCartButtons){
             }
           })
           document.getElementById("cartRemove-${response.id}").addEventListener('click', async () => {
+            document.getElementById("cartAdd-${response.id}").disabled = true
+            document.getElementById("cartRemove-${response.id}").disabled = true
             let response = await fetch('/cart/' + '${product._id}' + '?size=' + '${document.getElementById('sizegroup-' + event.target.dataset.id).dataset.sizechoosen}', {
               method: 'DELETE'
             })
             response = JSON.parse(await response.text())
+            document.getElementById("cartAdd-${response.id}").disabled = false
+            document.getElementById("cartRemove-${response.id}").disabled = false
             if(response.status == 'product-removed-from-cart'){
               document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
               if(document.getElementById('cart-indicator').innerHTML == 0){

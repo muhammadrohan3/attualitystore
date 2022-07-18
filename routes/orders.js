@@ -18,6 +18,8 @@ var transporter = nodemailer.createTransport({
 // stripe
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
+// TODO fare api testing sul checkout e checkout/buynow
+
 router.get('/checkout', (req, res) => {
   if(req.session.cart && req.session.cart.length){
     req.session.checkoutReached = new Date()
@@ -168,13 +170,21 @@ router.post('/checkout', async (req, res) => {
     return res.send('error')
   }
   // controllo email
-  if(!req.body.email || req.body.email.length > 50){
+  if(!req.body.email){
     return res.send('error')
+  }else{
+    if(req.body.email.length > 50){
+      return res.send('error')
+    }
   }
 
   // controllo numero di telefono
   if(!req.body.number || req.body.number.length != 12){
     return res.send('error')
+  }else{
+    if(req.body.number.length != 12) {
+      return res.send('error')
+    }
   }
 
   // controllo cashOnDelivery
@@ -186,27 +196,47 @@ router.post('/checkout', async (req, res) => {
       return res.send('error')
     }
   }
-  if(!req.body.name || req.body.name.length > 30){
-    return res.send('error')
+  if (!req.body.name) {
+    return res.send("error");
+  } else {
+    if (req.body.name.length > 30) {
+      return res.send("error");
+    }
   }
-
-  if(!req.body.surname || req.body.surname.length > 40){
-    return res.send('error')
+  if (!req.body.surname) {
+    return res.send("error");
+  } else {
+    if (req.body.surname.length > 40) {
+      return res.send("error");
+    }
   }
-  if(!req.body.address || req.body.address.length > 70){
-    return res.send('error')
+  if (!req.body.address) {
+    return res.send("error");
+  } else {
+    if (req.body.address.length > 70) {
+      return res.send("error");
+    }
   }
-
-  if(!req.body.city || req.body.city.length > 50){
-    return res.send('error')
+  if (!req.body.city) {
+    return res.send("error");
+  } else {
+    if (req.body.city.length > 50) {
+      return res.send("error");
+    }
   }
-
-  if(!req.body.province || req.body.province.length > 50){
-    return res.send('error')
+  if (!req.body.province) {
+    return res.send("error");
+  } else {
+    if (req.body.province.length > 50) {
+      return res.send("error");
+    }
   }
-
-  if(!req.body.zip || req.body.zip.length > 5){
-    return res.send('error')
+  if (!req.body.zip) {
+    return res.send("error");
+  } else {
+    if (req.body.zip.length != 5) {
+      return res.send("error");
+    }
   }
 
   let total = 0;
@@ -440,7 +470,6 @@ router.post('/webhook', async (req, res) => {
   res.send();
 })
 
-// TODO finire route per acquista ora
 router.get('/checkout/buynow/:id', async (req, res) => {
   const { id } = req.params;
   const { size } = req.query;
@@ -472,176 +501,202 @@ router.get('/checkout/buynow/:id', async (req, res) => {
   res.render('checkout-buynow', { key, product, size })
 })
 router.post('/checkout/buynow', async (req, res) => {
-  
-let countriesPrice = {
-  Francia: 22,
-  Spagna: 20,
-  USA: 27,
-  Cina: 35,
-  Italia: 0,
-  Messico: 37,
-  Germania: 18,
-  Thailandia: 35,
-  "Regno Unito": 25,
-  Portogallo: 24,
-  "Paesi Bassi": 21,
-  Grecia: 30,
-  Islanda: 28,
-  Canada: 35,
-  Australia: 60,
-  Belgio: 20,
-  Ungheria: 17,
-  Polonia: 17,
-  Argentina: 37,
-  Turchia: 35,
-};
+  let countriesPrice = {
+    Francia: 22,
+    Spagna: 20,
+    USA: 27,
+    Cina: 35,
+    Italia: 0,
+    Messico: 37,
+    Germania: 18,
+    Thailandia: 35,
+    "Regno Unito": 25,
+    Portogallo: 24,
+    "Paesi Bassi": 21,
+    Grecia: 30,
+    Islanda: 28,
+    Canada: 35,
+    Australia: 60,
+    Belgio: 20,
+    Ungheria: 17,
+    Polonia: 17,
+    Argentina: 37,
+    Turchia: 35,
+  };
 
-// controllo carrello
-try {
-  for (item of req.body.cart) {
-    await Product.findById(item.product._id);
-  }
-} catch (error) {
-  return res.send("error");
-}
-for (item of req.body.cart) {
-  if (!item.size) {
-    return res.send("error");
-  }
-  if (Number.isNaN(parseInt(item.copies))) {
-    return res.send("error");
-  }
-  if (!item.copies) {
-    return res.send("error");
-  }
-  const product = await Product.findById(item.product._id);
-  let productCopies = 0;
-  product.sizes.forEach((size) => {
-    if (size.size == item.size) {
-      productCopies = size.remaining;
+  // controllo carrello
+  try {
+    for (item of req.body.cart) {
+      await Product.findById(item.product._id);
     }
-  });
-  if (item.copies > productCopies) {
-    return res.send(JSON.stringify({ status: "cart-changed" }));
-  }
-}
-
-// controllo stato
-if (!Object.keys(countriesPrice).includes(req.body.state)) {
-  return res.send("error");
-}
-// controllo email
-if (!req.body.email || req.body.email.length > 50) {
-  return res.send("error");
-}
-
-// controllo numero di telefono
-if (!req.body.number || req.body.number.length != 12) {
-  return res.send("error");
-}
-
-// controllo cashOnDelivery
-if (typeof req.body.cashOnDelivery != "boolean") {
-  return res.send("error");
-}
-if (req.body.cashOnDelivery == true) {
-  if (req.body.state != "Italia") {
+  } catch (error) {
     return res.send("error");
   }
-}
-if (!req.body.name || req.body.name.length > 30) {
-  return res.send("error");
-}
+  for (item of req.body.cart) {
+    if (!item.size) {
+      return res.send("error");
+    }
+    if (Number.isNaN(parseInt(item.copies))) {
+      return res.send("error");
+    }
+    if (!item.copies) {
+      return res.send("error");
+    }
+    const product = await Product.findById(item.product._id);
+    let productCopies = 0;
+    product.sizes.forEach((size) => {
+      if (size.size == item.size) {
+        productCopies = size.remaining;
+      }
+    });
+    if (item.copies > productCopies) {
+      return res.send(JSON.stringify({ status: "cart-changed" }));
+    }
+  }
 
-if (!req.body.surname || req.body.surname.length > 40) {
-  return res.send("error");
-}
-if (!req.body.address || req.body.address.length > 70) {
-  return res.send("error");
-}
+  // controllo stato
+  if (!Object.keys(countriesPrice).includes(req.body.state)) {
+    return res.send("error");
+  }
+  // controllo email
+  if (!req.body.email) {
+    return res.send("error");
+  } else {
+    if (req.body.email.length > 50) {
+      return res.send("error");
+    }
+  }
 
-if (!req.body.city || req.body.city.length > 50) {
-  return res.send("error");
-}
+  // controllo numero di telefono
+  if (!req.body.number || req.body.number.length != 12) {
+    return res.send("error");
+  } else {
+    if (req.body.number.length != 12) {
+      return res.send("error");
+    }
+  }
 
-if (!req.body.province || req.body.province.length > 50) {
-  return res.send("error");
-}
+  // controllo cashOnDelivery
+  if (typeof req.body.cashOnDelivery != "boolean") {
+    return res.send("error");
+  }
+  if (req.body.cashOnDelivery == true) {
+    if (req.body.state != "Italia") {
+      return res.send("error");
+    }
+  }
+  if (!req.body.name) {
+    return res.send("error");
+  } else {
+    if (req.body.name.length > 30) {
+      return res.send("error");
+    }
+  }
+  if (!req.body.surname) {
+    return res.send("error");
+  } else {
+    if (req.body.surname.length > 40) {
+      return res.send("error");
+    }
+  }
+  if (!req.body.address) {
+    return res.send("error");
+  } else {
+    if (req.body.address.length > 70) {
+      return res.send("error");
+    }
+  }
+  if (!req.body.city) {
+    return res.send("error");
+  } else {
+    if (req.body.city.length > 50) {
+      return res.send("error");
+    }
+  }
+  if (!req.body.province) {
+    return res.send("error");
+  } else {
+    if (req.body.province.length > 50) {
+      return res.send("error");
+    }
+  }
+  if (!req.body.zip) {
+    return res.send("error");
+  } else {
+    if (req.body.zip.length != 5) {
+      return res.send("error");
+    }
+  }
 
-if (!req.body.zip || req.body.zip.length > 5) {
-  return res.send("error");
-}
+  let total = 0;
+  for (item of req.body.cart) {
+    total = total + item.product.discountedPrice * item.copies;
+  }
+  total = total + countriesPrice[req.body.state] * 100;
 
-let total = 0;
-for (item of req.body.cart) {
-  total = total + item.product.discountedPrice * item.copies;
-}
-total = total + countriesPrice[req.body.state] * 100;
+  let userBody = false;
+  if (req.user) {
+    userBody = JSON.stringify(req.user._id);
+  }
 
-let userBody = false;
-if (req.user) {
-  userBody = JSON.stringify(req.user._id);
-}
+  let cart = [];
+  for (data of req.body.cart) {
+    cart.push(
+      JSON.stringify({
+        product: data.product._id,
+        price: data.product.discountedPrice,
+        size: data.size,
+        copies: data.copies,
+      })
+    );
+  }
 
-let cart = [];
-for (data of req.body.cart) {
-  cart.push(
-    JSON.stringify({
-      product: data.product._id,
-      price: data.product.discountedPrice,
-      size: data.size,
-      copies: data.copies,
-    })
-  );
-}
+  let result;
+  if (req.body.cashOnDelivery) {
+    result = await stripe.paymentIntents.create({
+      amount: "1000",
+      currency: "eur",
+      payment_method_types: ["card"],
+      metadata: {
+        suuid: req.session.uuid,
+        user: userBody,
+        number: req.body.number,
+        email: req.body.email,
+        name: req.body.name,
+        surname: req.body.surname,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        state: req.body.state,
+        products: cart.toString(),
+        zip: req.body.zip,
+        cashOnDelivery: req.body.cashOnDelivery,
+      },
+    });
+  } else {
+    result = await stripe.paymentIntents.create({
+      amount: total,
+      currency: "eur",
+      payment_method_types: ["card"],
+      metadata: {
+        suuid: req.session.uuid,
+        user: userBody,
+        number: req.body.number,
+        email: req.body.email,
+        name: req.body.name,
+        surname: req.body.surname,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        state: req.body.state,
+        products: cart.toString(),
+        zip: req.body.zip,
+        cashOnDelivery: req.body.cashOnDelivery,
+      },
+    });
+  }
 
-let result;
-if (req.body.cashOnDelivery) {
-  result = await stripe.paymentIntents.create({
-    amount: "1000",
-    currency: "eur",
-    payment_method_types: ["card"],
-    metadata: {
-      suuid: req.session.uuid,
-      user: userBody,
-      number: req.body.number,
-      email: req.body.email,
-      name: req.body.name,
-      surname: req.body.surname,
-      address: req.body.address,
-      city: req.body.city,
-      province: req.body.province,
-      state: req.body.state,
-      products: cart.toString(),
-      zip: req.body.zip,
-      cashOnDelivery: req.body.cashOnDelivery,
-    },
-  });
-} else {
-  result = await stripe.paymentIntents.create({
-    amount: total,
-    currency: "eur",
-    payment_method_types: ["card"],
-    metadata: {
-      suuid: req.session.uuid,
-      user: userBody,
-      number: req.body.number,
-      email: req.body.email,
-      name: req.body.name,
-      surname: req.body.surname,
-      address: req.body.address,
-      city: req.body.city,
-      province: req.body.province,
-      state: req.body.state,
-      products: cart.toString(),
-      zip: req.body.zip,
-      cashOnDelivery: req.body.cashOnDelivery,
-    },
-  });
-}
-
-res.send(JSON.stringify({ clientSecret: result.client_secret }));
-
+  res.send(JSON.stringify({ clientSecret: result.client_secret }));
 })
 
 
