@@ -305,7 +305,7 @@ router.patch('/user/admin/products/modify/images/:id', middleware.isAdmin, uploa
   
   
       req.flash('success', 'Prodotto modificato con successo')
-      res.redirect('/user/admin/products')
+      res.redirect("/user/admin/products/modify/" + req.params.id);
     } catch (error) {
       req.flash('error', 'Invalid id')
       return res.redirect('/user/admin/analysis')
@@ -325,7 +325,7 @@ router.patch('/user/admin/products/modifysize/images/:id', middleware.isAdmin, u
       })
   
       req.flash('success', 'Prodotto modificato con successo')
-      res.redirect('/user/admin/products')
+      res.redirect('/user/admin/products/modify/' + req.params.id)
     } catch (error) {
       req.flash('error', 'Invalid id')
       return res.redirect('/user/admin/analysis')
@@ -338,7 +338,7 @@ router.delete('/user/admin/products/delete/:id', middleware.isAdmin, async (req,
   try {
     const { id } = req.params;
     await Product.findByIdAndUpdate(id, { deleted: true });
-    res.redirect('/user/admin/products')
+    res.redirect("/user/admin/products/modify/" + req.params.id);
   } catch (error) {
     req.flash('error', 'Invalid id')
     return res.redirect('/user/admin/analysis')

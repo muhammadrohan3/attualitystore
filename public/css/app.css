@@ -3036,6 +3036,10 @@ body[dir="rtl"] .checkbox:checked,
   margin-left: 20px;
 }
 
+.mb-auto{
+  margin-bottom: auto;
+}
+
 .block{
   display: block;
 }

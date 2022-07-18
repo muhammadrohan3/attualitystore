@@ -200,6 +200,12 @@ checkout.addEventListener("submit", async (e) => {
     );
     return (window.location = "/product/" + cart[0].product.urlSlug);
   }
+  if (response.status == "cart-changed-draft") {
+    alert(
+      "La disponibilità dei prodotti è cambiata durante il tuo checkout quindi ti preghiamo di rifare il checkout"
+    );
+    return (window.location = "/");
+  }
 
   if (paymentValue == "card") {
     response = response.clientSecret;

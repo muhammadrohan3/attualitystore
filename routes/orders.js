@@ -119,6 +119,9 @@ router.post('/checkout', async (req, res) => {
     let cache;
     try {
       cache = await Product.findById(item.product);
+      if(cache.draft || cache.deleted){
+        return res.send(JSON.stringify({ status: "cart-changed" }));
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -500,8 +503,12 @@ router.post('/checkout/buynow', async (req, res) => {
     }
   }
 
-  if (req.body.cart.length == 0) {
-    return res.send("error");
+  if(req.body.cart){
+    if (req.body.cart.length == 0 || req.body.cart.length > 1) {
+      return res.send("error");
+    }
+  }else{
+    return res.send('error')
   }
 
    const { error } = checkoutSchema.validate({
@@ -525,6 +532,10 @@ router.post('/checkout/buynow', async (req, res) => {
      if (req.body.state != "Italia") {
        return res.send("error");
      }
+   }
+   const productInTheCart = await Product.findById(req.body.cart[0].product._id);
+   if (productInTheCart.draft || productInTheCart.deleted) {
+     return res.send(JSON.stringify({ status: "cart-changed-draft" }));
    }
 
   let total = 0;
