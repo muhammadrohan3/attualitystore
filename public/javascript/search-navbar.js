@@ -137,41 +137,29 @@ search.addEventListener('keyup', async (e) => {
     } else{
       if(possibleSentenceCategories.length || possibleSentenceSuggestions.length || productsResponse.length){
         searchPopup.innerHTML = `
-        ${
-          possibleSentenceSuggestions.length
-            ? `
-        <div class="px-3 mb-2">
-          <p class="font-medium py-1 border-b text-14px border-secondaryDark">Ti consigliamo</p>
+        ${possibleSentenceSuggestions.length ? `
+        <div class="px-3 mb-1">
+          <p class="font-medium text-14px text-black">Ti consigliamo</p>
         </div>
-        <ul>
+        <ul class="border-b border-secondaryDark pb-2 mb-4">
           ${HTMLstringSuggestions}
-        </ul>`
-            : ""
-        }
-        ${
-          possibleSentenceCategories.length
-            ? `
-        <div class="px-3 mb-2">
-          <p class="font-medium py-1 border-b text-14px border-secondaryDark">Categorie</p>
+        </ul>`: ''}
+        ${possibleSentenceCategories.length ? `
+        <div class="px-3 mb-1">
+          <p class="font-medium text-14px text-black">Categorie</p>
         </div>
-        <ul>
+        <ul class="border-b border-secondaryDark pb-2 mb-4">
           ${HTMLstringCategories}
-        </ul>`
-            : ""
-        }
-        ${
-          productsResponse.length
-            ? `
-        <div class="px-3 mb-2 flex justify-between">
-        <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Prodotti</p>
-        <a href="/search?search=${e.target.value}" class="underline text-blue-400 text-12px">Mostra tutto</a>
-      </div>
+        </ul>`: ''}
+        ${productsResponse.length ? `
+        <div class="px-3 mb-1 flex justify-between">
+          <p class="font-medium text-14px text-black">Prodotti</p>
+          <a href="/search?search=${e.target.value}" class="underline text-blue-400 text-12px">Mostra tutto</a>
+        </div>
         <ul>
           ${HTMLstringProducts}
-        </ul>`
-            : ""
-        }
-      `;
+        </ul>`: ''}
+        `;
       } else{
         searchPopup.innerHTML = `
         <p class="font-semibold py-1 px-3">Nessun risultato</p>
@@ -267,9 +255,9 @@ offCanvasSearch.addEventListener('keyup', async (e) => {
   if(offCanvasSearch.value == ''){
     offCanvasSearchPopup.innerHTML = `
     <div class="px-3 mb-2">
-      <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Ti consigliamo</p>
+      <p class="font-medium text-14px text-black">Ricerche popolari</p>
     </div>
-    <ul>
+    <ul class="border-b border-secondaryDark">
       <li class="hover:bg-white text-12px text-black px-3 py-1"><a href="/search?search=Dsquared2">
         Dsquared2
       </a></li>
@@ -283,27 +271,27 @@ offCanvasSearch.addEventListener('keyup', async (e) => {
         Valentino
       </a></li>
     </ul>
-    `
+    `;
   } else{
     if(possibleSentenceCategories.length || possibleSentenceSuggestions.length || productsResponse.length){
       offCanvasSearchPopup.innerHTML = `
       ${possibleSentenceSuggestions.length ? `
-      <div class="px-3 mb-2">
-        <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Ti consigliamo</p>
+      <div class="px-3 mb-1">
+        <p class="font-medium text-14px text-black">Ti consigliamo</p>
       </div>
-      <ul>
+      <ul class="border-b border-secondaryDark pb-2 mb-4">
         ${HTMLstringSuggestions}
       </ul>`: ''}
       ${possibleSentenceCategories.length ? `
-      <div class="px-3 mb-2">
-        <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Categorie</p>
+      <div class="px-3 mb-1">
+        <p class="font-medium text-14px text-black">Categorie</p>
       </div>
-      <ul>
+      <ul class="border-b border-secondaryDark pb-2 mb-4">
         ${HTMLstringCategories}
       </ul>`: ''}
       ${productsResponse.length ? `
-      <div class="px-3 mb-2 flex justify-between">
-        <p class="font-medium py-1 border-b text-14px text-black border-secondaryDark">Prodotti</p>
+      <div class="px-3 mb-1 flex justify-between">
+        <p class="font-medium text-14px text-black">Prodotti</p>
         <a href="/search?search=${e.target.value}" class="underline text-blue-400 text-12px">Mostra tutto</a>
       </div>
       <ul>
