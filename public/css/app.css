@@ -3238,6 +3238,14 @@ body[dir="rtl"] .checkbox:checked,
   width: 20rem;
 }
 
+.w-14{
+  width: 3.5rem;
+}
+
+.w-auto{
+  width: auto;
+}
+
 .max-w-7xl{
   max-width: 80rem;
 }
@@ -4685,6 +4693,14 @@ body[dir="rtl"] .checkbox:checked,
     width: 13rem;
   }
 
+  .md\:w-20{
+    width: 5rem;
+  }
+
+  .md\:w-60{
+    width: 15rem;
+  }
+
   .md\:max-w-2xl{
     max-width: 42rem;
   }
@@ -4939,6 +4955,18 @@ body[dir="rtl"] .checkbox:checked,
     height: 6rem;
   }
 
+  .lg\:h-28{
+    height: 7rem;
+  }
+
+  .lg\:h-32{
+    height: 8rem;
+  }
+
+  .lg\:h-36{
+    height: 9rem;
+  }
+
   .lg\:w-96{
     width: 24rem;
   }
@@ -4969,6 +4997,14 @@ body[dir="rtl"] .checkbox:checked,
 
   .lg\:w-32{
     width: 8rem;
+  }
+
+  .lg\:w-72{
+    width: 18rem;
+  }
+
+  .lg\:w-6{
+    width: 1.5rem;
   }
 
   .lg\:max-w-3xl{
