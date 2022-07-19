@@ -3024,6 +3024,10 @@ body[dir="rtl"] .checkbox:checked,
   margin-top: 8rem;
 }
 
+.mb-auto{
+  margin-bottom: auto;
+}
+
 .mt-auto{
   margin-top: auto;
 }
@@ -3034,10 +3038,6 @@ body[dir="rtl"] .checkbox:checked,
 
 .ml-mobile{
   margin-left: 20px;
-}
-
-.mb-auto{
-  margin-bottom: auto;
 }
 
 .block{
@@ -3397,20 +3397,20 @@ body[dir="rtl"] .checkbox:checked,
   gap: 1.5rem;
 }
 
-.gap-8{
-  gap: 2rem;
-}
-
-.gap-10{
-  gap: 2.5rem;
+.gap-12{
+  gap: 3rem;
 }
 
 .gap-7{
   gap: 1.75rem;
 }
 
-.gap-12{
-  gap: 3rem;
+.gap-8{
+  gap: 2rem;
+}
+
+.gap-10{
+  gap: 2.5rem;
 }
 
 .gap-x-3{
@@ -3999,10 +3999,6 @@ body[dir="rtl"] .checkbox:checked,
 
 .leading-4{
   line-height: 1rem;
-}
-
-.leading-8{
-  line-height: 2rem;
 }
 
 .leading-7{

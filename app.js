@@ -167,6 +167,7 @@ app.use(async (req, res, next) => {
         }else{
           for(size of product.sizes){
             if(size.size == element.size){
+              passed = true
               if(size.remaining == 0){
                 passed = false;
                 req.session.cart.splice(req.session.cart.indexOf(element))
@@ -176,6 +177,7 @@ app.use(async (req, res, next) => {
               }
             }
           }
+          passed = false
         }
         if(passed){
           sessionCart.push({

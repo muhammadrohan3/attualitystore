@@ -20,9 +20,10 @@ module.exports.checkoutSchema = Joi.object({
     surname: Joi.string().required().max(40),
     number: Joi.string().regex(/^[0-9]{10}$/).messages({'string.pattern.base': `Phone number must have 10 digits.`}).required(),
     address: Joi.string().required().max(50),
-    zip: Joi.string().required().max(50),
+    zip: Joi.string().required().length(5),
     city: Joi.string().required().max(50), 
     province:Joi.string().required().max(50),
+    cashOnDelivery: Joi.boolean().required()
 })
 module.exports.emailSchema = Joi.object({
   email: Joi.string().email().required().max(50),

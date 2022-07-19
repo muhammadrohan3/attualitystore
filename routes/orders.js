@@ -20,8 +20,6 @@ var transporter = nodemailer.createTransport({
 // stripe
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
-// TODO fare api testing sul checkout e checkout/buynow
-
 router.get('/checkout', (req, res) => {
   if(req.session.cart && req.session.cart.length){
     req.session.checkoutReached = new Date()
@@ -75,6 +73,7 @@ router.post('/checkout', async (req, res) => {
     zip: req.body.zip,
     city: req.body.city,
     province: req.body.province,
+    cashOnDelivery: req.body.cashOnDelivery
   });
   if (errCheckout.error) {
     return res.send(errCheckout.error.message);
@@ -200,7 +199,7 @@ router.post('/checkout', async (req, res) => {
       return res.send("error");
     }
   }
-  if (req.body.cashOnDelivery == true) {
+  if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
     if (req.body.state != "Italia") {
       return res.send("error");
     }
@@ -498,6 +497,7 @@ router.post('/checkout/buynow', async (req, res) => {
     zip: req.body.zip,
     city: req.body.city,
     province: req.body.province,
+    cashOnDelivery: req.body.cashOnDelivery
   });
   if (errCheckout.error) {
     return res.send(errCheckout.error.message);
@@ -520,11 +520,12 @@ router.post('/checkout/buynow', async (req, res) => {
     } else {
       return res.send("error");
     }
-
+  
   // controllo carrello
+  let productCart;
   try {
     for (item of req.body.cart) {
-      await Product.findById(item.product._id);
+      productCart = await Product.findById(item.product._id);
     }
   } catch (error) {
     return res.send("error");
@@ -533,12 +534,22 @@ router.post('/checkout/buynow', async (req, res) => {
     if (!item.size) {
       return res.send("error");
     }
+    let passed = false;
+    for(element of productCart.sizes){
+      if(element.size == item.size){
+        passed = true
+      }
+    }
+    if(!passed){
+      return res.send('error')
+    }
     if (Number.isNaN(parseInt(item.copies))) {
       return res.send("error");
     }
     if (!item.copies) {
       return res.send("error");
     }
+
     const product = await Product.findById(item.product._id);
     let productCopies = 0;
     product.sizes.forEach((size) => {
@@ -550,7 +561,7 @@ router.post('/checkout/buynow', async (req, res) => {
       return res.send(JSON.stringify({ status: "cart-changed" }));
     }
   }
-   if (req.body.cashOnDelivery == true) {
+   if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
      if (req.body.state != "Italia") {
        return res.send("error");
      }
