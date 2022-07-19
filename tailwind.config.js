@@ -1,45 +1,11 @@
 module.exports = {
   content: [
-    "./views/home.ejs",
-    "./views/checkout.ejs",
-    "./views/404.ejs",
-    "./views/test.ejs",
-
-    "./views/showpage/category.ejs",
-    "./views/showpage/product.ejs",
-    "./views/showpage/search.ejs",
-    "./views/showpage/new-arrivals.ejs",
-
-    "./views/user/login.ejs",
-    "./views/user/register.ejs",
-    "./views/user/forgotpassword.ejs",
-    "./views/user/resetpassword.ejs",
-    "./views/user/dashboard.ejs",
-    "./views/user/cart.ejs",
-    "./views/user/wishlist.ejs",
-
-    "./views/info/privacy.ejs",
-    "./views/info/online-exclusive.ejs",
-    "./views/info/attuality-store.ejs",
-
-    "./views/admin/analysis.ejs",
-    "./views/admin/users.ejs",
-    "./views/admin/info-users.ejs",
-    "./views/admin/info-order.ejs",
-    "./views/admin/info-product.ejs",
-    "./views/admin/modify-users.ejs",
-    "./views/admin/products.ejs",
-    "./views/admin/add-product.ejs",
-    "./views/admin/modify-product.ejs",
-
-    "./views/partials/footer.ejs",
-    "./views/partials/countries-select.ejs",
-    "./views/partials/navbar.ejs",
-    "./views/partials/navbar-end.ejs",
-    "./views/partials/flash.ejs",
-    "./views/partials/admin-navbar.ejs",
-    "./views/partials/admin-navbar-end.ejs",
-    "./views/partials/why-attuality.ejs",
+    "./views/*.ejs",
+    "./views/showpage/*.ejs",
+    "./views/user/*.ejs",
+    "./views/info/*.ejs",
+    "./views/admin/*.ejs",
+    "./views/partials/*.ejs",
   ],
   theme: {
     extend: {
