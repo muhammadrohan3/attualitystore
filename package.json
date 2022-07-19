@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "build-css": "tailwindcss -i ./styles.css -o ./public/css/app.css --watch"
+    "build-css": "tailwindcss -i ./styles.css -o ./public/css/app.css --watch --minify"
   },
   "author": "Marco Moscatelli",
   "license": "ISC",
