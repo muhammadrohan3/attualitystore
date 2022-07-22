@@ -85,7 +85,7 @@
 
 
 
-    <div class="grid grid-cols-11 lg:gap-20px gap-10px mx-auto max-w-7xl mb-16">
+    <div class="grid grid-cols-11 lg:gap-20px gap-10px mx-auto max-w-7xl">
 
       <div class="relative lg:block hidden col-span-1 h-full">
         <div class="sticky lg:top-186.5px md:top-124px top-102px">
@@ -583,7 +583,7 @@
         </div>
       </div>
 
-      <div class="col-span-11 mt-36">
+      <div class="col-span-11 mt-10">
 
         <div>
           <% if(similars && similars.length){ %>
@@ -592,7 +592,7 @@
             </div>
             <div class="mb-10 mt-4 completeYourLook">
               <% for(similar of similars){ %>
-                <div class="flex prodotto flex-col mb-10 relative">
+                <div class="flex prodotto flex-col mb-6 relative">
                   <button id="wishlist-<%= similar._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(similar._id.toString()) ? 'hidden' : '' : '' %>">
                     <img src="/blackheart-icon.webp" class="md:h-5 h-4" alt="Product isn't added to the wishlist">       
                   </button>
@@ -736,7 +736,7 @@
             </div>
             <div class="mb-10 mt-4 completeYourLook">
               <% for(similar of completeYourLook){ %>
-                <div class="flex prodotto flex-col mb-16 relative">
+                <div class="flex prodotto flex-col mb-6 relative">
                   <button id="wishlist-<%= similar._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(similar._id.toString()) ? 'hidden' : '' : '' %>">
                     <img src="/blackheart-icon.webp" class="md:h-5 h-4" alt="Product isn't added to the wishlist">       
                   </button>
@@ -883,7 +883,7 @@
               <% for(similar of recentlySeen){ %>
 
                 <% if(similar){ %>
-                  <div class="flex prodotto flex-col mb-10 relative">
+                  <div class="flex prodotto flex-col mb-6 relative">
                     <button id="wishlist-<%= similar._id %>" class="absolute right-2 top-2 z-10 <%= wishlist ? wishlist.includes(similar._id.toString()) ? 'hidden' : '' : '' %>">
                       <img src="/blackheart-icon.webp" class="md:h-5 h-4" alt="Product isn't added to the wishlist">       
                     </button>

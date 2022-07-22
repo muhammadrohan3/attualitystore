@@ -377,7 +377,7 @@ router.post('/cart/:id', async (req, res)=> {
       return res.send('error')
     }
 
-    
+
     let remaining;
     product.sizes.forEach((sizeProduct) => {
       if(sizeProduct.size == size){
@@ -400,6 +400,9 @@ router.post('/cart/:id', async (req, res)=> {
     let contains = false;
     let indexProduct;
     req.session.cart.forEach((cart, index) => {
+      console.log(cart.product)
+      console.log(cart.product._id)
+      console.log('--------------')
       if(cart.product == product._id.toString() && cart.size == size){
         cartItemID = cart.id
         contains = true

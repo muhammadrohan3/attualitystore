@@ -36,7 +36,6 @@ function reportWindowSize() {
       button.classList.remove('active')
     }
     document.getElementById(`sizegroup-${productid}`).dataset.sizechoosen == 'none';
-    console.log(document.getElementById(`sizegroup-${productid}`))
   }
 }
 

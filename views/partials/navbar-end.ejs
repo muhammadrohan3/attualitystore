@@ -3,7 +3,15 @@
     <label for="my-drawer-4" class="drawer-overlay"></label>
 
     <div class="menu p-4 w-80 text-base-content flex flex-col justify-between bg-background">
-      <p class="border-b border-black font-medium py-3 sticky top-0 bg-background">IL TUO CARRELLO</p>
+      <button class="absolute top-6 right-3 z-40" id="close-cart">
+        <svg class="fill-black hover:fill-primary h-6 w-6 role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+      </button>
+      <script>
+        document.getElementById('close-cart').addEventListener('click', function() {
+          document.querySelector('#my-drawer-4').checked = false
+        });
+      </script>
+      <p class="border-b border-black font-medium py-2 sticky top-0 bg-background text-center">IL TUO CARRELLO</p>
       <div id="cartItems" class="flex flex-col h-full my-3 gap-3">
         <% let total = 0; %>
         <% for(cartItem of cart){ %>

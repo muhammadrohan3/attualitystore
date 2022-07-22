@@ -89,7 +89,7 @@
                   %> 
     
                   <% if(sizeRemaining.length > 6){ %>
-                    <div class="id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                    <div id="sizegroup-<%= product._id %>" data-sizechoosen="none">
                       <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
                         <% for(size of sizeRemaining.slice(0, 5)){ %>
                           <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
@@ -128,7 +128,7 @@
                     </div>
 
                   <% } else if(sizeRemaining.length > 5){ %>
-                    <div class="id="sizegroup-<%= product._id %>" data-sizechoosen="none">
+                    <div id="sizegroup-<%= product._id %>" data-sizechoosen="none">
                       <div class="md:flex hidden justify-center misure lg:gap-2 gap-0.5 mx-auto mt-3" role="group">
                         <% for(size of sizeRemaining.slice(0, 5)){ %>
                           <button type="button" data-productid="<%= product._id %>" data-size="<%= size.size %>" class="sizeButtonAll sizeButton-<%= product._id %> w-10 py-0.5 text-12px font-medium border border-gray-400 hover:border-black text-black hover:shadow-sm focus:shadow-md focus:ring-none text-center">
@@ -420,6 +420,7 @@ for(button of addToCartButtons){
 for(element of wishlist){
   const misureProdotto = document.querySelectorAll(`.sizeButton-${element._id}`)
   const sizegroup = document.getElementById(`sizegroup-${element._id}`);
+
   for(button of misureProdotto){
     button.addEventListener('click', (e) => {
       document.getElementById('chooseSize').classList.add('hidden')

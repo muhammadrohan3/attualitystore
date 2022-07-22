@@ -170,14 +170,12 @@ app.use(async (req, res, next) => {
               passed = true
               if(size.remaining == 0){
                 passed = false;
-                req.session.cart.splice(req.session.cart.indexOf(element))
               }
               else if(size.remaining < element.copies){
                 element.copies = size.remaining
               }
             }
           }
-          passed = false
         }
         if(passed){
           sessionCart.push({
