@@ -49,8 +49,8 @@
                 method: 'POST'
               })
               response = await response.text()
-              document.getElementById("removeWishlist-<%= product._id %>").disabled = falsei;
-              document.getElementById("wishlist-<%= product._id %>").disabled = falsei;
+              document.getElementById("removeWishlist-<%= product._id %>").disabled = false;
+              document.getElementById("wishlist-<%= product._id %>").disabled = false;
               if(response == 'success'){
                 document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) + 1
                 document.getElementById('wishlist-indicator').classList.remove('hidden')
@@ -67,8 +67,8 @@
                 method: 'DELETE'
               })
               response = await response.text()
-              document.getElementById("removeWishlist-<%= product._id %>").disabled = falsei;
-              document.getElementById("wishlist-<%= product._id %>").disabled = falsei;
+              document.getElementById("removeWishlist-<%= product._id %>").disabled = false;
+              document.getElementById("wishlist-<%= product._id %>").disabled = false;
               if(response == 'success'){
                 document.getElementById('wishlist-indicator').innerHTML = parseInt(document.getElementById('wishlist-indicator').innerHTML) - 1
                 if(parseInt(document.getElementById('wishlist-indicator').innerHTML) == 0){
