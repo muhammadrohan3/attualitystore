@@ -60,18 +60,33 @@
           <div id="accordionContent1" class="overflow-hidden">
             <div class="px-6 py-4 text-16px">
               <ul class="flex flex-col gap-3">
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/jackets">Giacche</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/hoodies">Felpe con cappuccio</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/sweatshirts">Felpe</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/shirts">Camicie</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/polos">Polo</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/t-shirts">T-shirt</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/jeans">Jeans</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/trousers">Pantaloni</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/bermuda">Bermuda</a></li>
+                <li class="<%= categoriesCount['jackets'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/jackets">Giacche</a></li>
+                <li class="<%= categoriesCount['hoodies'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/hoodies">Felpe con cappuccio</a></li>
+                <li class="<%= categoriesCount['sweatshirts'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/sweatshirts">Felpe</a></li>
+                <li class="<%= categoriesCount['shirts'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/shirts">Camicie</a></li>
+                <li class="<%= categoriesCount['polos'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/polos">Polo</a></li>
+                <li class="<%= categoriesCount['jeans'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/t-shirts">T-shirt</a></li>
+                <li class="<%= categoriesCount['jeans'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/jeans">Jeans</a></li>
+                <li class="<%= categoriesCount['trousers'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/trousers">Pantaloni</a></li>
+                <li class="<%= categoriesCount['bermuda'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/clothing/bermuda">Bermuda</a></li>
               </ul>
             </div>
           </div>
+          <% 
+          let countZeroCategories = 0;
+          for(let key of Object.keys(categoriesCount)) {
+            if(categoriesCount[key] == 0) {
+              if(key != 'wallets-and-small-leather-goods' || key != 'swimwear' || key != 'slippers') {
+                countZeroCategories++;
+              }
+            }
+          }
+          %>
+          <style>
+            #accordionContent1.active{
+              height: <%= 344 - countZeroCategories * 36 %>px;
+            }
+          </style>
 
         </div>
 
@@ -97,12 +112,27 @@
           <div id="accordionContent2" class="overflow-hidden">
             <div class="px-6 py-4 text-16px">
               <ul class="flex flex-col gap-3">
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/wallets-and-small-leather-goods">Portafoglio e Piccola Pelletteria</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/swimwear">Costumi da Bagno</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/slippers">Ciabatte</a></li>
+                <li class="<%= categoriesCount['wallets-and-small-leather-goods'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/wallets-and-small-leather-goods">Portafoglio e Piccola Pelletteria</a></li>
+                <li class="<%= categoriesCount['swimwear'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/swimwear">Costumi da Bagno</a></li>
+                <li class="<%= categoriesCount['slippers'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/accessories/slippers">Ciabatte</a></li>
               </ul>
             </div>
           </div>
+          <% 
+          let countZeroAccessories = 0;
+          for(let key of Object.keys(categoriesCount)) {
+            if(categoriesCount[key] == 0) {
+              if(key == 'wallets-and-small-leather-goods' || key== 'swimwear' || key == 'slippers') {
+                countZeroAccessories++;
+              }
+            }
+          }
+          %>
+          <style>
+            #accordionContent2.active{
+              height: <%= 128 - countZeroAccessories * 36 %>px;
+            }
+          </style>
 
         </div>
 
@@ -128,17 +158,30 @@
           <div id="accordionContent3" class="overflow-hidden">
             <div class="px-6 py-4 text-16px">
               <ul class="flex flex-col gap-3">
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/versace">Versace</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/fendi">Fendi</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/balmain">Balmain</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/dsquared2">Dsquared2</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/valentino">Valentino</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/philipp-plein">Philipp Plein</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/palm-angels">Palm Angels</a></li>
-                <li class=""><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/marcelo-burlon">Marcelo Burlon</a></li>
+                <li class="<%= designersCount['Versace'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/versace">Versace</a></li>
+                <li class="<%= designersCount['fendi'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/fendi">Fendi</a></li>
+                <li class="<%= designersCount['balmain'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/balmain">Balmain</a></li>
+                <li class="<%= designersCount['dsquared2'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/dsquared2">Dsquared2</a></li>
+                <li class="<%= designersCount['valentino'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/valentino">Valentino</a></li>
+                <li class="<%= designersCount['philipp-plein'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/philipp-plein">Philipp Plein</a></li>
+                <li class="<%= designersCount['palm-angels'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/palm-angels">Palm Angels</a></li>
+                <li class="<%= designersCount['marcelo-burlon'] == 0 ? 'hidden' : '' %>"><a class="hover:underline block whitespace-no-wrap text-16px" href="/designers/marcelo-burlon">Marcelo Burlon</a></li>
               </ul>
             </div>
           </div>
+          <% 
+          let countZeroDesigners = 0;
+          for(let key of Object.keys(designersCount)) {
+            if(designersCount[key] == 0) {
+              countZeroDesigners++;
+            }
+          }
+          %>
+          <style>
+            #accordionContent3.active{
+              height: <%= 308 - countZeroDesigners * 36 %>px;
+            }
+          </style>
 
         </div>
       </div>
@@ -258,23 +301,32 @@
                 </div>
                 <ul
                   class="dropdown-menu z-50 absolute hidden w-52 text-white rounded-b rounded-t bg-black shadow-md pb-2 pl-2">
-                  <li class=""><a class="rounded-t hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['jackets'] == 0 ? 'hidden' : '' %>"><a
+                      class="rounded-t hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
                       href="/clothing/jackets">Giacche</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['hoodies'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/hoodies">Felpe con cappuccio</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['sweatshirts'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/sweatshirts">Felpe</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['shirts'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/shirts">Camicie</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['polos'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/polos">Polo</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['t-shirts'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/t-shirts">T-shirt</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['jeans'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/jeans">Jeans</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['trousers'] == 0 ? 'hidden' : '' %>"><a
+                      class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/clothing/trousers">Pantaloni</a></li>
-                  <li class=""><a class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['bermuda'] == 0 ? 'hidden' : '' %>"><a
+                      class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
                       href="/clothing/bermuda">Bermuda</a></li>
                 </ul>
               </div>
@@ -293,11 +345,11 @@
                 </div>
                 <ul
                   class="dropdown-menu2 absolute z-50 hidden w-52 text-white rounded-b rounded-t bg-black shadow-md pb-2 pl-2">
-                  <li class=""><a class="rounded-t hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['wallets-and-small-leather-goods'] == 0 ? 'hidden' : '' %>"><a class="rounded-t hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
                       href="/accessories/wallets-and-small-leather-goods">Portafoglio e Piccola Pelletteria</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['swimwear'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap text-14px"
                       href="/accessories/swimwear">Costumi da Bagno</a></li>
-                  <li class=""><a class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
+                  <li class="<%= categoriesCount['slippers'] == 0 ? 'hidden' : '' %>"><a class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
                       href="/accessories/slippers">Ciabatte</a></li>
                 </ul>
               </div>
@@ -316,22 +368,22 @@
                 </div>
                 <ul
                   class="dropdown-menu3 absolute z-50 hidden w-52 text-white rounded-b rounded-t bg-black shadow-md pb-2 pl-2">
-                  <li class=""><a
+                  <li class="<%= designersCount['versace'] == 0 ? 'hidden' : '' %>"><a
                       class="rounded-t hover:underline font-light py-2 px-4 block whitespace-no-wrap  text-14px"
                       href="/designers/versace">Versace</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['fendi'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/fendi">Fendi</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['balmain'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/balmain">Balmain</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['dsquared2'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/dsquared2">Dsquared2</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['valentino'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/valentino">Valentino</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['philipp-plein'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/philipp-plein">Philipp Plein</a></li>
-                  <li class=""><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
+                  <li class="<%= designersCount['palm-angels'] == 0 ? 'hidden' : '' %>"><a class="py-2 px-4 hover:underline font-light block whitespace-no-wrap  text-14px"
                       href="/designers/palm-angels">Palm Angels</a></li>
-                  <li class=""><a class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
+                  <li class="<%= designersCount['marcelo-burlon'] == 0 ? 'hidden' : '' %>"><a class="rounded-b hover:underline font-light py-2 px-4 block whitespace-no-wrap text-14px"
                       href="/designers/marcelo-burlon">Marcelo Burlon</a></li>
                 </ul>
               </div>

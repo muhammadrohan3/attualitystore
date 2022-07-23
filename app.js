@@ -142,6 +142,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/webhook', bodyParser.raw({type: "*/*"}));
 app.use(bodyParser.json());
 
+// Mongo sanitizer
+const mongoSanitize = require('express-mongo-sanitize');
+app.use(mongoSanitize());
+
+
 // models
 const Product = require('./models/product');
 
@@ -193,19 +198,124 @@ app.use(async (req, res, next) => {
       }
     }
   }
-  const findDuplicates = (arr) => {
-    let sorted_arr = arr.slice().sort();
-    let results = [];
-    for (let i = 0; i < sorted_arr.length - 1; i++) {
-      if (sorted_arr[i + 1] == sorted_arr[i]) {
-        results.push(sorted_arr[i]);
-      }
-    }
-    return results;
-  };
   res.locals.cart = sessionCart;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+
+  // TODO create a local that count every element for every category
+  let categories = {
+    jackets: 0,
+    hoodies: 0,
+    sweatshirts: 0,
+    't-shirts': 0,
+    polos: 0,
+    jeans: 0,
+    trousers: 0,
+    bermuda: 0,
+    shirts: 0,
+    slippers: 0,
+    'wallets-and-small-leather-goods': 0,
+    swimwear: 0
+  }
+  // find all product and then change categories obj with the number of product in each category
+  try {
+    let products = await Product.find({})
+    for(elementProduct of products){
+      if(!elementProduct.draft && !elementProduct.deleted){
+        if (elementProduct.category.includes("jackets")) {
+          categories.jackets++;
+        }
+        if (elementProduct.category.includes("hoodies")) {
+          categories.hoodies++;
+        }
+        if (elementProduct.category.includes("sweatshirts")) {
+          categories.sweatshirts++;
+        }
+        if (elementProduct.category.includes("t-shirts")) {
+          categories["t-shirts"]++;
+        }
+        if (elementProduct.category.includes("polos")) {
+          categories.polos++;
+        }
+        if (elementProduct.category.includes("jeans")) {
+          categories.jeans++;
+        }
+        if (elementProduct.category.includes("trousers")) {
+          categories.trousers++;
+        }
+        if (elementProduct.category.includes("bermuda")) {
+          categories.bermuda++;
+        }
+        if (elementProduct.category.includes("shirts")) {
+          categories.shirts++;
+        }
+        if (elementProduct.category.includes("slippers")) {
+          categories.slippers++;
+        }
+        if (elementProduct.category.includes("wallets-and-small-leather-goods")) {
+          categories["wallets-and-small-leather-goods"]++;
+        }
+        if (elementProduct.category.includes("swimwear")) {
+          categories.swimwear++;
+        }
+      }
+    }
+  } catch (error) {
+    req.flash('error', "Internal server error")
+    return res.redirect('/')
+  }
+  res.locals.categoriesCount = categories;
+
+  // find all product and then change designer obj with the number of product in each category
+  let designers = {
+    'versace': 0,
+    'fendi': 0,
+    'balmain': 0,
+    'philipp-plein': 0,
+    'valentino': 0,
+    'palm-angels': 0,
+    'marcelo-burlon': 0,
+    'dsquared2': 0,
+  }
+  // find all product and then change designers obj with the number of product in each designer
+  try {
+    let products = await Product.find({})
+    for(elementProduct of products){
+      if(!elementProduct.draft && !elementProduct.deleted){
+        if (elementProduct.designer.includes("versace")) {
+          designers.versace++;
+        }
+        if (elementProduct.designer.includes("fendi")) {
+          designers.fendi++;
+        }
+        if (elementProduct.designer.includes("balmain")) {
+          designers.balmain++;
+        }
+        if (elementProduct.designer.includes("philipp-plein")) {
+          designers["philipp-plein"]++;
+        }
+        if (elementProduct.designer.includes("valentino")) {
+          designers.valentino++;
+        }
+        if (elementProduct.designer.includes("palm-angels")) {
+          designers["palm-angels"]++;
+        }
+        if (elementProduct.designer.includes("marcelo-burlon")) {
+          designers["marcelo-burlon"]++;
+        }
+        if (elementProduct.designer.includes("dsquared2")) {
+          designers.dsquared2++;
+        }
+      }
+    }
+
+  } catch (error) {
+    req.flash('error', "Internal server error")
+    return res.redirect('/')
+  }
+  res.locals.designersCount = designers;
+
+
   next();
 })
 // set the important information in the session
@@ -216,7 +326,6 @@ const device = require('express-device');
 app.use(device.capture())
 
 app.use(async (req, res, next) => {
-
   if(!req.session.device){
     req.session.device = req.device.type
   }
@@ -324,6 +433,7 @@ const adminRoutes = require('./routes/admin');
 app.use('/', adminRoutes);
 
 const infoRoutes = require('./routes/info');
+const product = require('./models/product');
 app.use('/', infoRoutes);
 
 

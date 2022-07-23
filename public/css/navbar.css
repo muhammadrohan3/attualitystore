@@ -32,24 +32,15 @@ body {
   transition: 0.5s;
   transition-timing-function: ease-in-out;
 }
-#accordionContent1.active{
-  height: 344px;
-}
 #accordionContent2{
   height: 0;
   transition: 0.5s;
   transition-timing-function: ease-in-out;
 }
-#accordionContent2.active{
-  height: 128px;
-}
 #accordionContent3{
   height: 0;
   transition: 0.5s;
   transition-timing-function: ease-in-out;
-}
-#accordionContent3.active{
-  height: 308px;
 }
 body{
   overflow-y: auto;
