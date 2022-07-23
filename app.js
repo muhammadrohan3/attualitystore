@@ -150,6 +150,12 @@ app.use(mongoSanitize());
 // models
 const Product = require('./models/product');
 
+// TODO add order count only on admin routes
+app.use('/user/admin', (req, res, next) => {
+  console.log('ciao')
+  next()
+})
+
 // locals
 app.use(async (req, res, next) => {
   res.locals.user = req.user;
