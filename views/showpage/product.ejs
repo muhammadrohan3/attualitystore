@@ -55,8 +55,36 @@
   </div>
 
   <main class="xl:px-desktop lg:px-laptop md:px-tablet px-mobile w-full">
-    <div class="breadcrumbs mb-8">
-      <ul class="text-gray-400 text-15px mt-4 mb-4">
+    <div class="mb-8">
+      <p class="text-gray-400 text-15px mt-4 mb-4">
+        <a class="text-black hover:underline font-medium" href="/">Home</a>
+        <span class="text-gray-400"><span class="opacity-0">s</span>><span class="opacity-0">s</span></span>
+        <% function capitalizeFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); } %>
+          <% if(from){ %>
+            <% if(from !='new-arrivals' && from !='search' ){ %>
+              <span class="text-black font-medium">
+                <%= capitalizeFirstLetter(from) %>
+              </span>
+              <span class="text-gray-400"><span class="opacity-0">s</span>><span class="opacity-0">s</span></span>
+            <% } %>
+            <a class="text-black hover:underline font-medium" href="<%= 
+            from == 'designer' ? `/designers/${product.designer}` : 
+            from=='accessory' ? `/accessories/${product.category}` : 
+            from=='new-arrivals' ? `/new-arrivals` :
+            from=='search' ? '/search?search=' + product.modelName :
+            `/clothing/${product.category}` %>">
+              <%= capitalizeFirstLetter( from=='designer' ? product.designer : from=='new-arrivals' ? 'new-arrivals' :
+                from=='search' ? 'search' : product.category.replaceAll('-', ' ' )) %>
+            </a>
+            <span class="text-gray-400"><span class="opacity-0">s</span>><span class="opacity-0">s</span></span>
+          <% } %>
+
+          <span class="text-black font-medium">
+            <%= product.modelName %>
+          </span>
+
+      </p>
+      <!-- <ul class="text-gray-400 text-15px mt-4 mb-4">
         <li><a class="text-black hover:underline font-medium" href="/">Home</a></li>
         <% 
         function capitalizeFirstLetter(string) {
@@ -80,7 +108,7 @@
             product.category.replaceAll('-', ' ')) %></a></li>
         <% } %>
         <li><span class="text-black font-medium"><%= product.modelName %></span></p></li>
-      </ul>
+      </ul> -->
     </div>
 
 
