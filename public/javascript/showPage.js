@@ -17,16 +17,16 @@ document.querySelector('#designerQueryButton').addEventListener('focusout', () =
 })
 for(element of document.querySelectorAll('.designerQuery')){
   if(params.has('sizeQuery') && params.has('sortBy')){
-    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sizeQuery=${params.get('sizeQuery')}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sizeQuery=${params.get('sizeQuery')}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else if(params.has('sizeQuery')){
-    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sizeQuery=${params.get('sizeQuery')}`
+    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sizeQuery=${params.get('sizeQuery')}&isOpen=true`
   }
   else if(params.has('sortBy')) {
-    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else{
-    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}`
+    element.href = window.location.pathname +`?designerQuery=${element.dataset.designer}&isOpen=true`
   }
 }
 
@@ -38,15 +38,15 @@ document.querySelector('#sizeQueryButton').addEventListener('focusout', () => {
 })
 for(element of document.querySelectorAll('.sizeQuery')){
   if(params.has('designerQuery') && params.has('sortBy')){
-    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else if(params.has('designerQuery')){
-    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}`
+    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&isOpen=true`
   }
   else if(params.has('sortBy')) {
-    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else{
-    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}`
+    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&isOpen=true`
   }
 }

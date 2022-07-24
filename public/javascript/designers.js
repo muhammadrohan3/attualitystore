@@ -17,16 +17,16 @@ document.querySelector('#categoryQueryButton').addEventListener('focusout', () =
 })
 for(element of document.querySelectorAll('.categoryQuery')){
   if(params.has('sizeQuery') && params.has('sortBy')){
-    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sizeQuery=${params.get('sizeQuery')}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sizeQuery=${params.get('sizeQuery')}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else if(params.has('sizeQuery')){
-    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sizeQuery=${params.get('sizeQuery')}`
+    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sizeQuery=${params.get('sizeQuery')}&isOpen=true`
   }
   else if(params.has('sortBy')) {
-    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else{
-    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}`
+    element.href = window.location.pathname +`?categoryQuery=${element.dataset.category}&isOpen=true`
   }
 }
 
@@ -38,15 +38,15 @@ document.querySelector('#sizeQueryButton').addEventListener('focusout', () => {
 })
 for(element of document.querySelectorAll('.sizeQuery')){
   if(params.has('designerQuery') && params.has('sortBy')){
-    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else if(params.has('designerQuery')){
-    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}`
+    element.href = window.location.pathname +`?designerQuery=${params.get('designerQuery')}&sizeQuery=${element.dataset.size}&isOpen=true`
   }
   else if(params.has('sortBy')) {
-    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}`
+    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&sortBy=${params.get('sortBy')}&isOpen=true`
   }
   else{
-    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}`
+    element.href = window.location.pathname +`?sizeQuery=${element.dataset.size}&isOpen=true`
   }
 }

@@ -83,7 +83,8 @@ router.get('/product/:urlSlug', async (req, res) => {
 
 router.get('/designers/:designer', async (req, res) => {
   let { designer } = req.params;
-  let { categoryQuery, sizeQuery, sortBy  } = req.query;
+  let { categoryQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  isOpen = isOpen == "true" || isOpen == true ? true : false;
   const designers = process.env.DESIGNERS.split(' ')
   
   if(!designers.includes(designer)){
@@ -175,11 +176,12 @@ router.get('/designers/:designer', async (req, res) => {
   const clothing = 'Giacche/Felpe con cappuccio/Felpe/Camicie/Polo/T-shirt/Jeans/Pantaloni/Bermuda';
   const categories = accessories.split('/').concat(clothing.split('/'));
 
-  res.render('showpage/designers', { products, categoryQuery, sizeQuery, sortBy, designer, categories });
+  res.render('showpage/designers', { products, categoryQuery, sizeQuery, sortBy, designer, categories, isOpen });
 })
 router.get('/clothing/:category', async (req, res) => {
   let { category } = req.params;
-  const { designerQuery, sizeQuery, sortBy  } = req.query;
+  let { designerQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  isOpen = isOpen == "true" || isOpen == true ? true : false;
   const clothing = process.env.CLOTHING.split(' ')
   const designers = process.env.DESIGNERS.split(' ')
   if(!clothing.includes(category)){
@@ -243,12 +245,13 @@ router.get('/clothing/:category', async (req, res) => {
   }
  
 
-  res.render('showpage/category', { category, products, designers, designerQuery, sizeQuery, sortBy });
+  res.render('showpage/category', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen });
 })
 
 router.get('/accessories/:category', async (req, res) => {
   let { category } = req.params;
-  const { designerQuery, sizeQuery, sortBy  } = req.query;
+  let { designerQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  isOpen = isOpen == "true" || isOpen == true ? true : false;
   const clothing = process.env.ACCESSORIES.split(' ')
   const designers = process.env.DESIGNERS.split(' ')
   
@@ -295,7 +298,7 @@ router.get('/accessories/:category', async (req, res) => {
   }
  
 
-  res.render('showpage/accessories', { category, products, designers, designerQuery, sizeQuery, sortBy });
+  res.render('showpage/accessories', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen });
 })
 
 router.post('/wishlist/:id', async (req, res)=> {
