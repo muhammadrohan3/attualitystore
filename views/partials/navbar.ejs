@@ -414,25 +414,37 @@
                 </label>
                 <% if(user) { %>
                   <div class="relative">
-                    <button id="dropdownDefault" class="lg:h-6 flex flex-col justify-center">
-                      <img src="/navbar/user-icon.webp" class="lg:h-6 h-5 mt-1" alt="user icon">
-                    </button>
+                    <div class="flex gap-2">
+                      <button id="dropdownDefault" class="lg:h-6 flex flex-col justify-center">
+                        <img src="/navbar/user-icon.webp" class="lg:h-6 h-5 mt-1" alt="user icon">
+                      </button>
+                      <label for="dropdownDefault" class="text-white opacity-70 hidden lg:block mt-1">
+                        <% 
+                        var string = (user.name + ' ' + user.surname);
+                        var length = 11;
+                        var trimmedString = string.length > length ? 
+                        string.substring(0, length - 3) + "..." : 
+                        string;
+                        %>
+                        <%= trimmedString %>
+                      </label>
+                    </div>
                     <div id="dropdown" class="z-10 hidden absolute w-24 lg:w-32 right-0 lg:top-9 top-7">
-                      <ul class="py-1 text-sm text-black shadowFar w-24 lg:w-32 shadow-md bg-gray-100 absolute">
+                      <ul class="py-1 text-sm text-black shadowFar w-28 lg:w-32 shadow-md bg-white absolute">
                         <li>
                           <a href="/user/dashboard"
-                            class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">Dashboard</a>
-                        </li>
-                        <li>
-                          <a href="#"
-                            class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">Assistenza</a>
+                            class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">Il mio account</a>
                         </li>
                         <% if(user.admin) { %>
                           <li>
                             <a href="/user/admin/analysis"
-                              class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">Admin</a>
+                              class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">ADMIN</a>
                           </li>
                         <% } %>
+                        <li>
+                          <a href="#"
+                            class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline">Assistenza</a>
+                        </li>
                         <li>
                           <a href="/logout" class="block lg:px-3 lg:py-2 py-1.5 px-2.5 lg:text-14px text-12px font-medium hover:underline flex gap-1">
                             <img src="/icons-utils/logout-icon.webp" class="h-5 w-5" alt="logout icon">

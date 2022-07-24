@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/app.css">
 </head>
 
-<body class="bg-background flex flex-col min-h-screen font-main">
+<body class="bg-white flex flex-col min-h-screen font-main">
   <%- include('../partials/navbar') %> 
   <%- include('../partials/flash') %> 
   <div id="error-wrapper-login" class="xl:px-desktop hidden lg:px-laptop md:px-tablet px-mobile py-4">
@@ -58,13 +58,13 @@
       </div>
 
       <div class="mb-5 flex justify-between">
-        <div class="form-check flex gap-1 md:gap-2">
+        <div class="form-check flex gap-2">
           <div class="flex flex-col justify-center">
             <input class="checkbox rounded-none checkbox-xs" type="checkbox" value="accepted-TOS" required>
           </div>
           <div class="flex flex-col justify-center">
             <label class="form-check-label inline-block text-12px md:text-14px text-gray-800" for="flexCheckDefault">
-              Accetta i nostri <a class="hover:underline" href="/info/terms-and-conditions">Termini e Condizioni</a>
+              Accetta <a class="hover:underline" href="/info/terms-and-conditions">Termini e Condizioni</a>
             </label>
           </div>
         </div>

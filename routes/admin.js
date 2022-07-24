@@ -337,7 +337,7 @@ router.delete('/user/admin/products/delete/:id', middleware.isAdmin, async (req,
   try {
     const { id } = req.params;
     await Product.findByIdAndUpdate(id, { deleted: true });
-    res.redirect("/user/admin/products/modify/" + req.params.id);
+    res.redirect("/user/admin/products");
   } catch (error) {
     req.flash('error', 'Invalid id')
     return res.redirect('/user/admin/analysis')

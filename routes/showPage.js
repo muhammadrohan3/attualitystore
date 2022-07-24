@@ -104,13 +104,13 @@ router.get('/designers/:designer', async (req, res) => {
   else if(designer == 'valentino'){
     designer = 'VALENTINO';
   }
-  else if(designer == 'philiplein'){
+  else if(designer == 'philipp-plein'){
     designer = 'PHILIPP PLEIN';
   }
-  else if(designer == 'palmangels'){
+  else if(designer == 'palm-angels'){
     designer = 'PALM ANGELS';
   }
-  else if(designer == 'marceloburlon'){
+  else if(designer == 'marcelo-burlon'){
     designer = 'MARCELO BURLON';
   }
 
@@ -400,9 +400,6 @@ router.post('/cart/:id', async (req, res)=> {
     let contains = false;
     let indexProduct;
     req.session.cart.forEach((cart, index) => {
-      console.log(cart.product)
-      console.log(cart.product._id)
-      console.log('--------------')
       if(cart.product == product._id.toString() && cart.size == size){
         cartItemID = cart.id
         contains = true

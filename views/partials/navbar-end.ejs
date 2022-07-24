@@ -3,15 +3,15 @@
     <label for="my-drawer-4" class="drawer-overlay"></label>
 
     <div class="menu p-4 w-80 text-base-content flex flex-col justify-between bg-background">
-      <button class="absolute top-5 right-3 z-40" id="close-cart">
-        <img src="/icons-utils/cross-icon.webp" alt="">
+      <button class="absolute top-6 right-3 z-40" id="close-cart">
+        <img src="/icons-utils/cross-icon.webp" class="h-6 w-6" alt="">
       </button>
       <script>
         document.getElementById('close-cart').addEventListener('click', function() {
           document.querySelector('#my-drawer-4').checked = false
         });
       </script>
-      <p class="border-b border-black font-medium py-2 sticky top-0 bg-background text-center">IL TUO CARRELLO</p>
+      <p class="border-b border-black font-medium py-2 sticky top-0 bg-background text-center text-primary">IL TUO CARRELLO</p>
       <div id="cartItems" class="flex flex-col h-full my-3 gap-3">
         <% let total = 0; %>
         <% for(cartItem of cart){ %>

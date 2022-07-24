@@ -149,10 +149,12 @@ app.use(mongoSanitize());
 
 // models
 const Product = require('./models/product');
+const Order = require('./models/order');
 
 // TODO add order count only on admin routes
-app.use('/user/admin', (req, res, next) => {
-  console.log('ciao')
+app.use('/user/admin', async (req, res, next) => {
+  const ordersCount = await Order.count({completed: false})
+  res.locals.ordersCount = ordersCount;
   next()
 })
 
@@ -209,7 +211,7 @@ app.use(async (req, res, next) => {
   res.locals.error = req.flash("error");
 
   // TODO create a local that count every element for every category
-  let categories = {
+  let categoriesCounting = {
     jackets: 0,
     hoodies: 0,
     sweatshirts: 0,
@@ -229,40 +231,40 @@ app.use(async (req, res, next) => {
     for(elementProduct of products){
       if(!elementProduct.draft && !elementProduct.deleted){
         if (elementProduct.category.includes("jackets")) {
-          categories.jackets++;
+          categoriesCounting.jackets++;
         }
         if (elementProduct.category.includes("hoodies")) {
-          categories.hoodies++;
+          categoriesCounting.hoodies++;
         }
         if (elementProduct.category.includes("sweatshirts")) {
-          categories.sweatshirts++;
+          categoriesCounting.sweatshirts++;
         }
         if (elementProduct.category.includes("t-shirts")) {
-          categories["t-shirts"]++;
+          categoriesCounting["t-shirts"]++;
         }
         if (elementProduct.category.includes("polos")) {
-          categories.polos++;
+          categoriesCounting.polos++;
         }
         if (elementProduct.category.includes("jeans")) {
-          categories.jeans++;
+          categoriesCounting.jeans++;
         }
         if (elementProduct.category.includes("trousers")) {
-          categories.trousers++;
+          categoriesCounting.trousers++;
         }
         if (elementProduct.category.includes("bermuda")) {
-          categories.bermuda++;
+          categoriesCounting.bermuda++;
         }
         if (elementProduct.category.includes("shirts")) {
-          categories.shirts++;
+          categoriesCounting.shirts++;
         }
         if (elementProduct.category.includes("slippers")) {
-          categories.slippers++;
+          categoriesCounting.slippers++;
         }
         if (elementProduct.category.includes("wallets-and-small-leather-goods")) {
-          categories["wallets-and-small-leather-goods"]++;
+          categoriesCounting["wallets-and-small-leather-goods"]++;
         }
         if (elementProduct.category.includes("swimwear")) {
-          categories.swimwear++;
+          categoriesCounting.swimwear++;
         }
       }
     }
@@ -270,10 +272,10 @@ app.use(async (req, res, next) => {
     req.flash('error', "Internal server error")
     return res.redirect('/')
   }
-  res.locals.categoriesCount = categories;
+  res.locals.categoriesCount = categoriesCounting;
 
   // find all product and then change designer obj with the number of product in each category
-  let designers = {
+  let designersCounting = {
     'versace': 0,
     'fendi': 0,
     'balmain': 0,
@@ -289,28 +291,28 @@ app.use(async (req, res, next) => {
     for(elementProduct of products){
       if(!elementProduct.draft && !elementProduct.deleted){
         if (elementProduct.designer.includes("versace")) {
-          designers.versace++;
+          designersCounting.versace++;
         }
         if (elementProduct.designer.includes("fendi")) {
-          designers.fendi++;
+          designersCounting.fendi++;
         }
         if (elementProduct.designer.includes("balmain")) {
-          designers.balmain++;
+          designersCounting.balmain++;
         }
         if (elementProduct.designer.includes("philipp-plein")) {
-          designers["philipp-plein"]++;
+          designersCounting["philipp-plein"]++;
         }
         if (elementProduct.designer.includes("valentino")) {
-          designers.valentino++;
+          designersCounting.valentino++;
         }
         if (elementProduct.designer.includes("palm-angels")) {
-          designers["palm-angels"]++;
+          designersCounting["palm-angels"]++;
         }
         if (elementProduct.designer.includes("marcelo-burlon")) {
-          designers["marcelo-burlon"]++;
+          designersCounting["marcelo-burlon"]++;
         }
         if (elementProduct.designer.includes("dsquared2")) {
-          designers.dsquared2++;
+          designersCounting.dsquared2++;
         }
       }
     }
@@ -319,7 +321,7 @@ app.use(async (req, res, next) => {
     req.flash('error', "Internal server error")
     return res.redirect('/')
   }
-  res.locals.designersCount = designers;
+  res.locals.designersCount = designersCounting;
 
 
   next();
