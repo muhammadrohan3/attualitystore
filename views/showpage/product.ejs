@@ -22,7 +22,7 @@
     <% if(Object.keys(product.images).length !== 1){ %>
       <div class="product-image-carousel-desktop h-screen">
         <% for(image of Object.keys(product.images)){ %>
-          <div class="px-33% mt-2">
+          <div class="px-30% xl:px-33% mt-2">
             <img class="mx-auto" src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1100/<%= product.images[image].filename %>" alt="Product Image">
           </div>
         <% } %>

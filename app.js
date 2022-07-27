@@ -63,7 +63,8 @@ const scriptSrcUrls = [
   "https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js",
   "https://js.stripe.com/",
   "https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js",
-  "https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"
+  "https://unpkg.com/flowbite@1.4.7/dist/datepicker.js",
+  "https://connect.facebook.net/"
 ];
 const styleSrcUrls = [
   "https://fonts.googleapis.com/",
