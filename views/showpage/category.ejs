@@ -399,24 +399,14 @@
       <% 
       const nPages = Math.ceil((products.length/20))
       %>
-      <!-- TODO fare in modo che si possa cambiare pagina -->
-      <div class="flex justify-center gap-1 bg-background pb-10">
-        <a href="#" class="flex items-center px-4 py-2 text-gray-500 bg-gray-300 rounded-md <%= nPage > 1 ? 'hover:bg-blue-400 hover:text-white' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-            </svg>
-        </a>
+
+      <div class="flex justify-center gap-2 bg-background pb-10">
         <% for(let i = 1; i <= nPages; i++){ %>
-          <a href="#" data-page="<%= i %>" class="px-4 py-2 page-redirect bg-gray-300 rounded-md hover:bg-blue-400 hover:text-white <%= nPage == i ? 'bg-blue-400 text-white' : 'text-gray-700' %>">
+          <a href="#" data-page="<%= i %>" class="py-2.5 w-10 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
             <%= i %>
           </a>
         <% } %> 
-        <a href="#" class="px-4 py-2 text-gray-500 bg-gray-300 rounded-md <%= nPage < nPages ? 'hover:bg-blue-400 hover:text-white' : '' %>">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
-    </div>
+      </div>
     <script>
       const pageRedirects = document.querySelectorAll('.page-redirect')
       for(element of pageRedirects){

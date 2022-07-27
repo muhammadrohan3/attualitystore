@@ -83,7 +83,8 @@ router.get('/product/:urlSlug', async (req, res) => {
 
 router.get('/designers/:designer', async (req, res) => {
   let { designer } = req.params;
-  let { categoryQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  let { categoryQuery, sizeQuery, sortBy, isOpen, nPage  } = req.query;
+  nPage = nPage ? nPage : 1
   isOpen = isOpen == "true" || isOpen == true ? true : false;
   const designers = process.env.DESIGNERS.split(' ')
   
@@ -176,7 +177,7 @@ router.get('/designers/:designer', async (req, res) => {
   const clothing = 'Giacche/Felpe con cappuccio/Felpe/Camicie/Polo/T-shirt/Jeans/Pantaloni/Bermuda';
   const categories = accessories.split('/').concat(clothing.split('/'));
 
-  res.render('showpage/designers', { products, categoryQuery, sizeQuery, sortBy, designer, categories, isOpen });
+  res.render('showpage/designers', { products, categoryQuery, sizeQuery, sortBy, designer, categories, isOpen, nPage });
 })
 router.get('/clothing/:category', async (req, res) => {
   let { category } = req.params;
@@ -250,7 +251,8 @@ router.get('/clothing/:category', async (req, res) => {
 
 router.get('/accessories/:category', async (req, res) => {
   let { category } = req.params;
-  let { designerQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  let { designerQuery, sizeQuery, sortBy, isOpen, nPage  } = req.query;
+  nPage = nPage ? nPage : 1
   isOpen = isOpen == "true" || isOpen == true ? true : false;
   const clothing = process.env.ACCESSORIES.split(' ')
   const designers = process.env.DESIGNERS.split(' ')
@@ -298,7 +300,7 @@ router.get('/accessories/:category', async (req, res) => {
   }
  
 
-  res.render('showpage/accessories', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen });
+  res.render('showpage/accessories', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen, nPage });
 })
 
 router.post('/wishlist/:id', async (req, res)=> {

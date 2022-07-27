@@ -428,6 +428,43 @@
         <% } %>
   
       </div>
+
+      <% 
+      const nPages = Math.ceil((products.length/20))
+      %>
+
+      <div class="flex justify-center gap-2 bg-background pb-10">
+        <% for(let i = 1; i <= nPages; i++){ %>
+          <a href="#" data-page="<%= i %>" class="py-2.5 w-10 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
+            <%= i %>
+          </a>
+        <% } %> 
+      </div>
+    <script>
+      const pageRedirects = document.querySelectorAll('.page-redirect')
+      for(element of pageRedirects){
+        var matches = window.location.search.match(/[a-z\d]+=[a-z\d]+/gi);
+        var count = matches? matches.length : 0;
+        const urlParams = new URLSearchParams(window.location.search);
+        if(count > 1){
+          if(urlParams.has('nPage')){
+            element.href = (window.location.href.split('&nPage')[0] + 'nPage=' + element.dataset.page);
+          }else{
+            element.href = (window.location + '&nPage=' + element.dataset.page);
+          }
+        }else{
+          if(urlParams.has('nPage')){
+            element.href = (window.location.href.split('nPage')[0] + 'nPage=' + element.dataset.page);
+          }else{
+            if(count == 0){
+              element.href = (window.location + '?nPage=' + element.dataset.page);
+            }else{
+              element.href = (window.location + '&nPage=' + element.dataset.page);
+            }
+          }
+        }
+      }
+    </script>
     <% }else{ %>
       <div class="flex justify-center h-full bg-background">
         <h6 class="text-20px uppercase font-medium mt-12 mb-20">NESSUN RISULTATO</h6>
