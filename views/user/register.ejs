@@ -55,7 +55,52 @@
       <div class="relative z-0 w-full mb-4 group">
           <input type="password" name="password" id="floating_password" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
           <label for="floating_password" maxlength="40" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+          <button type="button" id="eye" class="absolute right-0 top-4 hidden">
+            <img src="/eye.png" class="h-4" alt="">
+          </button>
       </div>
+      <script>
+        const passwordInput = document.querySelector('#floating_password')
+        const eye = document.querySelector('#eye')
+        passwordInput.addEventListener('keyup', () => {
+          if(passwordInput.value){
+            eye.classList.remove('hidden')
+          }else{
+            eye.classList.add('hidden')
+          }
+        })
+        eye.addEventListener('click', () => {
+          if(passwordInput.type == 'password'){
+            passwordInput.type = 'text'
+          }
+          else{
+            passwordInput.type = 'password'
+          }
+        })
+        window.onload = () => {
+          if(passwordInput.value){
+            eye.classList.remove('hidden')
+          }
+        }
+      </script>
+      <div class="relative z-0 w-full mb-4 group">
+        <input type="password" name="password_repeat" id="floating_password_repeat" class="block py-2 px-0 w-full text-16px text-black bg-transparent border-0 border-b-2 border-t-2 border-t-transparent border-b-black appearance-none focus:outline-none focus:ring-0 focus:border-b-primary peer" placeholder=" " required />
+        <label for="floating_password_repeat" maxlength="40" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Ripeti password</label>
+      </div>
+      <script>
+        const passwordRepeatInput = document.getElementById("floating_password_repeat");
+
+        function validatePassword(){
+          if(passwordInput.value != passwordRepeatInput.value) {
+            passwordRepeatInput.setCustomValidity("Passwords Don't Match");
+          } else {
+            passwordRepeatInput.setCustomValidity('');
+          }
+        }
+
+        passwordInput.onkeyup = validatePassword;
+        passwordRepeatInput.onkeyup = validatePassword;
+      </script>
 
       <div class="mb-5 flex justify-between">
         <div class="form-check flex gap-2">
@@ -68,10 +113,9 @@
             </label>
           </div>
         </div>
-        <a href="/forgotpassword" class="hover:underline text-12px md:text-14px">Password dimenticata?</a>
       </div>
       <div class="flex justify-center">
-        <button type="submit" class="bg-black text-white border focus:ring-none focus:outline-none font-semibold mt-3 lg:text-16px text-14px w-full py-2 text-center">REGISTER</button>
+        <button type="submit" class="bg-black text-white border focus:ring-none focus:outline-none font-semibold mt-3 lg:text-16px text-14px w-full py-2 text-center">REGISTRATI</button>
       </div>
  
     </form>
