@@ -401,7 +401,7 @@
       %>
       <div class="flex justify-center gap-2 bg-background pb-10">
         <% for(let i = 1; i <= nPages; i++){ %>
-          <a href="#" data-page="<%= i %>" class="py-2.5 w-10 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
+          <a href="#" data-page="<%= i %>" class="md:py-2.5 py-1 md:w-10 w-8 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
             <%= i %>
           </a>
         <% } %> 
