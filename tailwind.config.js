@@ -70,7 +70,7 @@ module.exports = {
         "30px": "30px",
         "20px": "20px",
         "10px": "10px",
-        "35%": "35%",
+        "33%": "33%",
         desktop: "50px",
         laptop: "30px",
         tablet: "20px",

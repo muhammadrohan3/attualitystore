@@ -7,6 +7,35 @@ filters.addEventListener('click', () => {
   filtersUp.classList.toggle('hidden')
   filtersDown.classList.toggle('hidden')
   filterMenu.classList.toggle('active')
+
+  const params = new URLSearchParams(window.location.search)
+  var matches = window.location.search.match(/[a-z\d]+=[a-z\d]+/gi);
+  var count = matches? matches.length : 0;
+  if(filterMenu.classList.contains('active')){
+    if(count > 1){
+      if(params.has('isOpen')){
+        window.history.pushState("", "", window.location.href.split('&isOpen')[0] + 'isOpen=true');
+      }else{
+        window.history.pushState("", "", window.location + '&isOpen=true');
+      }
+    }else{
+      if(params.has('isOpen')){
+        window.history.pushState("", "", window.location.href.split('isOpen')[0] + 'isOpen=true');
+      }else{
+        if(count == 0){
+          window.history.pushState("", "", window.location + '?isOpen=true');
+        }else{
+          window.history.pushState("", "", window.location + '&isOpen=true');
+        }
+      }
+    }
+  }else{
+    if(count == 1){
+      window.history.pushState("", "", window.location.href.split('?isOpen')[0]);
+    }else{
+      window.history.pushState("", "", window.location.href.split('&isOpen')[0]);
+    }
+  }
 })
 
 document.querySelector('#designerQueryButton').addEventListener('click', () => {

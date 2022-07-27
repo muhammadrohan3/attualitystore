@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attuality Store</title>
+  <title><%= category %></title>
   <link rel="icon" type="image/x-icon" href="/favico.ico">
   <link rel="stylesheet" href="/css/showPage.css">
   <link rel="stylesheet" href="/css/app.css">
@@ -25,10 +25,10 @@
         </div>
         <div class="flex flex-col justify-center h-full">
           <div class="flex">
-            <svg id="filters-up" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg id="filters-up" class="<%= isOpen ? 'hidden' : '' %>" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.4899 0.343207L20.9793 9.83261C21.437 10.2903 21.437 11.0323 20.9793 11.4899L19.8725 12.5967C19.4157 13.0536 18.6752 13.0544 18.2172 12.5986L10.6613 5.07812L3.10536 12.5987C2.6474 13.0545 1.90692 13.0536 1.45004 12.5967L0.34325 11.4899C-0.114417 11.0323 -0.114417 10.2903 0.34325 9.83266L9.83265 0.343255C10.2903 -0.114411 11.0323 -0.11441 11.4899 0.343207Z" fill="black"/>
             </svg> 
-            <svg id="filters-down" class="hidden" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg id="filters-down" class="<%= isOpen ? '' : 'hidden' %>" width="13" height="8" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.83265 12.5968L0.34325 3.1073C-0.114417 2.64963 -0.114417 1.90764 0.34325 1.45003L1.45004 0.343238C1.90692 -0.113646 2.6474 -0.114526 3.10536 0.341285L10.6613 7.86184L18.2172 0.341285C18.6752 -0.114526 19.4157 -0.113646 19.8725 0.343238L20.9793 1.45003C21.437 1.90769 21.437 2.64968 20.9793 3.1073L11.49 12.5968C11.0323 13.0544 10.2903 13.0544 9.83265 12.5968Z" fill="black"/>
             </svg>                      
           </div>
@@ -187,7 +187,11 @@
     <% if(products.length != 0) { %>
       <div class="grid lg:gap-x-5 md:gap-x-4 gap-x-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 pt-4 bg-background xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
       
-        <% for(product of products){ %>
+        <% 
+        const sliced = products.slice((20 * (nPage - 1)) - 1, (20 * nPage) - 1)
+        %>
+      
+        <% for(product of sliced){ %>
   
           <% 
             let passed = false;  

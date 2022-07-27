@@ -180,7 +180,8 @@ router.get('/designers/:designer', async (req, res) => {
 })
 router.get('/clothing/:category', async (req, res) => {
   let { category } = req.params;
-  let { designerQuery, sizeQuery, sortBy, isOpen  } = req.query;
+  let { designerQuery, sizeQuery, sortBy, isOpen, nPage  } = req.query;
+  nPage = nPage ? nPage : 1
   isOpen = isOpen == "true" || isOpen == true ? true : false;
   const clothing = process.env.CLOTHING.split(' ')
   const designers = process.env.DESIGNERS.split(' ')
@@ -244,8 +245,7 @@ router.get('/clothing/:category', async (req, res) => {
     products = products.sort((a, b) => a.modelName.localeCompare(b.modelName))
   }
  
-
-  res.render('showpage/category', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen });
+  res.render('showpage/category', { category, products, designers, designerQuery, sizeQuery, sortBy, isOpen, nPage });
 })
 
 router.get('/accessories/:category', async (req, res) => {
