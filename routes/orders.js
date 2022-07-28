@@ -560,7 +560,7 @@ router.post('/checkout/buynow', async (req, res) => {
     if (item.copies > productCopies) {
       return res.send(JSON.stringify({ status: "cart-changed" }));
     }
-  }
+    }
    if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
      if (req.body.state != "Italia") {
        return res.send("error");

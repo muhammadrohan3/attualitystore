@@ -42,6 +42,7 @@ const sessionConfig = {
   cookie: {
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 12),
+    sameSite: 'strict'
   },
 };
 app.use(session(sessionConfig))
@@ -76,18 +77,21 @@ const styleSrcUrls = [
   "https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css"
 ];
 const connectSrcUrls = [
-  "https://graph.instagram.com/"
+  "https://graph.instagram.com/",
+  "https://www.facebook.com"
 ];
 const fontSrcUrls = [
-  "fonts.gstatic.com",
+  "fonts.gstatic.com"
 ];
 const imgSrc = [
   "https://res.cloudinary.com/attuality-store/",
   "https://*.cdninstagram.com/",
   "https://cdn.shopify.com/",
+  "https://www.facebook.com/"
 ];
 const defaultSrc = [
-  "https://js.stripe.com/"
+  "https://js.stripe.com/",
+  "https://www.facebook.com"
 ]
 app.use(
   helmet.contentSecurityPolicy({

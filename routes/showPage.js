@@ -176,7 +176,6 @@ router.get('/designers/:designer', async (req, res) => {
   const accessories = 'Portafoglio e Piccola Pelletteria/Customi da Bagno/Ciabatte'
   const clothing = 'Giacche/Felpe con cappuccio/Felpe/Camicie/Polo/T-shirt/Jeans/Pantaloni/Bermuda';
   const categories = accessories.split('/').concat(clothing.split('/'));
-
   res.render('showpage/designers', { products, categoryQuery, sizeQuery, sortBy, designer, categories, isOpen, nPage });
 })
 router.get('/clothing/:category', async (req, res) => {

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/css/checkout.css">
 
   <script src="https://js.stripe.com/v3/"></script>
+  <%- include('./partials/facebook-pixel') %>
 </head>
 
 <body class="bg-background flex flex-col min-h-screen font-main">
@@ -2121,6 +2122,9 @@
 
                 <div id="emailError" class="flex justify-center hidden">
                   <p class="text-red-500 text-14px font-semibold">*seleziona una mail con tld presente nella IANA list*</p>
+                </div>
+                <div id="stateError" class="flex justify-center hidden">
+                  <p class="text-red-500 text-14px font-semibold">*seleziona uno stato*</p>
                 </div>
 
               </div>
