@@ -13,9 +13,9 @@
   <script src="https://js.stripe.com/v3/"></script>
   <%- include('./partials/facebook-pixel') %>
   <script>
-    fbq('track', 'InitiateCheckout', {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'})
-    fbq('track', 'AddPaymentInfo', {value: <%= product.discountedPrice/100 %>, currency: 'EUR'})
-    fbq('track', 'Purchase', {currency: "EUR", num_items: 1, content_ids: <%= product._id %>, content_type: <%= product.designer %>, content_category: <%= product.category %>, value: (<%= product.discountedPrice %>/100).toFixed(2)})
+    fbq('track', 'InitiateCheckout'/*, {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'}*/)
+    // fbq('track', 'AddPaymentInfo', {value: <%= product.discountedPrice/100 %>, currency: 'EUR'})
+    // fbq('track', 'Purchase', {currency: "EUR", num_items: 1, content_ids: <%= product._id %>, content_type: <%= product.designer %>, content_category: <%= product.category %>, value: (<%= product.discountedPrice %>/100).toFixed(2)})
   </script>
 </head>
 

@@ -11,15 +11,16 @@
   <link rel="stylesheet" href="/css/product.css">
   <link rel="stylesheet" href="/css/showPage.css">
   <meta name="description" content="<%= product.description %>">
-  <script>
-    fbq('track', 'ViewContent', {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'})
-  </script>
 </head>
 
 <body class="bg-background flex flex-col min-h-screen font-main">
 
   <%- include('../partials/navbar') %> 
   <%- include('../partials/flash') %> 
+
+  <script>
+    fbq('track', 'ViewContent'/*, {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'}*/)
+  </script>
 
   <div id="carousel-wrapper">
     <% if(Object.keys(product.images).length !== 1){ %>
@@ -284,7 +285,7 @@
                     response = JSON.parse(await response.text())
                     document.getElementById("cart-<%= product._id %>").disabled = false
                     if (response.status == 'success') {
-                      fbq('track', 'AddToCart', {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category})
+                      fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
                       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                       document.getElementById('cart-indicator').classList.remove('hidden')
                       document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (product.discountedPrice / 100) %>).toFixed(2)
