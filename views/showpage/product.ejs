@@ -274,6 +274,7 @@
                     const product = <%- JSON.stringify(product) %>
                                 
                     if (document.getElementById('sizegroup').dataset.sizechoosen == 'none') {
+                      document.getElementById("cart-<%= product._id %>").disabled = false
                       return document.getElementById('chooseSize').classList.remove('hidden')
                     }
 

@@ -258,6 +258,7 @@ for(button of addToCartButtons){
     })[0]
 
     if(document.getElementById(`sizegroup-${event.target.dataset.id}`).dataset.sizechoosen == 'none'){
+      event.target.disabled = false
       return document.getElementById('chooseSize').classList.remove('hidden')
     }
 
