@@ -17,9 +17,14 @@
 
   <%- include('./partials/facebook-pixel') %>
   <script>
-    fbq('track', 'InitiateCheckout'/*, {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'}*/)
-    // fbq('track', 'AddPaymentInfo', {value: <%= product.discountedPrice/100 %>, currency: 'EUR'})
-    // fbq('track', 'Purchase', {currency: "EUR", num_items: 1, content_ids: <%= product._id %>, content_type: <%= product.designer %>, content_category: <%= product.category %>, value: (<%= product.discountedPrice %>/100).toFixed(2)})
+    fbq('track', 'InitiateCheckout')
+    let alreadyAddedPaymentInfo = false;
+    function addPaymentInfo() {
+      if(!alreadyAddedPaymentInfo){
+        alreadyAddedPaymentInfo = true
+        fbq('track', 'AddPaymentInfo')
+      }
+    }
   </script>
 
   <%- include('./partials/flash') %>
@@ -48,13 +53,13 @@
 
                 <div class="flex flex-col gap-1">
                   <label class="text-14px font-medium" for="email">E-mail*</label>
-                  <input maxlength="50" value="<%= user ? user.email : '' %>" type="email" id="email" required
+                  <input onchange="addPaymentInfo()" maxlength="50" value="<%= user ? user.email : '' %>" type="email" id="email" required
                     name="email" class="border border-black px-2.5 py-2 text-14px">
                 </div>
 
                 <div class="flex flex-col gap-1">
                   <label class="text-14px font-medium" for="phone-number">Numero di telefono*</label>
-                  <input value="<%= user ? user.number : '' %>" type="tel" pattern=".{12,}" id="phone-number"
+                  <input onchange="addPaymentInfo()" value="<%= user ? user.number : '' %>" type="tel" pattern=".{12,}" id="phone-number"
                     name="phoneNumber" required class="border border-black px-2.5 py-2 text-14px">
                 </div>
 
@@ -62,13 +67,13 @@
 
                   <div class="flex flex-col gap-1">
                     <label class="text-14px font-medium" for="name">Nome*</label>
-                    <input maxlength="30" value="<%= user ? user.name : '' %>" type="text" id="name" required
+                    <input onchange="addPaymentInfo()" maxlength="30" value="<%= user ? user.name : '' %>" type="text" id="name" required
                       name="name" class="border border-black px-2.5 py-2 text-14px">
                   </div>
 
                   <div class="flex flex-col gap-1">
                     <label class="text-14px font-medium" for="surname">Cognome*</label>
-                    <input maxlength="40" value="<%= user ? user.surname : '' %>" type="text" id="surname" required
+                    <input onchange="addPaymentInfo()" maxlength="40" value="<%= user ? user.surname : '' %>" type="text" id="surname" required
                       name="surname" class="border border-black px-2.5 py-2 text-14px">
                   </div>
 
@@ -76,7 +81,7 @@
 
                 <div class="flex flex-col gap-1">
                   <label class="text-14px font-medium" for="address">Indirizzo di spedizione*</label>
-                  <input maxlength="70" type="text" id="address" required name="address"
+                  <input onchange="addPaymentInfo()" maxlength="70" type="text" id="address" required name="address"
                     class="border border-black px-2.5 py-2 text-14px">
                 </div>
 
@@ -84,13 +89,13 @@
 
                   <div class="flex flex-col gap-1">
                     <label class="text-14px font-medium" for="city">Città*</label>
-                    <input maxlength="50" type="text" id="city" required name="city"
+                    <input onchange="addPaymentInfo()" maxlength="50" type="text" id="city" required name="city"
                       class="border border-black px-2.5 py-2 text-14px">
                   </div>
 
                   <div class="flex flex-col gap-1">
                     <label class="text-14px font-medium" for="province">Paese/Provincia*</label>
-                    <input maxlength="50" type="text" id="province" required name="province"
+                    <input onchange="addPaymentInfo()" maxlength="50" type="text" id="province" required name="province"
                       class="border border-black px-2.5 py-2 text-14px">
                   </div>
 
@@ -100,7 +105,7 @@
 
                   <div class="flex flex-col gap-1">
                     <label class="text-14px font-medium" for="zip">Zip/Codice Postale*</label>
-                    <input pattern=".{5,}" type="text" id="zip" required name="zip"
+                    <input onchange="addPaymentInfo()" pattern=".{5,}" type="text" id="zip" required name="zip"
                       class="border border-black px-2.5 py-2 text-14px">
                   </div>
 
