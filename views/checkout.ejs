@@ -20,6 +20,8 @@
     let alreadyAddedPaymentInfo = false;
     function addPaymentInfo() {
       if(!alreadyAddedPaymentInfo){
+        // TODO test this
+        console.log('did')
         alreadyAddedPaymentInfo = true
         fbq('track', 'AddPaymentInfo')
       }

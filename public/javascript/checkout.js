@@ -217,8 +217,10 @@ checkout.addEventListener('submit', async (e) => {
         }, 5000)
       }
     }else{
-      alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
+      // TODO remove this console.log
+      console.log('purchase tracked')
       fbq('track', 'Purchase')
+      alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = '/destroycart'
     }
 
