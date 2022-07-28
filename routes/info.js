@@ -3,6 +3,12 @@ if(process.env.NODE_ENV !== 'production') require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 
+router.get("/info/terms-and-conditions", (req, res) => {
+  res.render("info/tos");
+});
+router.get("/info/attuality-store", (req, res) => {
+  res.render("info/attuality-store");
+});
 router.get("/info/attuality-store", (req, res) => {
   res.render("info/attuality-store");
 });
