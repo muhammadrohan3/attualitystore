@@ -218,7 +218,6 @@ checkout.addEventListener('submit', async (e) => {
       }
     }else{
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
-      fbq('track', 'Purchase', {currency: "EUR", value: (result.paymentIntent.amount/100).toFixed(2)})
       window.location = '/destroycart'
     }
 

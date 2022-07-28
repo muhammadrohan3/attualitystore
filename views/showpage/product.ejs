@@ -283,6 +283,7 @@
                     response = JSON.parse(await response.text())
                     document.getElementById("cart-<%= product._id %>").disabled = false
                     if (response.status == 'success') {
+                      fbq('track', 'AddToCart', {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category})
                       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                       document.getElementById('cart-indicator').classList.remove('hidden')
                       document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (product.discountedPrice / 100) %>).toFixed(2)

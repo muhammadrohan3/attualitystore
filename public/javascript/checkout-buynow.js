@@ -230,7 +230,6 @@ checkout.addEventListener("submit", async (e) => {
       }
     } else {
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
-      fbq('trackCustom', 'Purchase', {currency: "EUR", num_items: 1, content_ids: result.paymentIntent.id, content_type: 'clothing', content_category: 'clothing', value: (result.paymentIntent.amount/100).toFixed(2)})
       window.location = "/";
     }
   }
