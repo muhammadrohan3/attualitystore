@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="/css/checkout.css">
 
   <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body class="bg-background flex flex-col min-h-screen font-main">
+
   <%- include('./partials/facebook-pixel') %>
   <script>
     fbq('track', 'InitiateCheckout'/*, {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'}*/)
@@ -22,9 +26,6 @@
     // %>
     // fbq('track', 'Purchase', {currency: "EUR", num_items: <%= cart.length %>, content_ids: <%= cart.id %>, content_type: 'clothing', content_category: 'clothing', value: (<%= total %>/100).toFixed(2)})
   </script>
-</head>
-
-<body class="bg-background flex flex-col min-h-screen font-main">
 
   <%- include('./partials/flash') %> 
 
