@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="/css/product.css">
   <link rel="stylesheet" href="/css/showPage.css">
   <meta name="description" content="<%= product.description %>">
+  <script>
+    fbq('track', 'ViewContent', {value: <%= product.discountedPrice/100 %>, currency: 'EUR', content_name: '<%= product.modelName %>', content_ids: '<%= product._id %>', content_category: '<%= product.designer %>', content_type: '<%= product.category %>'})
+  </script>
 </head>
 
 <body class="bg-background flex flex-col min-h-screen font-main">
