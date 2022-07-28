@@ -219,7 +219,7 @@ checkout.addEventListener('submit', async (e) => {
     }else{
       // TODO remove this console.log
       console.log('purchase tracked')
-      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2)})
+      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: cart.length, content_ids: cart.id, content_type: 'clothing', content_category: 'clothing' })
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = '/destroycart'
     }

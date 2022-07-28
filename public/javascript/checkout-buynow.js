@@ -227,7 +227,7 @@ checkout.addEventListener("submit", async (e) => {
         }, 5000);
       }
     } else {
-      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2)})
+      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: 1, content_ids: product.id, content_type: product.category, content_category: product.designer })
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = "/";
     }

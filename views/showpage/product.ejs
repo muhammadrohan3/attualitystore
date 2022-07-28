@@ -18,10 +18,6 @@
   <%- include('../partials/navbar') %> 
   <%- include('../partials/flash') %> 
 
-  <script>
-    fbq('track', 'ViewContent')
-  </script>
-
   <div id="carousel-wrapper">
     <% if(Object.keys(product.images).length !== 1){ %>
       <div class="product-image-carousel-desktop h-screen">
@@ -1069,6 +1065,9 @@
   <%- include('../partials/why-attuality') %>
   <%- include('../partials/footer') %> 
   <%- include('../partials/navbar-end') %>
+  <script>
+    fbq('track', 'ViewContent')
+  </script>
 
   <script>
     $(document).ready(function(){
