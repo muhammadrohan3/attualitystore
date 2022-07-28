@@ -227,7 +227,7 @@ checkout.addEventListener("submit", async (e) => {
         }, 5000);
       }
     } else {
-      fbq('track', 'Purchase')
+      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2)})
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = "/";
     }
