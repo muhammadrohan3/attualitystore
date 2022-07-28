@@ -550,6 +550,10 @@ router.post('/checkout/buynow', async (req, res) => {
       return res.send("error");
     }
 
+    if(item.copies != 0){
+      return res.send('error')
+    }
+
     const product = await Product.findById(item.product._id);
     let productCopies = 0;
     product.sizes.forEach((size) => {
