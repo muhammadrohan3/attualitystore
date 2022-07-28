@@ -512,7 +512,6 @@ router.post('/checkout/buynow', async (req, res) => {
   if (errorEmail.error) {
     return res.send(JSON.stringify({ status: "invalid-tld" }));
   }
-
     if (req.body.cart) {
       if (req.body.cart.length == 0 || req.body.cart.length > 1) {
         return res.send("error");
@@ -550,7 +549,7 @@ router.post('/checkout/buynow', async (req, res) => {
       return res.send("error");
     }
 
-    if(item.copies != 0){
+    if(item.copies != 1){
       return res.send('error')
     }
 
