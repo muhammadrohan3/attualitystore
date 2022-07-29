@@ -467,13 +467,6 @@ app.use('/', infoRoutes);
 
 
 app.all('*', (req ,res) => {
-  try {
-    if(req.originalUrl.split('?')[0] == req.session.landingPage){
-      req.session.destroy()
-    }
-  } catch (error) {
-    
-  }
   res.status(404).render('404')
 })
 
