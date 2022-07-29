@@ -188,7 +188,11 @@
       <div class="grid lg:gap-x-5 md:gap-x-4 gap-x-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 pt-4 bg-background xl:px-desktop lg:px-laptop md:px-tablet px-mobile">
       
         <% 
+<<<<<<< HEAD
         const sliced = products.slice((20 * (nPage - 1)) - 1, (20 * nPage) - 1)
+=======
+        const sliced = products.slice((20 * (nPage - 1)), (20 * nPage))
+>>>>>>> 913306ade445f791f47b11b531a27c5d3d5d5233
         %>
       
         <% for(product of sliced){ %>
@@ -395,6 +399,42 @@
         <% } %>
   
       </div>
+
+      <% 
+      const nPages = Math.ceil((products.length/20))
+      %>
+      <div class="flex justify-center gap-2 bg-background pb-10">
+        <% for(let i = 1; i <= nPages; i++){ %>
+          <a href="#" data-page="<%= i %>" class="md:py-2.5 py-1 md:w-10 w-8 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
+            <%= i %>
+          </a>
+        <% } %> 
+      </div>
+    <script>
+      const pageRedirects = document.querySelectorAll('.page-redirect')
+      for(element of pageRedirects){
+        var matches = window.location.search.match(/[a-z\d]+=[a-z\d]+/gi);
+        var count = matches? matches.length : 0;
+        const urlParams = new URLSearchParams(window.location.search);
+        if(count > 1){
+          if(urlParams.has('nPage')){
+            element.href = (window.location.href.split('&nPage')[0] + 'nPage=' + element.dataset.page);
+          }else{
+            element.href = (window.location + '&nPage=' + element.dataset.page);
+          }
+        }else{
+          if(urlParams.has('nPage')){
+            element.href = (window.location.href.split('nPage')[0] + 'nPage=' + element.dataset.page);
+          }else{
+            if(count == 0){
+              element.href = (window.location + '?nPage=' + element.dataset.page);
+            }else{
+              element.href = (window.location + '&nPage=' + element.dataset.page);
+            }
+          }
+        }
+      }
+    </script>
     <% }else{ %>
       <div class="flex justify-center h-full bg-background">
         <h6 class="text-20px uppercase font-medium mt-12 mb-20">NESSUN RISULTATO</h6>

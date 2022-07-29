@@ -512,7 +512,6 @@ router.post('/checkout/buynow', async (req, res) => {
   if (errorEmail.error) {
     return res.send(JSON.stringify({ status: "invalid-tld" }));
   }
-
     if (req.body.cart) {
       if (req.body.cart.length == 0 || req.body.cart.length > 1) {
         return res.send("error");
@@ -550,6 +549,10 @@ router.post('/checkout/buynow', async (req, res) => {
       return res.send("error");
     }
 
+    if(item.copies != 1){
+      return res.send('error')
+    }
+
     const product = await Product.findById(item.product._id);
     let productCopies = 0;
     product.sizes.forEach((size) => {
@@ -560,7 +563,7 @@ router.post('/checkout/buynow', async (req, res) => {
     if (item.copies > productCopies) {
       return res.send(JSON.stringify({ status: "cart-changed" }));
     }
-  }
+    }
    if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
      if (req.body.state != "Italia") {
        return res.send("error");

@@ -27,6 +27,8 @@ class="bg-white flex flex-col min-h-screen font-main">
           <th class="bg-secondary">Nome</th> 
           <th class="bg-secondary">Designer</th> 
           <th class="bg-secondary">Categoria</th> 
+          <th class="bg-secondary">Taglia</th> 
+          <th class="bg-secondary">Copie</th> 
           <th class="bg-secondary">AZIONI</th> 
         </tr>
       </thead> 
@@ -51,6 +53,12 @@ class="bg-white flex flex-col min-h-screen font-main">
               order.products[i].product.category == 'swimwear' ? "COSTUMI DA BAGNO" :
               'CIABATTE'
               %></td> 
+              <td class="bg-background">
+                <%= order.products[i].size %>
+              </td>
+              <td class="bg-background">
+                <%= order.products[i].copies %>
+              </td>
             <td class="bg-background flex gap-4">
               <form action="/user/admin/orders/info/<%= order.products[i].product._id %>">
                 <button class="border border-black p-1 bg-secondary">

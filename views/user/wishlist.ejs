@@ -258,6 +258,7 @@ for(button of addToCartButtons){
     })[0]
 
     if(document.getElementById(`sizegroup-${event.target.dataset.id}`).dataset.sizechoosen == 'none'){
+      event.target.disabled = false
       return document.getElementById('chooseSize').classList.remove('hidden')
     }
 
@@ -267,6 +268,7 @@ for(button of addToCartButtons){
     response = JSON.parse(await response.text())
     event.target.disabled = false
     if(response.status == 'success'){
+      fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
       document.getElementById('cart-indicator').classList.remove('hidden')
       document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + (product.discountedPrice/100)).toFixed(2)
@@ -334,6 +336,7 @@ for(button of addToCartButtons){
             document.getElementById("cartAdd-${response.id}").disabled = false
             document.getElementById("cartRemove-${response.id}").disabled = false
             if(response.status == 'success'){
+              fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
               document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
               document.getElementById('cart-indicator').classList.remove('hidden')
               document.getElementById('cartQuantity-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantity-${response.id}').innerHTML) + 1

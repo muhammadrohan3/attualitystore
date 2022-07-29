@@ -54,6 +54,7 @@ let prevFlag = 'none';
 let total = parseFloat(totalPage.innerHTML);
 for(flag of countryFlag){
   flag.addEventListener('click', (e) => {
+    document.getElementById('stateError').classList.add('hidden')
 
     dropdown.classList.add('hidden')
     dropdown.classList.remove('block')
@@ -148,6 +149,7 @@ country.addEventListener('focusout', () => {
 const paymentRadios = document.getElementsByName('payment')
 let paymentValue = false;
 for(radio of paymentRadios){
+  radio.checked = false
   radio.addEventListener('change', (e) => {
     if(e.target.checked){
       paymentValue = e.target.value
@@ -175,6 +177,10 @@ checkout.addEventListener('submit', async (e) => {
     state: prevFlag,
   }
 
+  if(prevFlag == 'none'){
+    return document.getElementById('stateError').classList.remove('hidden')
+  }
+
   const request = await fetch('/checkout', {
     method: 'POST',
     headers: {
@@ -196,6 +202,7 @@ checkout.addEventListener('submit', async (e) => {
   if(paymentValue == 'card'){
     response = response.clientSecret 
   
+
     const result = await stripe.confirmCardPayment(response, {
       payment_method: {
         card: cardElement
@@ -210,6 +217,9 @@ checkout.addEventListener('submit', async (e) => {
         }, 5000)
       }
     }else{
+      // TODO remove this console.log
+      console.log('purchase tracked')
+      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: cart.length, content_ids: cart.id, content_type: 'clothing', content_category: 'clothing' })
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = '/destroycart'
     }

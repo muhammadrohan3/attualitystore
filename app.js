@@ -42,6 +42,7 @@ const sessionConfig = {
   cookie: {
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 12),
+    sameSite: 'strict'
   },
 };
 app.use(session(sessionConfig))
@@ -63,7 +64,12 @@ const scriptSrcUrls = [
   "https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js",
   "https://js.stripe.com/",
   "https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js",
-  "https://unpkg.com/flowbite@1.4.7/dist/datepicker.js"
+  "https://unpkg.com/flowbite@1.4.7/dist/datepicker.js",
+  "https://connect.facebook.net/",
+
+  // userlike
+  "https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/c96f3aaf445142ddbdb4923ccc099e494bf948f1ea464e8e8474894d6c37f432.js",
+  "https://d3dc1lgancj6l0.cloudfront.net"
 ];
 const styleSrcUrls = [
   "https://fonts.googleapis.com/",
@@ -75,18 +81,34 @@ const styleSrcUrls = [
   "https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css"
 ];
 const connectSrcUrls = [
-  "https://graph.instagram.com/"
+  "https://graph.instagram.com/",
+  "https://www.facebook.com",
+
+  // userlike
+  "https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/umm-manifest.json",
+  "https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/c96f3aaf445142ddbdb4923ccc099e494bf948f1ea464e8e8474894d6c37f432.json",
+  "https://api.userlike.com",
+  "https://www.userlike.com",
+  "wss://umd.userlike.com/umd/"
 ];
 const fontSrcUrls = [
   "fonts.gstatic.com",
+
+  // userlike
+  "https://d3dc1lgancj6l0.cloudfront.net"
 ];
 const imgSrc = [
   "https://res.cloudinary.com/attuality-store/",
   "https://*.cdninstagram.com/",
   "https://cdn.shopify.com/",
+  "https://www.facebook.com/",
+
+  // userlike
+  "https://userlike-cdn-operators.s3-eu-west-1.amazonaws.com"
 ];
 const defaultSrc = [
-  "https://js.stripe.com/"
+  "https://js.stripe.com/",
+  "https://www.facebook.com"
 ]
 app.use(
   helmet.contentSecurityPolicy({

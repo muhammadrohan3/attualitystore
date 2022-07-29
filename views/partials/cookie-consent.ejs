@@ -1,0 +1,72 @@
+<div style="z-index: 100000;" id="cookie-consent" class="fixed w-full bg-white bottom-0 left-0 grid grid-cols-12 xl:px-desktop lg:px-laptop md:px-tablet px-mobile lg:py-8 py-5 gap-3 lg:gap-0 hidden lg:text-16px text-14px">
+    <div class="flex flex-col justify-center lg:col-span-8 col-span-12">
+        <p class="text-center lg:text-left">Utilizziamo i cookie di terze parti sul nostro sito per fornirti la migliore esperienza, analizzare il nostro traffico e il marketing. Seleziona "Accetta tutto" per permetterci di utilizzarli.</p>
+    </div>
+    <div class="lg:col-span-4 col-span-12 flex justify-center lg:justify-end gap-4">
+        <div class="flex flex-col justify-center">
+            <a href="/info/privacy-cookie-policy" class="underline">Info</a>
+        </div>
+        <div class="flex flex-col justify-center">
+            <button id="decline" class="px-2 lg:h-11 h-9 border-black border">Rifiuta</button>
+        </div>
+        <div class="flex flex-col justify-center">
+            <button id="accept" class="px-2 lg:h-11 h-9 border-black border bg-black text-white">Accetta tutto</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const cookieConsent = document.getElementById('cookie-consent')
+    const accept = document.getElementById('accept')
+    const decline = document.getElementById('decline')
+
+
+    // set cookie according to you
+    var cookieName= "cookie-accepted";
+    var cookieValue="yes";
+    var cookieValueDecline='no'
+    var cookieExpireDays= 30;
+    // when users click accept button
+    accept.onclick= function(){
+        createCookie(cookieName, cookieValue, cookieExpireDays);
+    }
+    decline.onclick= function(){
+        createCookie(cookieName, cookieValueDecline, cookieExpireDays);
+    }
+    // function to set cookie in web browser
+    let createCookie= function(cookieName, cookieValue, cookieExpireDays){
+        let currentDate = new Date();
+        currentDate.setTime(currentDate.getTime() + (cookieExpireDays*24*60*60*1000));
+        let expires = "expires=" + currentDate.toGMTString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+        if(document.cookie){
+            cookieConsent.classList.add('hidden')
+        }else{
+            alert("Unable to set cookie. Please allow all cookies site from cookie setting of your browser");
+        }
+    }
+    // get cookie from the web browser
+    let getCookie= function(cookieName){
+    let name = cookieName + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+    }
+    // check cookie is set or not
+    let checkCookie= function(){
+        let check=getCookie(cookieName);
+        if(check==""){
+            cookieConsent.classList.remove('hidden')
+        }
+    }
+    checkCookie();
+</script>

@@ -399,6 +399,7 @@
       <% 
       const nPages = Math.ceil((products.length/20))
       %>
+<<<<<<< HEAD
       <!-- TODO fare in modo che si possa cambiare pagina -->
       <div class="flex justify-center gap-1 bg-background pb-10">
         <a href="#" class="flex items-center px-4 py-2 text-gray-500 bg-gray-300 rounded-md <%= nPage > 1 ? 'hover:bg-blue-400 hover:text-white' : '' %>">
@@ -417,6 +418,16 @@
           </svg>
         </a>
     </div>
+=======
+
+      <div class="flex justify-center gap-2 bg-background pb-10">
+        <% for(let i = 1; i <= nPages; i++){ %>
+          <a href="#" data-page="<%= i %>" class="md:py-2.5 py-1 md:w-10 w-8 text-center page-redirect rounded-none bg-white hover:bg-black hover:text-white <%= nPage == i ? 'bg-black text-white' : 'text-black' %>">
+            <%= i %>
+          </a>
+        <% } %> 
+      </div>
+>>>>>>> 913306ade445f791f47b11b531a27c5d3d5d5233
     <script>
       const pageRedirects = document.querySelectorAll('.page-redirect')
       for(element of pageRedirects){

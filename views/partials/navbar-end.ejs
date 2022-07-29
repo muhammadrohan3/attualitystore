@@ -1,7 +1,8 @@
-  </div>
-  <div class="drawer-side">
-    <label for="my-drawer-4" class="drawer-overlay"></label>
+</div>
+<div class="drawer-side">
+  <label for="my-drawer-4" class="drawer-overlay"></label>
 
+<<<<<<< HEAD
     <div class="menu p-4 w-80 text-base-content flex flex-col justify-between bg-background">
       <button class="absolute top-6 right-4 z-40" id="close-cart">
         ╳
@@ -80,97 +81,178 @@
                             document.getElementById('unavailableCart-<%= cartItem.id %>').classList.add('hidden')
                           }, 4000)
                         }
+=======
+  <div class="menu p-4 w-80 text-base-content flex flex-col justify-between bg-background">
+    <button class="absolute top-6 right-4 z-40" id="close-cart">
+      ╳
+    </button>
+    <script>
+      document.getElementById('close-cart').addEventListener('click', function() {
+        document.querySelector('#my-drawer-4').checked = false
+      });
+    </script>
+    <p class="border-b border-black font-medium py-2 sticky top-0 bg-background">IL TUO CARRELLO</p>
+    <div id="cartItems" class="flex flex-col h-full my-3 gap-3">
+      <% let total = 0; %>
+      <% for(cartItem of cart){ %>
+        <% 
+          total = total +  (cartItem.product.discountedPrice/100)*cartItem.copies 
+        %>
+        <div id="container=<%= cartItem.id %>">
+          <div class="flex gap-4">
+            <a class="w-20 shrink-0" href="/product/<%= cartItem.product.urlSlug %>">
+              <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_120/<%= cartItem.product.images[0].filename %>" class="w-20 shrink-0" alt="<%= cartItem.product.modelName.urlSlug %>">
+            </a>
+            <div class="flex flex-col justify-center">
+              <a href="/product/<%= cartItem.product.urlSlug %>" class="font-semibold hover:underline"><%= cartItem.product.modelName %></a>
+              <div class="flex gap-4">
+                <p class="text-14px">Taglia: <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'UNICA' : cartItem.size %></span></p>
+                <p class="text-14px">Quantità: <span class="font-semibold" id="cartQuantity-<%= cartItem.id %>"><%= cartItem.copies %></span></p>
+              </div>
+              <div class="flex gap-4">
+                <div class="flex mt-1">
+                  <button id="cartRemove-<%= cartItem.id %>" class="rounded-l border border-black hover:border-primary w-5 h-5 font-bold">
+                    <div class="flex justify-center">
+                      <svg class="w-1.5" viewBox="0 0 25 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.6562 0H2.34375C1.0498 0 0 1.0498 0 2.34375V3.90625C0 5.2002 1.0498 6.25 2.34375 6.25H22.6562C23.9502 6.25 25 5.2002 25 3.90625V2.34375C25 1.0498 23.9502 0 22.6562 0Z" fill="black"/>
+                      </svg> 
+                    </div>                   
+                  </button>
+                  <button id="cartAdd-<%= cartItem.id %>" class="rounded-r border border-black hover:border-primary w-5 h-5 font-bold">
+                    <div class="flex justify-center">
+                      <svg class="w-1.5" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.6562 9H2.34375C1.0498 9 0 10.0498 0 11.3438V12.9062C0 14.2002 1.0498 15.25 2.34375 15.25H22.6562C23.9502 15.25 25 14.2002 25 12.9062V11.3438C25 10.0498 23.9502 9 22.6562 9Z" fill="black"/>
+                        <path d="M9.375 2.34375L9.375 22.6562C9.375 23.9502 10.4248 25 11.7188 25H13.2812C14.5752 25 15.625 23.9502 15.625 22.6562L15.625 2.34375C15.625 1.0498 14.5752 0 13.2813 0H11.7188C10.4248 0 9.375 1.0498 9.375 2.34375Z" fill="black"/>
+                      </svg> 
+                    </div>                   
+                  </button>
+                  <script>
+                    document.getElementById("cartAdd-<%= cartItem.id %>").addEventListener('click', async () => {
+                      if (document.getElementById("cart-<%= cartItem.id %>")) {
+                        document.getElementById("cart-<%= cartItem.id %>").disabled = true;
+                      }
+                      document.getElementById("cartAdd-<%= cartItem.id %>").disabled = true;
+                      document.getElementById("cartRemove-<%= cartItem.id %>").disabled = true;
+                      let response = await fetch(`/cart/<%= cartItem.product._id %>?size=<%= cartItem.size %>`, {
+                        method: 'POST'
+>>>>>>> 913306ade445f791f47b11b531a27c5d3d5d5233
                       })
-                      document.getElementById("cartRemove-<%= cartItem.id %>").addEventListener('click', async () => {
-                        if (document.getElementById("cart-<%= cartItem.id %>")) {
-                          document.getElementById("cart-<%= cartItem.id %>").disabled = true;
+                      response = JSON.parse(await response.text())
+                      if (document.getElementById("cart-<%= cartItem.id %>")) {
+                        document.getElementById("cart-<%= cartItem.id %>").disabled = false;
+                      }
+                      document.getElementById("cartAdd-<%= cartItem.id %>").disabled = false;
+                      document.getElementById("cartRemove-<%= cartItem.id %>").disabled = false;
+                      if(response.status == 'success'){
+                        fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
+                        document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
+                        document.getElementById('cart-indicator').classList.remove('hidden')
+                        document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML) + 1
+                        if(document.getElementById('cartQuantityPage-<%= cartItem.id %>')){
+                          document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML) + 1
                         }
-                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = true
-                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = true
-                        let response = await fetch(`/cart/<%= cartItem.product._id %>?size=<%= cartItem.size %>`, {
-                          method: 'DELETE'
-                        })
-                        response = JSON.parse(await response.text())
-                        if (document.getElementById("cart-<%= cartItem.id %>")) {
-                          document.getElementById("cart-<%= cartItem.id %>").disabled = false;
+                        if(document.getElementById('totalPage')){
+                          document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) + <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                          document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) + <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
                         }
-                        document.getElementById("cartAdd-<%= cartItem.id %>").disabled = false;
-                        document.getElementById("cartRemove-<%= cartItem.id %>").disabled = false;
-                        if(response.status == 'product-removed-from-cart'){
-                          document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
-                          if(document.getElementById('cart-indicator').innerHTML == 0){
-                            document.getElementById('cart-indicator').classList.add('hidden')
-                          }
-                          document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                          if(document.getElementById('containerPage=<%= cartItem.id %>')){
-                            document.getElementById('containerPage=<%= cartItem.id %>').parentElement.removeChild(document.getElementById('containerPage=<%= cartItem.id %>'))
-                          }
-                          if(document.getElementById('totalPage')){
-                            document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                            document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                          }
-                          document.getElementById('container=<%= cartItem.id %>').parentElement.removeChild(document.getElementById('container=<%= cartItem.id %>'))
-                        } else if(response.status == 'product-removed'){
-                          document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
-                          document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML) - 1
-                          if(document.getElementById('cartQuantityPage-<%= cartItem.id %>')){
-                            document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML) - 1
-                          }
-                          if(document.getElementById('totalPage')){
-                            document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                            document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                          }
-                          document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
-                        }
+                        document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                      } else if(response.status == 'unavailable'){
+                        document.getElementById('unavailableCart-<%= cartItem.id %>').classList.remove('hidden')
+                        setTimeout(() => {
+                          document.getElementById('unavailableCart-<%= cartItem.id %>').classList.add('hidden')
+                        }, 4000)
+                      }
+                    })
+                    document.getElementById("cartRemove-<%= cartItem.id %>").addEventListener('click', async () => {
+                      if (document.getElementById("cart-<%= cartItem.id %>")) {
+                        document.getElementById("cart-<%= cartItem.id %>").disabled = true;
+                      }
+                      document.getElementById("cartAdd-<%= cartItem.id %>").disabled = true
+                      document.getElementById("cartRemove-<%= cartItem.id %>").disabled = true
+                      let response = await fetch(`/cart/<%= cartItem.product._id %>?size=<%= cartItem.size %>`, {
+                        method: 'DELETE'
                       })
-                    </script>
-                  </div>
-                  <p class="text-14px font-semibold mt-1">€<%= (cartItem.product.discountedPrice/100).toFixed(2) %></p>
+                      response = JSON.parse(await response.text())
+                      if (document.getElementById("cart-<%= cartItem.id %>")) {
+                        document.getElementById("cart-<%= cartItem.id %>").disabled = false;
+                      }
+                      document.getElementById("cartAdd-<%= cartItem.id %>").disabled = false;
+                      document.getElementById("cartRemove-<%= cartItem.id %>").disabled = false;
+                      if(response.status == 'product-removed-from-cart'){
+                        document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+                        if(document.getElementById('cart-indicator').innerHTML == 0){
+                          document.getElementById('cart-indicator').classList.add('hidden')
+                        }
+                        document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                        if(document.getElementById('containerPage=<%= cartItem.id %>')){
+                          document.getElementById('containerPage=<%= cartItem.id %>').parentElement.removeChild(document.getElementById('containerPage=<%= cartItem.id %>'))
+                        }
+                        if(document.getElementById('totalPage')){
+                          document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                          document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                        }
+                        document.getElementById('container=<%= cartItem.id %>').parentElement.removeChild(document.getElementById('container=<%= cartItem.id %>'))
+                      } else if(response.status == 'product-removed'){
+                        document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) - 1
+                        document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantity-<%= cartItem.id %>').innerHTML) - 1
+                        if(document.getElementById('cartQuantityPage-<%= cartItem.id %>')){
+                          document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML = parseInt(document.getElementById('cartQuantityPage-<%= cartItem.id %>').innerHTML) - 1
+                        }
+                        if(document.getElementById('totalPage')){
+                          document.getElementById('totalPage').innerHTML = (parseInt(document.getElementById('totalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                          document.getElementById('subtotalPage').innerHTML = (parseInt(document.getElementById('subtotalPage').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                        }
+                        document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) - <%= (cartItem.product.discountedPrice/100) %>).toFixed(2)
+                      }
+                    })
+                  </script>
                 </div>
+                <p class="text-14px font-semibold mt-1">€<%= (cartItem.product.discountedPrice/100).toFixed(2) %></p>
               </div>
             </div>
-            <div id="unavailableCart-<%= cartItem.id %>" class="mb-2 mx-auto hidden text-12px border font-medium text-primary text-center">
-              <%= cartItem.product.sizes[0].size == 'one-size' ? 'Non ci sono altri prodotti disponibili' : 'Non ci sono altri prodotti di questa taglia disponibili' %>
-            </div>
           </div>
-        <% } %>  
-      </div>
-      <div class="p-2 flex flex-col md:gap-3 gap-2">
-        <div class="flex justify-between">
-          <p class="text-14px font-semibold">Totale:</p>
-          <p class="text-14px font-semibold">€<span id="total"><%= total.toFixed(2) %></span></p>
+          <div id="unavailableCart-<%= cartItem.id %>" class="mb-2 mx-auto hidden text-12px border font-medium text-primary text-center">
+            <%= cartItem.product.sizes[0].size == 'one-size' ? 'Non ci sono altri prodotti disponibili' : 'Non ci sono altri prodotti di questa taglia disponibili' %>
+          </div>
         </div>
-        <a href="/cart" class="px-auto bg-white md:py-3 py-2 border-2 border-black text-center font-semibold uppercase">VAI AL CARRELLO</a>
-        <a href="/checkout" class="px-auto bg-black text-white md:py-3 py-2 border-black border-2 text-center font-medium uppercase">CHECKOUT</a>
+      <% } %>  
+    </div>
+    <div class="p-2 flex flex-col md:gap-3 gap-2">
+      <div class="flex justify-between">
+        <p class="text-14px font-semibold">Totale:</p>
+        <p class="text-14px font-semibold">€<span id="total"><%= total.toFixed(2) %></span></p>
       </div>
+      <a href="/cart" class="px-auto bg-white md:py-3 py-2 border-2 border-black text-center font-semibold uppercase">VAI AL CARRELLO</a>
+      <a href="/checkout" class="px-auto bg-black text-white md:py-3 py-2 border-black border-2 text-center font-medium uppercase">CHECKOUT</a>
     </div>
   </div>
 </div>
+</div>
 
 <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
 <script>
-  const user = <%- JSON.stringify(user) %>
+const user = <%- JSON.stringify(user) %>
 </script>
 <script src="/javascript/navbar.js"></script>
 <script src="/javascript/search-navbar.js"></script>
 <script type="text/javascript" src="/javascript/slick.min.js"></script>
-
 <script>
 $(document).ready(function(){
-    $('.carousel').slick({
-      prevArrow: null,
-      nextArrow: null,
-      autoplay: true,
-      infinite: true,
-      draggable: false,
-      autoplaySpeed: 4000,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      pauseOnFocus: false,
-      swipe: false
-  });
+  $('.carousel').slick({
+    prevArrow: null,
+    nextArrow: null,
+    autoplay: true,
+    infinite: true,
+    draggable: false,
+    autoplaySpeed: 4000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    pauseOnFocus: false,
+    swipe: false
+});
 });
 </script>
+<%- include('./facebook-pixel') %>

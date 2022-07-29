@@ -22,7 +22,11 @@
     <% if(Object.keys(product.images).length !== 1){ %>
       <div class="product-image-carousel-desktop h-screen">
         <% for(image of Object.keys(product.images)){ %>
+<<<<<<< HEAD
           <div class="px-33% mt-2">
+=======
+          <div class="px-30% xl:px-33% mt-2">
+>>>>>>> 913306ade445f791f47b11b531a27c5d3d5d5233
             <img class="mx-auto" src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_1100/<%= product.images[image].filename %>" alt="Product Image">
           </div>
         <% } %>
@@ -271,15 +275,18 @@
                     const product = <%- JSON.stringify(product) %>
                                 
                     if (document.getElementById('sizegroup').dataset.sizechoosen == 'none') {
+                      document.getElementById("cart-<%= product._id %>").disabled = false
                       return document.getElementById('chooseSize').classList.remove('hidden')
                     }
 
                     let response = await fetch(`/cart/<%= product._id %>?size=${document.getElementById('sizegroup').dataset.sizechoosen}`, {
                       method: 'POST'
                     })
+                    // TODO aggiungere fbq addtocart anche nella navbar end
                     response = JSON.parse(await response.text())
                     document.getElementById("cart-<%= product._id %>").disabled = false
                     if (response.status == 'success') {
+                      fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
                       document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                       document.getElementById('cart-indicator').classList.remove('hidden')
                       document.getElementById('total').innerHTML = (parseInt(document.getElementById('total').innerHTML) + <%= (product.discountedPrice / 100) %>).toFixed(2)
@@ -349,6 +356,7 @@
                                         document.getElementById("cartAdd-${response.id}").disabled = false
                                         document.getElementById("cartRemove-${response.id}").disabled = false
                                         if(response.status == 'success'){
+                                          fbq('track', 'AddToCart'/*, {value: (product.discountedPrice/100).toFixed(2), num_items: 1, currency: 'EUR', content_name: product.modelName, content_ids: product._id, content_category: product.designer, content_type: product.category}*/)
                                           document.getElementById('cart-indicator').innerHTML = parseInt(document.getElementById('cart-indicator').innerHTML) + 1
                                           document.getElementById('cart-indicator').classList.remove('hidden')
                                           document.getElementById('cartQuantity-${response.id}').innerHTML = parseInt(document.getElementById('cartQuantity-${response.id}').innerHTML) + 1
@@ -1061,6 +1069,9 @@
   <%- include('../partials/why-attuality') %>
   <%- include('../partials/footer') %> 
   <%- include('../partials/navbar-end') %>
+  <script>
+    fbq('track', 'ViewContent')
+  </script>
 
   <script>
     $(document).ready(function(){

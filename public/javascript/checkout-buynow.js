@@ -55,6 +55,7 @@ const deliveryItaly = document.getElementById("deliveryItaly");
 let prevFlag = "none";
 let total = parseFloat(totalPage.innerHTML);
 for (flag of countryFlag) {
+  document.getElementById('stateError').classList.add('hidden')
   flag.addEventListener("click", (e) => {
     dropdown.classList.add("hidden");
     dropdown.classList.remove("block");
@@ -153,6 +154,7 @@ country.addEventListener("focusout", () => {
 const paymentRadios = document.getElementsByName("payment");
 let paymentValue = false;
 for (radio of paymentRadios) {
+  radio.checked = false
   radio.addEventListener("change", (e) => {
     if (e.target.checked) {
       paymentValue = e.target.value;
@@ -177,6 +179,10 @@ checkout.addEventListener("submit", async (e) => {
     zip: document.getElementById("zip").value,
     state: prevFlag,
   };
+
+  if(prevFlag == 'none'){
+    return document.getElementById('stateError').classList.remove('hidden')
+  }
 
   const request = await fetch("/checkout/buynow", {
     method: "POST",
@@ -221,9 +227,8 @@ checkout.addEventListener("submit", async (e) => {
         }, 5000);
       }
     } else {
-      alert(
-        "Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco"
-      );
+      fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: 1, content_ids: cart[0].product.id, content_type: cart[0].product.category, content_category: cart[0].product.designer })
+      alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = "/";
     }
   }
