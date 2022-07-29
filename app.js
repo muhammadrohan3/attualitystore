@@ -379,7 +379,6 @@ app.use(async (req, res, next) => {
   }
   if(!req.session.country){
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    console.log(lookup(ip.split(',')[0]))
     req.session.country = lookup(ip) ? lookup(ip).country : lookup(ip.split(',')[0]) ? lookup(ip.split(',')[0]).country : 'unknown'
   }
   if(!req.session.uuid){
