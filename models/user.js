@@ -53,7 +53,7 @@ UserSchema.index(
 )
 
 UserSchema.plugin(passportLocalMongoose, { usernameField: 'email', errorMessages: {
-  UserExistsError: 'A user with the given email is already registered'
+  UserExistsError: 'Un utente con questa email è già registrato'
 } });
 
 module.exports = mongoose.model('User', UserSchema)

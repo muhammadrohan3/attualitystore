@@ -96,7 +96,7 @@ router.post('/register', async (req, res) => {
     }
     const phoneNumberExist = await User.find({number: number});
     if(phoneNumberExist.length){
-      req.flash('error', 'A user with the given phone number is already registered');
+      req.flash('error', 'Un utente con questo numero è già registrato');
       return res.redirect('/register');
     }
     const user = new User({ 
@@ -178,7 +178,7 @@ router.get('/user/verify/:token', async (req, res) => {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findByIdAndUpdate(payload.id, {verified: true});
-    req.flash('success', 'User verified successfully');
+    req.flash('success', 'Utente verificato con successo');
     return res.redirect('/')
   } catch (error) {
     return res.render('404');
@@ -194,7 +194,7 @@ router.post('/forgotpassword', async (req, res) => {
   const user = await User.findOne({email: req.body.email});
 
   if(!user){
-    req.flash('error', "A user with given email doesn't exist")
+    req.flash('error', "Un utente con questa email esiste già")
     return res.redirect('/forgotpassword')
   }
   const payload = {id: user._id}
@@ -206,7 +206,7 @@ router.post('/forgotpassword', async (req, res) => {
     text: `Click on this link to change your password: ${req.protocol + '://' + req.get('host')}/forgotpassword/verified/${ token }`
   };
   transporter.sendMail(mailOptions, function(error, info){
-    req.flash('success', 'We sent you an email to verify your identity');
+    req.flash('success', 'Ti abbiamo inviato una email per verificare la tua identità');
     res.redirect('/')
     if (error) {
         req.flash("error", `Internal server error`);
@@ -235,7 +235,7 @@ router.post('/forgotpassword/verified/:token', async (req, res) => {
     }
     user.setPassword(req.body.password, function(err,user){
       if(err){
-          req.flash('error', 'Sorry something went wrong')
+          req.flash('error', 'Qualcosa è andato storto')
           return res.redirect('/')
       } else {
           user.save(function (err) {
@@ -243,7 +243,7 @@ router.post('/forgotpassword/verified/:token', async (req, res) => {
               req.flash("error", "Internal server error");
               return res.redirect("/");
             }
-            req.flash("success", "Password changed successfully");
+            req.flash("success", "Password cambiata con successo");
             return res.redirect("/");
           });
         }})
@@ -270,7 +270,7 @@ router.post('/user/resetpassword', middleware.isLoggedIn, (req, res) => {
           return res.redirect("/");
       }
   });
-  req.flash('success', 'We sent you an email to verify your identity');
+  req.flash('success', 'Ti abbiamo inviato una email per verificare la tua identità');
   res.redirect('/')
 })
 router.get('/user/resetpassword/verified/:token', middleware.isLoggedIn, (req, res) => {
@@ -303,7 +303,7 @@ router.post('/user/resetpassword/verified/:token', middleware.isLoggedIn, async 
               return res.redirect('/')
             }
             req.login(user, function(err){
-              req.flash('success', 'Password changed successfully');
+              req.flash('success', 'Password cambiata con successo');
               return res.redirect('/')
             })
           })
@@ -384,7 +384,7 @@ router.patch('/user/savechanges', async (req, res) => {
       return res.redirect('/user/dashboard');
     }
     if(!countries.includes(req.body.country)){
-      req.flash('error', 'Invalid country');
+      req.flash('error', 'Stato invalido');
       return res.redirect('/user/dashboard')
     }
     if(number != req.user.number){
@@ -403,7 +403,7 @@ router.patch('/user/savechanges', async (req, res) => {
       country: req.body.country
     })
 
-    req.flash('success', 'Changes saved successfully')
+    req.flash('success', 'Modifiche salvate con successo')
     return res.redirect('/user/dashboard')
 
   } catch (e) {
