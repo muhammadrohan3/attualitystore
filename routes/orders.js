@@ -605,6 +605,8 @@ router.post('/checkout/buynow', async (req, res) => {
     );
   }
 
+  console.log('error passed')
+
   let result;
   if (req.body.cashOnDelivery) {
     result = await stripe.paymentIntents.create({
