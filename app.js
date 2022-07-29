@@ -444,6 +444,9 @@ app.use('/', infoRoutes);
 
 
 app.use((req ,res, next) => {
+  if(req.originalUrl.split('?')[0] == req.session.landingPage){
+    req.session.destroy()
+  }
   res.status(404).render('404')
 })
 
