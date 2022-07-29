@@ -363,7 +363,7 @@ app.use(async (req, res, next) => {
   if(!req.session.landingPage){
     req.session.landingPage = req.originalUrl.split('?')[0]
   }
-  if(req.session.landingPage.split('.').length > 1 || req.session.landingPage.split('/clothing').length > 1 || req.session.landingPage.split('/accessories').length > 1 || req.session.landingPage.split('/pages').length > 1 || req.session.landingPage.split('/collections').length > 1){
+  if(req.session.landingPage.split('.').length > 1){
     req.session.destroy()
     return next()
   }
