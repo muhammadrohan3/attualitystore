@@ -354,6 +354,10 @@ app.use(device.capture())
 
 app.use(async (req, res, next) => {
   if(!req.session.device){
+    if(req.device.type == 'bot'){
+      req.session.destroy()
+      return next()
+    }
     req.session.device = req.device.type
   }
   if(!req.session.landingPage){
