@@ -71,7 +71,10 @@ module.exports = {
         "20px": "20px",
         "10px": "10px",
         "33%": "33%",
+<<<<<<< HEAD
+=======
         "30%": "28%",
+>>>>>>> 913306ade445f791f47b11b531a27c5d3d5d5233
         desktop: "50px",
         laptop: "30px",
         tablet: "20px",

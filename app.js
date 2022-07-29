@@ -173,7 +173,6 @@ app.use(mongoSanitize());
 const Product = require('./models/product');
 const Order = require('./models/order');
 
-// TODO add order count only on admin routes
 app.use('/user/admin', async (req, res, next) => {
   const ordersCount = await Order.count({completed: false})
   res.locals.ordersCount = ordersCount;
@@ -232,7 +231,6 @@ app.use(async (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
 
-  // TODO create a local that count every element for every category
   let categoriesCounting = {
     jackets: 0,
     hoodies: 0,
