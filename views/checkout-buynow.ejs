@@ -22,7 +22,7 @@
     function addPaymentInfo() {
       if(!alreadyAddedPaymentInfo){
         alreadyAddedPaymentInfo = true
-        fbq('track', 'AddPaymentInfo')
+        fbq('track', 'AddPaymentInfo', { currency: 'EUR' })
       }
     }
   </script>

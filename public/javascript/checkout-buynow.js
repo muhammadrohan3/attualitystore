@@ -164,6 +164,8 @@ for (radio of paymentRadios) {
 
 const checkout = document.getElementById("checkout");
 checkout.addEventListener("submit", async (e) => {
+  // TODO rimuovere questo e pushare
+  fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: 1, content_ids: cart[0].product.id, content_type: cart[0].product.category, content_category: cart[0].product.designer })
   e.preventDefault();
 
   const dataToFormat = {

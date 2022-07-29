@@ -41,8 +41,7 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 12),
-    sameSite: 'strict'
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 12)
   },
 };
 app.use(session(sessionConfig))
@@ -181,7 +180,7 @@ app.use('/user/admin', async (req, res, next) => {
 
 // locals
 app.use(async (req, res, next) => {
-  res.locals.user = req.user;
+  res.locals.user = req.user ? req.user : false;
   res.locals.wishlist = req.session.wishlist || [];
   let sessionCart = [];
   let elements = []
@@ -358,6 +357,8 @@ app.use(async (req, res, next) => {
     req.session.device = req.device.type
   }
   if(!req.session.landingPage){
+    console.log(req.session)
+    console.log('----------------')
     req.session.landingPage = req.originalUrl.split('?')[0]
   }
   if(req.session.landingPage.split('.').length > 1 || req.session.landingPage.split('/clothing').length > 1 || req.session.landingPage.split('/accessories').length > 1){
