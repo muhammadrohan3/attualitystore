@@ -11,6 +11,16 @@
   <link rel="stylesheet" href="/css/product.css">
   <link rel="stylesheet" href="/css/showPage.css">
   <meta name="description" content="<%= product.description %>">
+
+  <meta property="og:title" content="<%= product.modelName %>">
+  <meta property="og:description" content="<%= product.description %>">
+  <meta property="og:image" content="<%= product.images[0].path %>">
+  <meta property="product:brand" content="<%= product.designer %>">
+  <meta property="product:availability" content="in stock">
+  <meta property="product:condition" content="new">
+  <meta property="product:price:amount" content="<%= (product.discountedPrice/100).toFixed(2) %>">
+  <meta property="product:price:currency" content="EUR">
+  <meta property="product:item_group_id" content="<%= product._id %>">
 </head>
 
 <body class="bg-background flex flex-col min-h-screen font-main">
