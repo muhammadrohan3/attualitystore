@@ -15,12 +15,14 @@
   <meta property="og:title" content="<%= product.modelName %>">
   <meta property="og:description" content="<%= product.description %>">
   <meta property="og:image" content="<%= product.images[0].path %>">
+  <meta property="og:url" content="https://attualitystore.com/product/<%= product.urlSlug %>">
   <meta property="product:brand" content="<%= product.designer %>">
   <meta property="product:availability" content="in stock">
   <meta property="product:condition" content="new">
   <meta property="product:price:amount" content="<%= (product.discountedPrice/100).toFixed(2) %>">
   <meta property="product:price:currency" content="EUR">
-  <meta property="product:item_group_id" content="<%= product._id %>">
+  <meta property="product:retailer_item_id" content="<%= product._id %>">
+  <meta property="product:item_group_id" content="<%= product.category %>">
 </head>
 
 <body class="bg-background flex flex-col min-h-screen font-main">
