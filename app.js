@@ -465,9 +465,13 @@ const product = require('./models/product');
 app.use('/', infoRoutes);
 
 
-app.use((req ,res, next) => {
-  if(req.originalUrl.split('?')[0] == req.session.landingPage){
-    req.session.destroy()
+app.all('*', (req ,res) => {
+  try {
+    if(req.originalUrl.split('?')[0] == req.session.landingPage){
+      req.session.destroy()
+    }
+  } catch (error) {
+    
   }
   res.status(404).render('404')
 })
