@@ -167,6 +167,7 @@ checkout.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   // TODO rimuovere questo e pushare
+  console.log('tracked')
   fbq('track', 'Purchase', {value : 10000/100, currency: 'EUR', num_items: 1, content_ids: cart[0].product.id, content_type: cart[0].product.category, content_category: cart[0].product.designer })
 
   const dataToFormat = {
