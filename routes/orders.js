@@ -444,25 +444,17 @@ router.get('/checkout/buynow/:id', async (req, res) => {
 
   let passed = false;
   for(item of product.sizes){
-    console.log('passed')
     if(item.size == size){
-      console.log('sizeeuqal')
       if(item.remaining > 0){
-        console.log('not remaining')
         passed = true;
       }
     }
   }
 
   if(!passed){
-    console.log('not passed')
-    console.log(product)
-    console.log(req.query)
     req.flash('error', 'Invalid size')
     return res.redirect(`/product/${product.urlSlug}`)
   }
-
-  console.log('---------------------------')
 
   const key = process.env.STRIPE_KEY;
 
@@ -605,7 +597,6 @@ router.post('/checkout/buynow', async (req, res) => {
     );
   }
 
-  console.log('error passed')
 
   let result;
   if (req.body.cashOnDelivery) {
