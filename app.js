@@ -357,8 +357,6 @@ app.use(async (req, res, next) => {
     req.session.device = req.device.type
   }
   if(!req.session.landingPage){
-    console.log(req.session)
-    console.log('----------------')
     req.session.landingPage = req.originalUrl.split('?')[0]
   }
   if(req.session.landingPage.split('.').length > 1 || req.session.landingPage.split('/clothing').length > 1 || req.session.landingPage.split('/accessories').length > 1 || req.session.landingPage.split('/pages').length > 1 || req.session.landingPage.split('/collections').length > 1){
@@ -377,6 +375,8 @@ app.use(async (req, res, next) => {
   }
   if(!req.session.country){
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+    console.log(ip)
+    console.log(lookup(ip))
     req.session.country = lookup(ip) ? lookup(ip).country : 'unknown'
   }
   if(!req.session.uuid){
