@@ -141,24 +141,52 @@ class="bg-background flex flex-col min-h-screen font-main">
       <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
         <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Landing page più popolari per sessioni</h1>
         <% 
-        const landigPages = {}
+        let landingPages = {}
         for(session of sessions){
-          if(Object.keys(landigPages).includes(session.landingPage)){
-            landigPages[session.landingPage] = landigPages[session.landingPage] + 1
+          if(Object.keys(landingPages).includes(session.landingPage)){
+            landingPages[session.landingPage] = landingPages[session.landingPage] + 1
           }else{
-            landigPages[session.landingPage] = 1
+            landingPages[session.landingPage] = 1
           }
         }
+        var sortable = [];
+        for (var item in landingPages) {
+            sortable.push([item, landingPages[item]]);
+        }
+
+        sortable.sort(function(a, b) {
+            return b[1]-a[1];
+        });
         %>
        <div class="flex flex-col gap-1 mt-2">
-        <% for(page of Object.keys(landigPages)){ %>
+        <% for(page of sortable.slice(0, 5)){ %>
           <div class="flex justify-between">
-            <a href="<%= page %>" class="text-14px text-blue-400 underline"><%= page %></a>
-            <p><%= landigPages[page] %></p>
+            <a href="<%= page[0] %>" class="text-14px text-blue-400 underline"><%= page[0] %></a>
+            <p><%= page[1] %></p>
+          </div>
+        <% } %> 
+        <% if(sortable.length > 5) { %>
+          <div class="flex justify-center">
+            <label for="landing-pages-modal" class="cursor-pointer text-3xl">. . .</label>
           </div>
         <% } %> 
        </div>
       </div>
+      
+      <input type="checkbox" id="landing-pages-modal" class="modal-toggle" />
+      <label for="landing-pages-modal" class="modal cursor-pointer">
+        <label class="modal-box relative rounded-none" for="">
+          <h3 class="text-lg font-bold">Tutte le landinpage</h3>
+          <div class="overflow-y-auto py-4">
+            <% for(page of sortable){ %>
+              <div class="flex justify-between">
+                <a href="<%= page[0] %>" class="text-14px text-blue-400 underline"><%= page[0] %></a>
+                <p><%= page[1] %></p>
+              </div>
+            <% } %> 
+          </div>
+        </label>
+      </label>
 
       <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
         <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni create per tipo di dispositivo</h1>
@@ -193,16 +221,44 @@ class="bg-background flex flex-col min-h-screen font-main">
             referrers[session.referrer] = 1
           }
         }
+        var sortable = [];
+        for (var item in referrers) {
+            sortable.push([item, referrers[item]]);
+        }
+
+        sortable.sort(function(a, b) {
+            return b[1]-a[1];
+        });
         %>
        <div class="flex flex-col gap-1 mt-2">
-        <% for(referrer of Object.keys(referrers)){ %>
+        <% for(referrer of sortable.slice(0, 6)){ %>
           <div class="flex justify-between">
-            <p class="text-14px"><%= referrer.slice(0, 30) %></p>
-            <p><%= referrers[referrer] %></p>
+            <p class="text-14px"><%= referrer[0] %></p>
+            <p><%= referrer[1] %></p>
           </div>
         <% } %> 
        </div>
+        <% if(sortable.length > 5){ %>
+          <div class="flex justify-center">
+            <label for="referrers-modal" class="cursor-pointer text-3xl">. . .</label>
+          </div>
+        <% } %>
+        
       </div>
+      <input type="checkbox" id="referrers-modal" class="modal-toggle" />
+      <label for="referrers-modal" class="modal cursor-pointer">
+        <label class="modal-box relative rounded-none" for="">
+          <h3 class="text-lg font-bold">Tutte le landinpage</h3>
+          <div class="overflow-y-auto py-4">
+            <% for(page of sortable){ %>
+              <div class="flex justify-between">
+                <a href="<%= page[0] %>" class="text-14px text-blue-400 underline"><%= page[0] %></a>
+                <p><%= page[1] %></p>
+              </div>
+            <% } %> 
+          </div>
+        </label>
+      </label>
 
       <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
         <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Sessioni per località</h1>
@@ -210,21 +266,64 @@ class="bg-background flex flex-col min-h-screen font-main">
         const countries = {}
         for(session of sessions){
           if(Object.keys(countries).includes(session.country)){
-            countries[session.country] = countries[session.country] + 1
+            if(session.country){
+              countries[session.country] = countries[session.country] + 1
+            }else{
+              if(Object.keys(countries).includes('unknown')){
+                countries['unknown'] = countries['unknown'] + 1
+              }else{
+                countries['unknown'] = 1
+              }
+            }
           }else{
-            countries[session.country] = 1
+            if(session.country){
+              countries[session.country] = 1
+            }else{
+              if(Object.keys(countries).includes('unknown')){
+                countries['unknown'] = countries['unknown'] + 1
+              }else{
+                countries['unknown'] = 1
+              }
+            }
           }
         }
+        var sortable = [];
+        for (var item in countries) {
+            sortable.push([item, countries[item]]);
+        }
+
+        sortable.sort(function(a, b) {
+            return b[1]-a[1];
+        });
         %>
        <div class="flex flex-col gap-1 mt-2">
-        <% for(country of Object.keys(countries)){ %>
+        <% for(country of sortable.slice(0, 6)){ %>
           <div class="flex justify-between">
-            <p class="text-14px"><%= country %></p>
-            <p><%= countries[country] %></p>
+            <p class="text-14px"><%= country[0] %></p>
+            <p><%= country[1] %></p>
           </div>
         <% } %> 
        </div>
+       <% if(sortable.length > 5){ %>
+        <div class="flex justify-center">
+          <label for="location-session-modal" class="cursor-pointer text-3xl">. . .</label>
+        </div>
+      <% } %> 
       </div>
+      <input type="checkbox" id="location-session-modal" class="modal-toggle" />
+      <label for="location-session-modal" class="modal cursor-pointer">
+        <label class="modal-box relative rounded-none" for="">
+          <h3 class="text-lg font-bold">Tutte le landinpage</h3>
+          <div class="overflow-y-auto py-4">
+            <% for(page of sortable){ %>
+              <div class="flex justify-between">
+                <a href="<%= page[0] %>" class="text-14px text-blue-400 underline"><%= page[0] %></a>
+                <p><%= page[1] %></p>
+              </div>
+            <% } %> 
+          </div>
+        </label>
+      </label>
 
       <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
         <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Utenti per località</h1>
@@ -290,16 +389,44 @@ class="bg-background flex flex-col min-h-screen font-main">
             bestReferrers[session.referrer] = amount
           }
         }
+
+        var sortable = [];
+        for (var item in bestReferrers) {
+            sortable.push([item, bestReferrers[item]]);
+        }
+
+        sortable.sort(function(a, b) {
+            return b[1]-a[1];
+        });
         %>
        <div class="flex flex-col gap-1 mt-2">
-        <% for(referrer of Object.keys(bestReferrers)){ %>
+        <% for(referrer of sortable.slice(0, 6)){ %>
           <div class="flex justify-between">
-            <p class="text-14px"><%= referrer.slice(0, 30) %></p>
-            <p>€<%= bestReferrers[referrer] %></p>
+            <p class="text-14px"><%= referrer[0] %></p>
+            <p><%= referrer[1] %></p>
+          </div>
+        <% } %> 
+        <% if(sortable.length > 5){ %>
+          <div class="flex justify-center">
+            <label for="referrers-earnings-modal" class="cursor-pointer text-3xl">. . .</label>
           </div>
         <% } %> 
        </div>
       </div>
+      <input type="checkbox" id="referrers-earnings-modal" class="modal-toggle" />
+      <label for="referrers-earnings-modal" class="modal cursor-pointer">
+        <label class="modal-box relative rounded-none" for="">
+          <h3 class="text-lg font-bold">Tutte le landinpage</h3>
+          <div class="overflow-y-auto py-4">
+            <% for(page of sortable){ %>
+              <div class="flex justify-between">
+                <a href="<%= page[0] %>" class="text-14px text-blue-400 underline"><%= page[0] %></a>
+                <p><%= page[1] %></p>
+              </div>
+            <% } %> 
+          </div>
+        </label>
+      </label>
 
       <div class="lg:col-span-4 md:col-span-6 col-span-12 p-4 shadow-md bg-white">
         <h1 class="text-20px border-b border-black pb-1.5 mb-4 font-medium">Utenti totali:</h1>
