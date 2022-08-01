@@ -365,6 +365,7 @@ router.post('/webhook', async (req, res) => {
       };
       transporter.sendMail(mailOptions, async function(error, info){
         if (error) {
+          console.log(error)
           throw new Error(error)
         }
       });

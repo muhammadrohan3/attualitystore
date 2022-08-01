@@ -129,10 +129,10 @@ router.post('/register', async (req, res) => {
         };
         transporter.sendMail(mailOptions, async function(error, info){
             if (error) {
-                console.log(error);
+              console.log(error)
                 await User.findByIdAndDelete(user._id)
                 req.flash("error", `Internal server error`);
-                res.redirect("/");
+                return res.redirect("/");
             }
         });
         for(item of Object.keys(session)){
@@ -207,6 +207,7 @@ router.post('/forgotpassword', async (req, res) => {
   };
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
+      console.log(error)
         req.flash("error", `Internal server error`);
         return res.redirect("/");
     }
@@ -266,6 +267,7 @@ router.post('/user/resetpassword', middleware.isLoggedIn, (req, res) => {
   };
   transporter.sendMail(mailOptions, function(error, info){
       if (error) {
+        console.log(error)
           req.flash("error", `Internal server error`);
           return res.redirect("/");
       }
