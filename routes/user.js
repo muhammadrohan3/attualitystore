@@ -206,12 +206,12 @@ router.post('/forgotpassword', async (req, res) => {
     text: `Click on this link to change your password: ${req.protocol + '://' + req.get('host')}/forgotpassword/verified/${ token }`
   };
   transporter.sendMail(mailOptions, function(error, info){
-    req.flash('success', 'Ti abbiamo inviato una email per verificare la tua identità');
-    res.redirect('/')
     if (error) {
         req.flash("error", `Internal server error`);
         return res.redirect("/");
     }
+    req.flash('success', 'Ti abbiamo inviato una email per verificare la tua identità');
+    return res.redirect('/')
   });
 })
 router.get('/forgotpassword/verified/:token', async (req, res) => {
