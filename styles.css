@@ -38,6 +38,10 @@
 } */
  
 
+body {
+  color: #191919;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
