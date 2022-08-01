@@ -49,8 +49,8 @@ const countryFlag = document.querySelectorAll(".countryFlag");
 const country = document.getElementById("country");
 const dropdown = document.getElementById("dropdown");
 
-const deliveryItalyWrapper = document.getElementById("deliveryItalyWrapper");
-const deliveryItaly = document.getElementById("deliveryItaly");
+// const deliveryItalyWrapper = document.getElementById("deliveryItalyWrapper");
+// const deliveryItaly = document.getElementById("deliveryItaly");
 
 let prevFlag = "none";
 let total = parseFloat(totalPage.innerHTML);
@@ -59,15 +59,17 @@ for (flag of countryFlag) {
   flag.addEventListener("click", (e) => {
     dropdown.classList.add("hidden");
     dropdown.classList.remove("block");
-
-    if (deliveryItaly.checked) {
-      totalPage.innerHTML = total;
-      subtotalPage.innerHTML = total;
-    } else {
-      totalPage.innerHTML = (
-        parseFloat(totalPage.innerHTML) - parseFloat(deliveryPage.innerHTML)
-      ).toFixed(2);
-    }
+    totalPage.innerHTML = (
+      parseFloat(totalPage.innerHTML) - parseFloat(deliveryPage.innerHTML)
+    ).toFixed(2);
+    // if (deliveryItaly.checked) {
+    //   totalPage.innerHTML = total;
+    //   subtotalPage.innerHTML = total;
+    // } else {
+    //   totalPage.innerHTML = (
+    //     parseFloat(totalPage.innerHTML) - parseFloat(deliveryPage.innerHTML)
+    //   ).toFixed(2);
+    // }
     deliveryPage.innerHTML = `0`;
     deliveryPageHidden.classList.add("hidden");
     deliveryNotYet.classList.remove("hidden");
@@ -85,13 +87,13 @@ for (flag of countryFlag) {
       deliveryMethod.classList.remove("hidden");
       deliveryText.classList.add("hidden");
       if (e.target.dataset.country == "Italia") {
-        deliveryItalyWrapper.classList.remove("hidden");
+        // deliveryItalyWrapper.classList.remove("hidden");
         deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€${
           countriesPrice[e.target.dataset.country]
         }`;
       } else {
-        deliveryItaly.checked = false;
-        deliveryItalyWrapper.classList.add("hidden");
+        // deliveryItaly.checked = false;
+        // deliveryItalyWrapper.classList.add("hidden");
         document.getElementById("italyMessage").classList.add("hidden");
         deliveryPrice.innerHTML = `UPS&nbsp;&nbsp;-&nbsp;&nbsp;€${
           countriesPrice[e.target.dataset.country]
@@ -104,15 +106,19 @@ for (flag of countryFlag) {
 deliveryRadio.addEventListener("change", (e) => {
   deliveryNotYet.classList.add("hidden");
   deliveryPageHidden.classList.remove("hidden");
-  if (deliveryItaly.checked) {
-    deliveryPage.innerHTML = `10`;
-    totalPage.innerHTML = (parseFloat(totalPage.innerHTML) + 10).toFixed(2);
-  } else {
-    deliveryPage.innerHTML = `${countriesPrice[prevFlag].toFixed(2)}`;
+  deliveryPage.innerHTML = `${countriesPrice[prevFlag].toFixed(2)}`;
     totalPage.innerHTML = (
       parseFloat(totalPage.innerHTML) + countriesPrice[prevFlag]
     ).toFixed(2);
-  }
+  // if (deliveryItaly.checked) {
+  //   deliveryPage.innerHTML = `10`;
+  //   totalPage.innerHTML = (parseFloat(totalPage.innerHTML) + 10).toFixed(2);
+  // } else {
+  //   deliveryPage.innerHTML = `${countriesPrice[prevFlag].toFixed(2)}`;
+  //   totalPage.innerHTML = (
+  //     parseFloat(totalPage.innerHTML) + countriesPrice[prevFlag]
+  //   ).toFixed(2);
+  // }
 });
 
 const card = document.getElementById("card");
@@ -122,25 +128,25 @@ card.addEventListener("change", () => {
   cardElement.mount("#card-input");
 });
 
-deliveryItaly.addEventListener("change", () => {
-  if (deliveryItaly.checked) {
-    if (deliveryRadio.checked) {
-      totalPage.innerHTML = "10.00";
-    } else {
-      totalPage.innerHTML = "0.00";
-    }
-    deliveryPage.innerHTML = "10.00";
-    deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€10`;
-    subtotalPage.innerHTML = "0.00";
-    document.getElementById("italyMessage").classList.remove("hidden");
-  } else {
-    document.getElementById("italyMessage").classList.add("hidden");
-    totalPage.innerHTML = parseInt(total + countriesPrice[prevFlag]).toFixed(2);
-    deliveryPage.innerHTML = "0.00";
-    deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€0`;
-    subtotalPage.innerHTML = total;
-  }
-});
+// deliveryItaly.addEventListener("change", () => {
+//   if (deliveryItaly.checked) {
+//     if (deliveryRadio.checked) {
+//       totalPage.innerHTML = "10.00";
+//     } else {
+//       totalPage.innerHTML = "0.00";
+//     }
+//     deliveryPage.innerHTML = "10.00";
+//     deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€10`;
+//     subtotalPage.innerHTML = "0.00";
+//     document.getElementById("italyMessage").classList.remove("hidden");
+//   } else {
+//     document.getElementById("italyMessage").classList.add("hidden");
+//     totalPage.innerHTML = parseInt(total + countriesPrice[prevFlag]).toFixed(2);
+//     deliveryPage.innerHTML = "0.00";
+//     deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€0`;
+//     subtotalPage.innerHTML = total;
+//   }
+// });
 
 country.addEventListener("click", () => {
   dropdown.classList.toggle("hidden");
@@ -166,9 +172,10 @@ const checkout = document.getElementById("checkout");
 checkout.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  /* deliveryItaly.checked */
   const dataToFormat = {
     cart: cart,
-    cashOnDelivery: deliveryItaly.checked,
+    cashOnDelivery: false,
     email: document.getElementById("email").value,
     number: document.getElementById("phone-number").value,
     name: document.getElementById("name").value,
