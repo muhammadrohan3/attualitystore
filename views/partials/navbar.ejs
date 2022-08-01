@@ -79,7 +79,7 @@
           let countZeroCategories = 0;
           for(let key of Object.keys(categoriesCount)) {
             if(categoriesCount[key] == 0) {
-              if(key != 'wallets-and-small-leather-goods' || key != 'swimwear' || key != 'slippers') {
+              if(key != 'wallets-and-small-leather-goods' && key != 'swimwear' && key != 'slippers') {
                 countZeroCategories++;
               }
             }
@@ -125,7 +125,7 @@
           let countZeroAccessories = 0;
           for(let key of Object.keys(categoriesCount)) {
             if(categoriesCount[key] == 0) {
-              if(key == 'wallets-and-small-leather-goods' || key== 'swimwear' || key == 'slippers') {
+              if(key == 'wallets-and-small-leather-goods' || key == 'swimwear' || key == 'slippers') {
                 countZeroAccessories++;
               }
             }
