@@ -218,6 +218,19 @@
               <% }else{ %>
                 <div class="flex mx-auto mb-3 hidden" role="group" id="sizegroup" data-sizechoosen="one-size"></div>
               <% } %>  
+
+              <% 
+              let totalSizes = 0
+              for(size of product.sizes){
+                totalSizes = totalSizes + size.remaining
+              }
+              %>
+              <% if(totalSizes >= 2 && totalSizes <= 5){ %>
+                <p class="text-primary text-14px mx-auto" id="chooseSize">Disponibilità scarsa</p>
+              <% } %> 
+              <% if(totalSizes == 1){ %>
+                <p class="text-primary text-14px mx-auto" id="chooseSize">Ultimo disponibile</p>
+              <% } %> 
             </div>
     
             <div class="flex flex-col">
