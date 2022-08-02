@@ -30,7 +30,6 @@ router.get('/checkout', (req, res) => {
   }
 })
 router.post('/checkout', async (req, res) => {
-  // TODO testare se va con stati diversi dall' italia
   try{
     req.body.number = req.body.number.replaceAll("-", "");
   }catch(e){
