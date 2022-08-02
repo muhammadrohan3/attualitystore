@@ -87,8 +87,8 @@ class="bg-white flex flex-col min-h-screen font-main">
           </tr>
           <tr class="hover">
             <th  class="bg-secondary text-14px">Pagamento</th>
-            <td  class="bg-background">Tipo: <%= order.cashOnDelivery ? 'Alla consegna' : order.paymentMethod %></td>
-            <td  class="bg-background">PIID: <%= order.piid %></td>
+            <td  class="bg-background">Tipo: <%= order.paymentMethod %></td>
+            <td  class="bg-background">PIID: <%= order.piid ? order.piid : 'unknown' %></td>
             <td  class="bg-background">Coupon: <%= order.coupon ? order.coupon : 'NO' %></td>
           </tr>
           <!-- row 3 -->

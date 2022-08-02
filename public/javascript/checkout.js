@@ -46,6 +46,8 @@ const subtotalPage = document.getElementById('subtotalPage')
 const countryFlag = document.querySelectorAll('.countryFlag')
 const country = document.getElementById('country')
 const dropdown = document.getElementById('dropdown')
+const cashOnDeliveryWrapper = document.getElementById('cash-on-delivery');
+const onDelivery = document.getElementById('on-delivery')
 
 // const deliveryItalyWrapper = document.getElementById('deliveryItalyWrapper');
 // const deliveryItaly = document.getElementById('deliveryItaly');
@@ -82,11 +84,11 @@ for(flag of countryFlag){
       deliveryMethod.classList.remove('hidden')
       deliveryText.classList.add('hidden')
       if(e.target.dataset.country == 'Italia'){
-        // deliveryItalyWrapper.classList.remove('hidden')
+        cashOnDeliveryWrapper.classList.remove('hidden')
         deliveryPrice.innerHTML = `SDA Express&nbsp;&nbsp;-&nbsp;&nbsp;€${countriesPrice[e.target.dataset.country]}`
       }else{
-        // deliveryItaly.checked = false;
-        // deliveryItalyWrapper.classList.add('hidden')
+        onDelivery.checked = false;
+        cashOnDeliveryWrapper.classList.add('hidden')
         document.getElementById("italyMessage").classList.add("hidden");
         deliveryPrice.innerHTML = `UPS&nbsp;&nbsp;-&nbsp;&nbsp;€${countriesPrice[e.target.dataset.country]}`
       }
@@ -117,6 +119,10 @@ card.addEventListener('change', () => {
   cardDetails.classList.remove('hidden')
   cardElement.mount('#card-input')
 
+})
+onDelivery.addEventListener('change', () => {
+  cardDetails.classList.add('hidden')
+  cardElement.unmount()
 })
 
 // deliveryItaly.addEventListener('change', () => {
@@ -161,14 +167,16 @@ for(radio of paymentRadios){
 
 
 const checkout = document.getElementById('checkout');
+const checkoutButton = document.getElementById('checkoutButton')
 checkout.addEventListener('submit', async (e) => {
 
   e.preventDefault()
 
+  checkoutButton.disabled = true
+
   /*deliveryItaly.checked*/ 
   const dataToFormat = {
     cart: cart,
-    cashOnDelivery: false,
     email: document.getElementById('email').value,
     number: document.getElementById('phone-number').value,
     name: document.getElementById('name').value,
@@ -178,6 +186,7 @@ checkout.addEventListener('submit', async (e) => {
     province: document.getElementById('province').value,
     zip: document.getElementById('zip').value,
     state: prevFlag,
+    paymentMethod: paymentValue
   }
 
   if(prevFlag == 'none'){
@@ -192,27 +201,31 @@ checkout.addEventListener('submit', async (e) => {
     body: JSON.stringify(dataToFormat)
   })
   let response = await request.text()
-  response = JSON.parse(response)
+  try {
+    response = JSON.parse(response)
+  } catch (error) {
+    checkoutButton.disabled = false
+  }
 
   if(response.status == 'cart-changed'){
+    checkoutButton.disabled = false
     alert('La disponibilità dei prodotti è cambiata durante il tuo checkout quindi ti preghiamo di rifare il checkout')
     return window.location = '/cart'
   }
   if (response.status == "invalid-tld") {
+    checkoutButton.disabled = false
     return document.getElementById('emailError').classList.remove('hidden')
   }
 
   if(paymentValue == 'card'){
     response = response.clientSecret 
-  
-
     const result = await stripe.confirmCardPayment(response, {
       payment_method: {
         card: cardElement
       }
     })
-
     if(result.error){
+      checkoutButton.disabled = false
       if(result.error.type == 'card_error'){
         document.getElementById('cardRejected').classList.remove('hidden')
         setTimeout(() => {
@@ -220,11 +233,19 @@ checkout.addEventListener('submit', async (e) => {
         }, 5000)
       }
     }else{
+      checkoutButton.disabled = false
       fbq('track', 'Purchase', {value : (result.paymentIntent.amount/100).toFixed(2), currency: 'EUR', num_items: cart.length, content_ids: cart.id, content_type: 'clothing', content_category: 'clothing' })
       alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
       window.location = '/destroycart'
     }
 
+  }else if(paymentValue == 'cash-on-delivery'){
+    if(response.success){
+      checkoutButton.disabled = false
+      fbq('track', 'Purchase', {value : response.total.toFixed(2), currency: 'EUR', num_items: cart.length, content_ids: cart.id, content_type: 'clothing', content_category: 'clothing' })
+      alert('Grazie per aver scelto Attuality Store, il nostro staff inizierà a preparare il tuo pacco')
+      window.location = '/destroycart'
+    }
   }
 
 })

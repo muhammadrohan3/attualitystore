@@ -82,6 +82,7 @@ const styleSrcUrls = [
 const connectSrcUrls = [
   "https://graph.instagram.com/",
   "https://www.facebook.com",
+  "https://r.stripe.com/0",
 
   // userlike
   "https://userlike-cdn-widgets.s3-eu-west-1.amazonaws.com/umm-manifest.json",

@@ -1360,12 +1360,11 @@
           <div class="pb-8 mt-4">
             <p class="text-28px mb-3 font-light">METODO DI PAGAMENTO</p>
   
-            <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-3">
 
               <div class="p-4 border-black border">
                 <div class="flex flex-col justify-center">
                   <div class="flex flex-col">
-
                     <div class="flex gap-2.5">
                       <div class=" flex flex-col justify-center">
                         <input required id="card" value="card" type="radio" name="payment" class="radio h-5 w-5"/>
@@ -1373,13 +1372,23 @@
                       <p>Debit/Credit Card</p>
                     </div>
                     <input type="text" class="hidden" id="paymentChoosen">
-
-                    <div id="card-details" class="flex flex-wrap gap-3 w-full p-2 md:p-3 hidden">
-                      
+                    <div id="card-details" class="flex flex-wrap gap-3 w-full p-2 md:p-3 hidden">                   
                       <label id="card-input" class="relative w-full flex flex-col mt-4"></label>
-          
                     </div>
+                  </div>
+                </div>
+              </div>
 
+              <div id="cash-on-delivery" class="p-4 border-black border hidden">
+                <div class="flex flex-col justify-center">
+                  <div class="flex flex-col">
+                    <div class="flex gap-2.5">
+                      <div class=" flex flex-col justify-center">
+                        <input required id="on-delivery" value="cash-on-delivery" type="radio" name="payment" class="radio h-5 w-5"/>
+                      </div>
+                      <p>Alla consegna</p>
+                    </div>
+                    <input type="text" class="hidden" id="paymentChoosen">
                   </div>
                 </div>
               </div>

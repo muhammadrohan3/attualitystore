@@ -15,7 +15,7 @@ var transporter = nodemailer.createTransport({
       pass: process.env.EMAIL_PASSWORD
     }
 });
-
+const { v4: uuidv4 } = require('uuid');
 
 // stripe
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
@@ -30,6 +30,7 @@ router.get('/checkout', (req, res) => {
   }
 })
 router.post('/checkout', async (req, res) => {
+  // TODO testare se va con stati diversi dall' italia
   try{
     req.body.number = req.body.number.replaceAll("-", "");
   }catch(e){
@@ -73,9 +74,10 @@ router.post('/checkout', async (req, res) => {
     zip: req.body.zip,
     city: req.body.city,
     province: req.body.province,
-    cashOnDelivery: req.body.cashOnDelivery
+    paymentMethod: req.body.paymentMethod
   });
   if (errCheckout.error) {
+    console.log(errCheckout)
     return res.send(errCheckout.error.message);
   }
   // controllo stato
@@ -149,25 +151,30 @@ router.post('/checkout', async (req, res) => {
   };
 
   const tempCart = [];
-  for (item of req.body.cart) {
-    let cache;
-    try {
-      cache = await Product.findById(item.product);
-      if(cache.draft || cache.deleted){
-        return res.send(JSON.stringify({ status: "cart-changed" }));
+  try {
+    for (item of req.body.cart) {
+      let cache;
+      try {
+        cache = await Product.findById(item.product);
+        if(cache.draft || cache.deleted){
+          return res.send(JSON.stringify({ status: "cart-changed" }));
+        }
+      } catch (error) {
+        req.flash('error', 'Internal server error')
+        return res.redirect('/')
       }
-    } catch (error) {
-      throw new Error(error);
+      tempCart.push({
+        id: item.id,
+        product: item.product._id,
+        size: item.size,
+        copies: item.copies,
+      });
     }
-    tempCart.push({
-      id: item.id,
-      product: item.product._id,
-      size: item.size,
-      copies: item.copies,
-    });
-  }
-  if (!isEqual(tempCart, req.session.cart)) {
-    return res.send(JSON.stringify({ status: "cart-changed" }));
+    if (!isEqual(tempCart, req.session.cart)) {
+      return res.send(JSON.stringify({ status: "cart-changed" }));
+    }
+  } catch (error) {
+    return res.send('error')
   }
 
   // controllo carrello
@@ -199,7 +206,7 @@ router.post('/checkout', async (req, res) => {
       return res.send("error");
     }
   }
-  if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
+  if (req.body.paymentMethod == 'cash-on-delivery') {
     if (req.body.state != "Italia") {
       return res.send("error");
     }
@@ -229,28 +236,7 @@ router.post('/checkout', async (req, res) => {
   }
 
   let result;
-  if (req.body.cashOnDelivery) {
-    result = await stripe.paymentIntents.create({
-      amount: "1000",
-      currency: "eur",
-      payment_method_types: ["card"],
-      metadata: {
-        suuid: req.session.uuid,
-        user: userBody,
-        number: req.body.number,
-        email: req.body.email,
-        name: req.body.name,
-        surname: req.body.surname,
-        address: req.body.address,
-        city: req.body.city,
-        province: req.body.province,
-        state: req.body.state,
-        products: cart.toString(),
-        zip: req.body.zip,
-        cashOnDelivery: req.body.cashOnDelivery,
-      },
-    });
-  } else {
+  if (req.body.paymentMethod == 'card') {
     result = await stripe.paymentIntents.create({
       amount: total,
       currency: "eur",
@@ -268,12 +254,113 @@ router.post('/checkout', async (req, res) => {
         state: req.body.state,
         products: cart.toString(),
         zip: req.body.zip,
-        cashOnDelivery: req.body.cashOnDelivery,
       },
     });
-  }
 
-  res.send(JSON.stringify({ clientSecret: result.client_secret }));
+    res.send(JSON.stringify({ clientSecret: result.client_secret }));
+  } else if(req.body.paymentMethod == 'cash-on-delivery') {
+    const products = []
+    for(item of cart.toString().split(',{')){
+      if(cart.toString().split(',{').indexOf(item) == 0){
+        const str = item
+        products.push(JSON.parse(str))
+      }else{
+        const str = '{' + item
+        products.push(JSON.parse(str))
+      }
+    }
+
+    let order;
+    try {
+      const user = await User.findById(req.user._id)
+      order = new Order({
+        id: uuidv4(),
+        suuid: req.session.uuid,
+        products,
+        user: user._id,
+        paymentMethod: 'cash-on-delivery',
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        number: req.body.number.replaceAll('-', ''),
+        state: req.body.state,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        zip: req.body.zip,
+        amount: total,
+        createdAt: new Date(),
+        completed: false
+      })
+
+    } catch (error) {
+      order = new Order({
+        id: uuidv4(),
+        suuid: req.session.uuid,
+        products,
+        paymentMethod: 'cash-on-delivery',
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        number: req.body.number.replaceAll('-', ''),
+        state: req.body.state,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        zip: req.body.zip,
+        amount: total,
+        createdAt: new Date(),
+        completed: false
+      })
+
+    }
+
+    await order.save()
+    // mandare mail ad admin
+    var mailOptions = {
+      from: process.env.EMAIL,
+      to: process.env.EMAIL_ADMIN,
+      subject: 'NUOVO ORDINE!',
+      text: `Hai un nuovo ordine: ${req.protocol + '://' + req.get('host')}/user/admin/orders/info/${ order.id }`
+    };
+    transporter.sendMail(mailOptions, async function(error, info){
+      if (error) {
+        console.log(error)
+        req.flash('error', 'Internal server error')
+        return res.redirect('/')
+      }
+    });
+
+    for(item of req.body.cart){
+      let product = await Product.findById(item.product);
+      for(size of product.sizes){
+        if(size.size == item.size){
+          if(product.sizes[product.sizes.indexOf(size)].remaining - item.copies >= 0){
+            product.sizes[product.sizes.indexOf(size)].remaining = product.sizes[product.sizes.indexOf(size)].remaining - item.copies
+          }else{
+            await Order.findByIdAndDelete(order._id)
+            product.sizes[product.sizes.indexOf(size)].remaining = 0
+          }
+        }
+      }
+      await product.save()
+    }
+    for(item of req.body.cart){
+      let passed = false;
+      let product = await Product.findById(item.product);
+      for(size of product.sizes){
+        if(size.remaining > 0){
+          passed = true
+        }
+      }
+      if(!passed){
+        await Order.findByIdAndDelete(order._id)
+        await Product.findByIdAndUpdate(product._id, { draft: true })
+      }
+    }
+
+    return res.send(JSON.stringify({ success: true, total }))
+  }
 })
 
 router.post('/webhook', async (req, res) => {
@@ -306,7 +393,6 @@ router.post('/webhook', async (req, res) => {
       }
 
       let order;
-      const { v4: uuidv4 } = require('uuid');
       try {
         const user = await User.findById(metadata.user.replaceAll(`"`, ''))
         order = new Order({
@@ -315,7 +401,6 @@ router.post('/webhook', async (req, res) => {
           products,
           user: user._id,
           paymentMethod: 'card',
-          cashOnDelivery: metadata.cashOnDelivery,
           name: metadata.name,
           surname: metadata.surname,
           email: metadata.email,
@@ -336,7 +421,6 @@ router.post('/webhook', async (req, res) => {
           id: uuidv4(),
           suuid: metadata.suuid,
           products,
-          cashOnDelivery: metadata.cashOnDelivery,
           paymentMethod: 'card',
           name: metadata.name,
           surname: metadata.surname,
@@ -366,7 +450,8 @@ router.post('/webhook', async (req, res) => {
       transporter.sendMail(mailOptions, async function(error, info){
         if (error) {
           console.log(error)
-          throw new Error(error)
+          req.flash('error', 'Internal server error')
+          return res.redirect('/')
         }
       });
 
@@ -498,7 +583,7 @@ router.post('/checkout/buynow', async (req, res) => {
     zip: req.body.zip,
     city: req.body.city,
     province: req.body.province,
-    cashOnDelivery: req.body.cashOnDelivery
+    paymentMethod: req.body.paymentMethod
   });
   if (errCheckout.error) {
     return res.send(errCheckout.error.message);
@@ -565,7 +650,7 @@ router.post('/checkout/buynow', async (req, res) => {
       return res.send(JSON.stringify({ status: "cart-changed" }));
     }
     }
-   if (req.body.cashOnDelivery == true || req.body.cashOnDelivery == "true") {
+   if (req.body.paymentMethod == 'cash-on-delivery') {
      if (req.body.state != "Italia") {
        return res.send("error");
      }
@@ -600,28 +685,7 @@ router.post('/checkout/buynow', async (req, res) => {
 
 
   let result;
-  if (req.body.cashOnDelivery) {
-    result = await stripe.paymentIntents.create({
-      amount: "1000",
-      currency: "eur",
-      payment_method_types: ["card"],
-      metadata: {
-        suuid: req.session.uuid,
-        user: userBody,
-        number: req.body.number,
-        email: req.body.email,
-        name: req.body.name,
-        surname: req.body.surname,
-        address: req.body.address,
-        city: req.body.city,
-        province: req.body.province,
-        state: req.body.state,
-        products: cart.toString(),
-        zip: req.body.zip,
-        cashOnDelivery: req.body.cashOnDelivery,
-      },
-    });
-  } else {
+  if (req.body.paymentMethod == 'card') {
     result = await stripe.paymentIntents.create({
       amount: total,
       currency: "eur",
@@ -639,12 +703,112 @@ router.post('/checkout/buynow', async (req, res) => {
         state: req.body.state,
         products: cart.toString(),
         zip: req.body.zip,
-        cashOnDelivery: req.body.cashOnDelivery,
       },
     });
-  }
+    return res.send(JSON.stringify({ clientSecret: result.client_secret }));
+  } else if(req.body.paymentMethod == 'cash-on-delivery') {
+    const products = []
+    for(item of cart.toString().split(',{')){
+      if(cart.toString().split(',{').indexOf(item) == 0){
+        const str = item
+        products.push(JSON.parse(str))
+      }else{
+        const str = '{' + item
+        products.push(JSON.parse(str))
+      }
+    }
 
-  res.send(JSON.stringify({ clientSecret: result.client_secret }));
+    let order;
+    try {
+      const user = await User.findById(req.user._id)
+      order = new Order({
+        id: uuidv4(),
+        suuid: req.session.uuid,
+        products,
+        user: user._id,
+        paymentMethod: 'cash-on-delivery',
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        number: req.body.number.replaceAll('-', ''),
+        state: req.body.state,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        zip: req.body.zip,
+        amount: total,
+        createdAt: new Date(),
+        completed: false
+      })
+
+    } catch (error) {
+      order = new Order({
+        id: uuidv4(),
+        suuid: req.session.uuid,
+        products,
+        paymentMethod: 'cash-on-delivery',
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        number: req.body.number.replaceAll('-', ''),
+        state: req.body.state,
+        address: req.body.address,
+        city: req.body.city,
+        province: req.body.province,
+        zip: req.body.zip,
+        amount: total,
+        createdAt: new Date(),
+        completed: false
+      })
+
+    }
+
+    await order.save()
+    // mandare mail ad admin
+    var mailOptions = {
+      from: process.env.EMAIL,
+      to: process.env.EMAIL_ADMIN,
+      subject: 'NUOVO ORDINE!',
+      text: `Hai un nuovo ordine: ${req.protocol + '://' + req.get('host')}/user/admin/orders/info/${ order.id }`
+    };
+    transporter.sendMail(mailOptions, async function(error, info){
+      if (error) {
+        console.log(error)
+        req.flash('error', 'Internal server error')
+        return res.redirect('/')
+      }
+    });
+
+    for(item of req.body.cart){
+      let product = await Product.findById(item.product);
+      for(size of product.sizes){
+        if(size.size == item.size){
+          if(product.sizes[product.sizes.indexOf(size)].remaining - item.copies >= 0){
+            product.sizes[product.sizes.indexOf(size)].remaining = product.sizes[product.sizes.indexOf(size)].remaining - item.copies
+          }else{
+            await Order.findByIdAndDelete(order._id)
+            product.sizes[product.sizes.indexOf(size)].remaining = 0
+          }
+        }
+      }
+      await product.save()
+    }
+    for(item of req.body.cart){
+      let passed = false;
+      let product = await Product.findById(item.product);
+      for(size of product.sizes){
+        if(size.remaining > 0){
+          passed = true
+        }
+      }
+      if(!passed){
+        await Order.findByIdAndDelete(order._id)
+        await Product.findByIdAndUpdate(product._id, { draft: true })
+      }
+    }
+
+    return res.send(JSON.stringify({ success: true, total }))
+  }
 })
 
 

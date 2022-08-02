@@ -48,6 +48,11 @@ module.exports.userChangesSchema = Joi.object({
     .escapeHTML(),
   email: Joi.string().email().required().max(50),
 });
+
+const validPaymentMethod = [
+  "card",
+  "cash-on-delivery"
+]
 module.exports.checkoutSchema = Joi.object({
   name: Joi.string().required().max(30).escapeHTML(),
   surname: Joi.string().required().max(40).escapeHTML(),
@@ -60,7 +65,7 @@ module.exports.checkoutSchema = Joi.object({
   zip: Joi.string().required().length(5).escapeHTML(),
   city: Joi.string().required().max(50).escapeHTML(),
   province: Joi.string().required().max(50).escapeHTML(),
-  cashOnDelivery: Joi.boolean().required(),
+  paymentMethod: Joi.string().valid(...validPaymentMethod).required()
 });
 module.exports.emailSchema = Joi.object({
   email: Joi.string().email().required().max(50).escapeHTML(),

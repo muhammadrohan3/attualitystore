@@ -31,10 +31,6 @@ const OrderSchema = new Schema({
     type: Schema.Types.String,
     required: true
   },
-  cashOnDelivery: {
-    type: Schema.Types.Boolean,
-    required: true
-  },
 
   state: {
     type: Schema.Types.String,
@@ -79,7 +75,6 @@ const OrderSchema = new Schema({
   },
   piid: {
     type: Schema.Types.String,
-    required: true,
   },
   paymentMethod: {
     type: Schema.Types.String,
