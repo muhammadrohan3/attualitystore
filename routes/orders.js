@@ -76,7 +76,6 @@ router.post('/checkout', async (req, res) => {
     paymentMethod: req.body.paymentMethod
   });
   if (errCheckout.error) {
-    console.log(errCheckout)
     return res.send(errCheckout.error.message);
   }
   // controllo stato
@@ -353,7 +352,6 @@ router.post('/checkout', async (req, res) => {
         }
       }
       if(!passed){
-        await Order.findByIdAndDelete(order._id)
         await Product.findByIdAndUpdate(product._id, { draft: true })
       }
     }
@@ -490,13 +488,10 @@ router.post('/webhook', async (req, res) => {
         let passed = false;
         let product = await Product.findById(item.product);
         for(size of product.sizes){
-
+          console.log(size)
           if(size.remaining > 0){
-
             passed = true
-
           }
-
         }
 
         if(!passed){
@@ -763,6 +758,8 @@ router.post('/checkout/buynow', async (req, res) => {
     }
 
     await order.save()
+
+
     // mandare mail ad admin
     var mailOptions = {
       from: process.env.EMAIL,
@@ -801,7 +798,6 @@ router.post('/checkout/buynow', async (req, res) => {
         }
       }
       if(!passed){
-        await Order.findByIdAndDelete(order._id)
         await Product.findByIdAndUpdate(product._id, { draft: true })
       }
     }
