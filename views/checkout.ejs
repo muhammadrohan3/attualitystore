@@ -27,16 +27,10 @@
   </script>
 
   <%- include('./partials/flash') %> 
-
-  <main id="bgToBlur" class="h-auto">
-
-    <div class="absolute xl:left-desktop lg:left-laptop md:left-tablet left-mobile top-5 bg-white p-1 rounded">
-      <a href="/cart">
-        <svg width="20" height="20" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13.1831 20.8149L12.0991 21.8989C11.6401 22.3579 10.8979 22.3579 10.4438 21.8989L0.95166 12.4116C0.492676 11.9526 0.492676 11.2105 0.95166 10.7563L10.4438 1.26416C10.9028 0.805176 11.645 0.805176 12.0991 1.26416L13.1831 2.34814C13.647 2.81201 13.6372 3.56885 13.1636 4.02295L7.27979 9.62842H21.313C21.9624 9.62842 22.4849 10.1509 22.4849 10.8003V12.3628C22.4849 13.0122 21.9624 13.5347 21.313 13.5347H7.27979L13.1636 19.1401C13.6421 19.5942 13.6519 20.3511 13.1831 20.8149Z" fill="black"/>
-        </svg>    
-      </a>  
-    </div>
+  
+  <main id="bgToBlur" class="h-auto" style = "background : white">
+    <img src="/originale.png" class="logo" alt="logo attuality store sfondo bianco testo nero">
+    
 
     <form id="checkout" class="xl:px-desktop lg:px-laptop md:px-tablet px-mobile max-w-7xl mx-auto mb-20 mt-14">
       <div class="grid grid-cols-12 gap-5">
@@ -1349,7 +1343,7 @@
                     <div class="flex flex-col justify-center">
                         <input id="deliveryRadio" required type="radio" name="delivery" class="radio h-5 w-5"/>
                     </div>
-                    <p id="deliveryPrice">€<span>0</span></p>
+                    <p class="shipping_method"><span>SDA 1-2 giorni lavorativi</span> <span>Gratuita</span></p>
                   </div>
                 </div>
               </div>
@@ -1361,7 +1355,19 @@
             <p class="text-28px mb-3 font-light">METODO DI PAGAMENTO</p>
   
             <div class="flex flex-col gap-3">
-
+              <div class="p-4 border-black border">
+                <div class="flex flex-col justify-center">
+                  <div class="flex flex-col">
+                    <div class="flex gap-2.5">
+                      <div class=" flex flex-col justify-center">
+                        <input required id="on-delivery" value="cash-on-delivery" type="radio" name="payment" class="radio h-5 w-5"/>
+                      </div>
+                      <p>Paga alla consegna</p>
+                    </div>
+                    <input type="text" class="hidden" id="paymentChoosen">
+                  </div>
+                </div>
+              </div>
               <div class="p-4 border-black border">
                 <div class="flex flex-col justify-center">
                   <div class="flex flex-col">
@@ -1369,33 +1375,48 @@
                       <div class=" flex flex-col justify-center">
                         <input required id="card" value="card" type="radio" name="payment" class="radio h-5 w-5"/>
                       </div>
-                      <p>Debit/Credit Card</p>
+                      <p class="pay_by_card"><span>Carta di Credito/Debito</span><span><img src="/paymentmethods.png" alt=""></span></p>
                     </div>
                     <input type="text" class="hidden" id="paymentChoosen">
-                    <div id="card-details" class="flex flex-wrap gap-3 w-full p-2 md:p-3 hidden">                   
+                    <div id="card-details" class="flex flex-wrap gap-3 w-full p-2 md:p-3 hidden">
+                      <!-- <label id="card-number2"></label>
+                      <label id="card-expiry"></label>
+                      <label id="card-cvc" ></label>                    -->
                       <label id="card-input" class="relative w-full flex flex-col mt-4"></label>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div id="cash-on-delivery" class="p-4 border-black border hidden">
-                <div class="flex flex-col justify-center">
-                  <div class="flex flex-col">
-                    <div class="flex gap-2.5">
-                      <div class=" flex flex-col justify-center">
-                        <input required id="on-delivery" value="cash-on-delivery" type="radio" name="payment" class="radio h-5 w-5"/>
-                      </div>
-                      <p>Alla consegna</p>
-                    </div>
-                    <input type="text" class="hidden" id="paymentChoosen">
-                  </div>
-                </div>
-              </div>
+              
 
             </div>
-            
-          </div>
+          <p class="terms">I tuoi dati personali e di pagamento verranno utilizzati per elaborare il tuo ordine e per altri scopi descritti nella nostra politica sulla <span><a href="https://www.attualitystore.com/info/privacy-cookie-policy" target="_blank" rel="noopener noreferrer">Privacy & Cookie Policy.</a></span></p> 
+          <% 
+          let totalPage = 0;
+          cart.forEach(item => {
+            totalPage = totalPage + item.copies * item.product.discountedPrice
+          })  
+        %> 
+          <% if(totalPage != 0){ %>
+            <div class="flex flex-col mt-5 gap-3">
+              <!-- <label id="deliveryItalyWrapper" class="flex gap-2 cursor-pointer justify-end hidden">
+                <span class="text-13px font-medium">Vuoi pagare alla consegna?</span> 
+                <input id="deliveryItaly" style="width: 18px; height: 18px;" type="checkbox" class="checkbox rounded-none" />
+              </label> -->
+              <div class="flex justify-center">
+                <button id="checkoutButton" class="bg-black text-white py-2 font-medium text-20px button2">
+                  ACQUISTA ORA
+                </button>
+              </div>
+              <p class="text-red-500 font-medium text-16px text-center hidden" id="italyMessage">I soldi della spedizione verranno
+              scalati dal totale all' arrivo del pacco</p>
+              <div id="cardRejected" class="flex justify-center hidden">
+                <p class="font-semibold text-red-500">PAGAMENTO RIFIUTATO</p>
+              </div>
+            </div>
+          <% } %> 
+        </div>
 
         </div>
 
@@ -1403,18 +1424,18 @@
 
           <div class="flex flex-col gap-5">
 
-            <img src="/logo-black.png" class="shadow-md lg:block hidden" alt="logo attuality store sfondo bianco testo nero">
+            
 
-            <div class="p-3 md:p-4 lg:p-5 bg-white shadow-md">
+            <div class="p-3 md:p-4 lg:p-5 right shadow-md">
 
-              <p class="text-20px mb-5">NEL TUO CARRELLO</p>
+              <p class="text-20px mb-5">IL TUO CARRELLO</p>
 
               <div class="flex flex-col gap-5">
 
                 <% if(cart && cart.length){ %>
                   <% for(cartItem of cart){ %>
 
-                    <div class="flex gap-4">
+                    <div class="item flex gap-4">
                       <a class="w-20 shrink-0" href="/product/<%= cartItem.product.urlSlug %>">
                         <img src="https://res.cloudinary.com/attuality-store/image/upload/c_scale,h_120/<%= cartItem.product.images[0].filename %>" class="w-20 shrink-0" alt="<%= cartItem.product.modelName.urlSlug %>">
                       </a>
@@ -1424,63 +1445,55 @@
                           <p class="text-14px">Taglia: <span class="font-semibold"><%= cartItem.size == 'one-size' ? 'UNICA' : cartItem.size %></span></p>
                           <p class="text-14px">Quantità: <span class="font-semibold" id="cartQuantity-<%= cartItem.id %>"><%= cartItem.copies %></span></p>
                         </div>
-                        <p class="text-14px font-semibold mt-1">€<%= (cartItem.product.discountedPrice/100).toFixed(2) %></p>
+                        <p class="text-14px font-semibold mt-1"><span class="price">€<%= (cartItem.product.price/100).toFixed(2) %></span> <span class="discounted">€<%= (cartItem.product.discountedPrice/100).toFixed(2) %></span> </p>
                       </div>
                     </div>
   
                   <% } %> 
                 <% } %>  
-
-              </div>
-
-            </div>
-
-            <div class="lg:col-span-5 col-span-12 bg-white p-3 md:p-4 lg:p-5 shadow-md">
-              <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">RIASSUNTO</p>
-              <div class="flex border-b border-black mt-4 flex-col gap-3 py-3">
-                <% 
-                  let totalPage = 0;
-                  cart.forEach(item => {
-                    totalPage = totalPage + item.copies * item.product.discountedPrice
-                  })  
-                %> 
-                <div class="flex justify-between">
-                  <p>Subtotale:</p>
-                  <p>€<span id="subtotalPage"><%= (totalPage/100).toFixed(2) %></span></p>
-                </div>
-                <div class="flex justify-between">
-                  <p>Spedizione:</p>
-                  <p id="deliveryNotYet">Non ancora calcolata</p>
-                  <p id="deliveryPageHidden" class="hidden">€<span id="deliveryPage">0</span></p>
-                </div>
-              </div>
-              <div class="flex flex-col">
-                <div class="flex justify-between font-medium text-18px mt-5">
-                  <p>Totale:</p>
-                  <p>€<span id="totalPage"><%= (totalPage/100 ).toFixed(2) %></span></p>
-                </div>
-                <p class="text-14px font-light text-right w-full">IVA inclusa</p>
-              </div>
-
-              <% if(totalPage != 0){ %>
-                <div class="flex flex-col mt-5 gap-3">
-                  <!-- <label id="deliveryItalyWrapper" class="flex gap-2 cursor-pointer justify-end hidden">
-                    <span class="text-13px font-medium">Vuoi pagare alla consegna?</span> 
-                    <input id="deliveryItaly" style="width: 18px; height: 18px;" type="checkbox" class="checkbox rounded-none" />
-                  </label> -->
-                  <div class="flex justify-center">
-                    <button id="checkoutButton" class="bg-black text-white w-full py-2 font-medium text-20px">
-                      CHECKOUT
+                <div class="discount"> 
+                    <input onchange="" placeholder="CODICE SCONTO" maxlength="50" type="text" id="coupon" name="coupon" class="border border-black px-2.5 py-2 text-14px" style="margin-right: 5px">
+                    <button id="" class="bg-black text-white w-full py-2 font-medium text-14px">
+                      Applica
                     </button>
+               </div>
+                
+                <div class="flex border-b border-black mt-4 flex-col gap-3 py-3">
+
+                  <div class="flex justify-between">
+                    <p>Subtotale:</p>
+                    <p>€<span id="subtotalPage"><%= (totalPage/100).toFixed(2) %></span></p>
                   </div>
-                  <p class="text-red-500 font-medium text-16px text-center hidden" id="italyMessage">I soldi della spedizione verranno
-                  scalati dal totale all' arrivo del pacco</p>
-                  <div id="cardRejected" class="flex justify-center hidden">
-                    <p class="font-semibold text-red-500">PAGAMENTO RIFIUTATO</p>
+                  <div class="flex justify-between">
+                    <p>Spedizione:</p>
+                    <p id="deliveryNotYet">Non ancora calcolata</p>
+                    <p id="deliveryPageHidden" class="hidden">€<span id="deliveryPage">0</span></p>
                   </div>
                 </div>
-              <% } %> 
+                <div class="flex flex-col">
+                  <div class="flex justify-between font-medium text-18px mt-5">
+                    <p>Totale:</p>
+                    <p>€<span id="totalPage"><%= (totalPage/100 ).toFixed(2) %></span></p>
+                  </div>
+                  <p class="text-14px font-light text-right w-full">IVA inclusa</p>
+                </div>
+
+
+
+                <p class="py-2 px-0.5 border-b border-secondaryDark font-medium text-20px mb-5">PERCHÈ ATTUALITY STORE</p>
+                <ul class="item">
+                  <li><span class="tick"><img src="/tick.png" alt=""></span><span> Acquisti sicuri al 100%</span></li>
+                  <li><span class="tick"><img src="/tick.png" alt=""></span><span> Miglior prezzo</span></li>
+                  <li><span class="tick"><img src="/tick.png" alt=""></span><span> Spedizione veloce</span></li>
+                  <li><span class="tick"><img src="/tick.png" alt=""></span><span> Monitoraggio rapido degli ordini</span></li>
+                </ul>
+              </div>
+
             </div>
+
+            <!-- <div class="lg:col-span-5 col-span-12 bg-white p-3 md:p-4 lg:p-5 shadow-md">
+              
+            </div> -->
 
           </div>
 

@@ -1,8 +1,11 @@
-const stripe = Stripe(key);
+const stripe = Stripe(key, {locale : 'it'});
 
-const elements = stripe.elements()
+const elements = stripe.elements();
 
 var cardElement = elements.create('card')
+// var cardNumberElement = elements.create('cardNumber');
+// var cardExpiryElement = elements.create('cardExpiry');
+// var cardCvcElement = elements.create('cardCvc');
 
 let countriesPrice = {
   'Francia': 22,
@@ -113,16 +116,24 @@ deliveryRadio.addEventListener('change', (e) => {
 })
 
 const card = document.getElementById('card')
+
 const cardDetails = document.getElementById('card-details')
 card.addEventListener('change', () => {
     
   cardDetails.classList.remove('hidden')
+  // cardNumberElement.mount('#card-number2');
+  // cardExpiryElement.mount('#card-expiry');
+  // cardCvcElement.mount('#card-cvc');
   cardElement.mount('#card-input')
+  
 
 })
 onDelivery.addEventListener('change', () => {
   cardDetails.classList.add('hidden')
-  cardElement.unmount()
+  cardElement.unmount();
+  // cardNumberElement.unmount();
+  // cardExpiryElement.unmount();
+  // cardCvcElement.unmount();
 })
 
 // deliveryItaly.addEventListener('change', () => {
@@ -221,7 +232,7 @@ checkout.addEventListener('submit', async (e) => {
     response = response.clientSecret 
     const result = await stripe.confirmCardPayment(response, {
       payment_method: {
-        card: cardElement
+        card: cardElement,
       }
     })
     if(result.error){

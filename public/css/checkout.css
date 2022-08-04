@@ -1,6 +1,10 @@
 #bgToBlur{
   transition: 0.5s;
 }
+main{
+  padding-top: 0;
+  margin-top: 0;
+}
 #bgToBlur.active{
   filter: blur(5px);
   pointer-events: none;
@@ -22,4 +26,98 @@
   visibility: visible;
   opacity: 1;
   transition: 0.5s;
+}
+.back
+{
+  width: fit-content;
+  margin-left: 4%;
+  margin-bottom: -20px;
+}
+.shipping_method
+{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.logo
+{
+  width: 30%; 
+  padding : 4%;
+  padding-bottom: 0;
+ }
+.pay_by_card
+{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.pay_by_card span
+{
+  display: flex;
+  align-items: center;
+}
+.terms
+{
+  padding-top: 10px;
+
+}
+.terms span
+{
+  text-decoration: underline;
+}
+@media screen and (max-width: 768px) {
+  .logo
+  {
+    width: 40%;
+  }
+  
+}
+.item
+{
+  border-bottom: 1px solid #ccc;
+}
+.right
+{
+  background-color: #e7e7e7
+
+}
+.price
+{
+  text-decoration: line-through;
+  padding-right: 15px;
+}
+.discounted
+{
+  color : #f94c43;
+}
+
+.discount
+{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+.button
+{
+  padding: 0 5px;
+  width: 50%;
+}
+.button2 
+{
+  padding: 5px 20px;
+  width: 50%;
+}
+.tick
+{
+  width: 20px;
+}
+.tick img 
+{
+  width: 15px;
+}
+li{
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
 }
